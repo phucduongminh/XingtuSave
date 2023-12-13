@@ -5,7 +5,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import { ToDoItem } from '../models';
+import { ToDoItem } from '../models/ToDoItem';
 export const ToDoItemComponent: React.FC<{
   todo: ToDoItem;
   deleteItem: Function;
@@ -22,7 +22,7 @@ export const ToDoItemComponent: React.FC<{
         onPress={() => deleteItem(id)}
         title="done"
         color="#841584"
-        accessibilityLabel="add todo item"
+        accessibilityLabel="Delete todo item"
       />
     </View>
   );
