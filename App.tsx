@@ -18,7 +18,7 @@ const App = () => {
         <Stack.Screen
           name="ShowPlan"
           component={ShowPlan}
-          options={{title: 'Welcome'}}
+          options={{title: 'ShowPlan'}}
         />
         <Stack.Screen name="NewPlan" component={NewPlan} />
       </Stack.Navigator>
