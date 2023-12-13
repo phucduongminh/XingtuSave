@@ -1,9 +1,9 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {BlurView} from '@react-native-community/blur';
+import { StyleSheet } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BlurView } from '@react-native-community/blur';
 
-import {COLORS} from '../theme/theme';
+import { COLORS } from '../theme/theme';
 import CustomIcon from '../components/CustomIcon';
 import HomeScreen from '../screens/HomeScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
@@ -32,7 +32,7 @@ const TabNavigator = () => {
         name="Home"
         component={HomeScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <CustomIcon
               name="home"
               size={25}
@@ -46,7 +46,7 @@ const TabNavigator = () => {
         name="Cart"
         component={CartScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <CustomIcon
               name="cart"
               size={25}
@@ -60,7 +60,7 @@ const TabNavigator = () => {
         name="Favorite"
         component={FavoritesScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <CustomIcon
               name="like"
               size={25}
@@ -74,7 +74,7 @@ const TabNavigator = () => {
         name="History"
         component={OrderHistoryScreen}
         options={{
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <CustomIcon
               name="bell"
               size={25}
