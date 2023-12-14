@@ -13,38 +13,31 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '../../App';
-import { getDBConnection, saveTodoItems, createTable } from '../controllers/db-service';
-import { ToDoItem } from '../models/ToDoItem';
+import { getDBConnection, saveTodoItems } from '../controllers/db-service';
+import { AddPlans } from '../models/Plans';
 
 type ProfileProps = NativeStackScreenProps<RootStackParamList>;
 
 export default function NewPlan({ navigation }: ProfileProps) {
   const isDarkMode = useColorScheme() === 'dark';
-  const [newTodo, setNewTodo] = useState('');
-  const [todos, setTodos] = useState<ToDoItem[]>([]);
-  const [age, setAge] = useState('');
+  const [newCategory, setNewCategory] = useState('');
+  const [todos, setTodos] = useState<AddPlans[]>([]);
+  const [money, setMoney] = useState('');
 
   const addPlan = async () => {
     const db = await getDBConnection();
-    await createTable(db);
-    if (!newTodo.trim()) return;
+    if (!newCategory.trim()) return;
     try {
       const newTodos = [
         ...todos,
         {
-          id: todos.length
-            ? todos.reduce((acc, cur) => {
-                if (cur.id > acc.id) return cur;
-                return acc;
-              }).id + 1
-            : 0,
-          value: newTodo,
+          category: newCategory,
+          money: Number(money)
         },
       ];
       setTodos(newTodos);
       const db = await getDBConnection();
       await saveTodoItems(db, newTodos);
-      setNewTodo('');
       navigation.navigate('ShowPlan');
     } catch (error) {
       console.error(error);
@@ -62,15 +55,15 @@ export default function NewPlan({ navigation }: ProfileProps) {
         <View style={styles.input1}>
           <TextInput
             style={styles.input}
-            placeholder="Tên kế hoạch"
-            value={newTodo}
-            onChangeText={setNewTodo}
+            placeholder="Tên danh mục"
+            value={newCategory}
+            onChangeText={setNewCategory}
           />
           <TextInput
         style={styles.input}
         placeholder="Số tiền"
-        value={age}
-        onChangeText={setAge}
+        value={money}
+        onChangeText={setMoney}
         keyboardType="numeric"
       />
           <Button title="Lưu" onPress={addPlan} />

@@ -5,17 +5,17 @@ import {
   Text,
   View,
 } from 'react-native';
-import { ToDoItem } from '../models/ToDoItem';
+import { Plans } from '../models/Plans';
 export const ToDoItemComponent: React.FC<{
-  todo: ToDoItem;
+  todo: Plans;
   deleteItem: Function;
-}> = ({ todo: {id, value}, deleteItem }) => {
+}> = ({ todo: {id, category,money}, deleteItem }) => {
   return (
     <View style={styles.todoContainer}>
       <View style={styles.todoTextContainer}>
         <Text
           style={styles.sectionTitle}>
-          {value}
+          {category}
         </Text>
       </View>
       <Button
