@@ -1,27 +1,31 @@
 import { enablePromise, openDatabase, SQLiteDatabase } from 'react-native-sqlite-storage';
-import { ToDoItem } from '../models/ToDoItem';
+import { Plans } from '../models/Plans';
+import { AddPlans } from '../models/Plans';
 
-const tableName = 'todoData';
+const tableName = 'plans';
 
 enablePromise(true);
 
 export const getDBConnection = async () => {
-  return openDatabase({ name: 'todo-data.db', location: 'default' });
+  return openDatabase({ name: 'xingtu.db', location:'default' });
 };
 
 export const createTable = async (db: SQLiteDatabase) => {
   // create table if not exists
-  const query = `CREATE TABLE IF NOT EXISTS ${tableName}(
-        value TEXT NOT NULL
+  const query = `CREATE TABLE IF NOT EXISTS "${tableName}"(
+    "category_id"	INTEGER NOT NULL,
+    "category_name"	INTEGER NOT NULL,
+    "money"	INTEGER NOT NULL,
+    PRIMARY KEY("category_id" AUTOINCREMENT)
     );`;
 
   await db.executeSql(query);
 };
 
-export const getTodoItems = async (db: SQLiteDatabase): Promise<ToDoItem[]> => {
+export const getTodoItems = async (db: SQLiteDatabase): Promise<Plans[]> => {
   try {
-    const todoItems: ToDoItem[] = [];
-    const results = await db.executeSql(`SELECT rowid as id,value FROM ${tableName}`);
+    const todoItems: Plans[] = [];
+    const results = await db.executeSql(`SELECT category_id,category_name,money  FROM ${tableName};`);
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         todoItems.push(result.rows.item(index))
@@ -34,21 +38,21 @@ export const getTodoItems = async (db: SQLiteDatabase): Promise<ToDoItem[]> => {
   }
 };
 
-export const saveTodoItems = async (db: SQLiteDatabase, todoItems: ToDoItem[]) => {
+export const saveTodoItems = async (db: SQLiteDatabase, todoItems: AddPlans[]) => {
   const insertQuery =
-    `INSERT OR REPLACE INTO ${tableName}(rowid, value) values` +
-    todoItems.map(i => `(${i.id}, '${i.value}')`).join(',');
+    `INSERT INTO ${tableName}(category_name, money) values` +
+    todoItems.map(i => `('${i.category}', ${i.money})`).join(',');
 
   return db.executeSql(insertQuery);
 };
 
 export const deleteTodoItem = async (db: SQLiteDatabase, id: number) => {
-  const deleteQuery = `DELETE from ${tableName} where rowid = ${id}`;
+  const deleteQuery = `DELETE from ${tableName} where category_id = ${id};`;
   await db.executeSql(deleteQuery);
 };
 
 export const deleteTable = async (db: SQLiteDatabase) => {
-  const query = `drop table ${tableName}`;
+  const query = `drop table ${tableName};`;
 
   await db.executeSql(query);
 };

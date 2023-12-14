@@ -18,9 +18,9 @@ const App = () => {
         <Stack.Screen
           name="ShowPlan"
           component={ShowPlan}
-          options={{title: 'ShowPlan'}}
+          options={{title: 'Show Plan'}}
         />
-        <Stack.Screen name="NewPlan" component={NewPlan} />
+        <Stack.Screen name="NewPlan" component={NewPlan} options={{title: 'New Plan'}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );
