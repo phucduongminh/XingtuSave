@@ -9,7 +9,7 @@ import { Plans } from '../models/Plans';
 export const ToDoItemComponent: React.FC<{
   todo: Plans;
   deleteItem: Function;
-}> = ({ todo: {id, category,money}, deleteItem }) => {
+}> = ({ todo: {id, category}, deleteItem }) => {
   return (
     <View style={styles.todoContainer}>
       <View style={styles.todoTextContainer}>

@@ -13,8 +13,8 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '../../App';
-import { getDBConnection, saveTodoItems } from '../controllers/db-service';
-import { AddPlans } from '../models/Plans';
+import { getDBConnection, saveTodoItems, createTable } from '../controllers/db-service';
+import { AddPlans } from '../models/AddPlans';
 
 type ProfileProps = NativeStackScreenProps<RootStackParamList>;
 
@@ -26,6 +26,7 @@ export default function NewPlan({ navigation }: ProfileProps) {
 
   const addPlan = async () => {
     const db = await getDBConnection();
+    await createTable(db);
     if (!newCategory.trim()) return;
     try {
       const newTodos = [

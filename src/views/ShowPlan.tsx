@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import { ToDoItemComponent } from '../components/ToDoItem';
 import { Plans } from '../models/Plans';
-import { getDBConnection, getTodoItems, saveTodoItems, createTable, deleteTodoItem } from '../controllers/db-service';
+import { getDBConnection, getTodoItems, saveInitItems, createTable, deleteTodoItem } from '../controllers/db-service';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 
@@ -20,23 +20,24 @@ type ProfileProps = NativeStackScreenProps<RootStackParamList>;
 
 const ShowPlan = ({ navigation }: ProfileProps) => {
   const isDarkMode = useColorScheme() === 'dark';
-  const [todos, setTodos] = useState<Plans[]>([]);
+  const [todos, setTodos] = useState<Plans[]>([]); 
 
   const loadDataCallback = useCallback(async () => {
     try {
-      const initPlans = [{ category: 'No Plans', money:1 }];
+      const initPlans = [{ id:0, category: 'No Plans', money:1 }];
       const db = await getDBConnection();
       await createTable(db);
       const storedPlanItems = await getTodoItems(db);
       if (storedPlanItems.length) {
         setTodos(storedPlanItems);
       } else {
-        await saveTodoItems(db, initPlans);
+        await saveInitItems(db, initPlans);
+        setTodos(initPlans);
       }
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [todos]);
 
   useEffect(() => {
     loadDataCallback();
@@ -46,12 +47,12 @@ const ShowPlan = ({ navigation }: ProfileProps) => {
     try {
       const db = await getDBConnection();
       await deleteTodoItem(db, id);
-      todos.splice(id, 1);
-      setTodos(todos.slice(0));
+  todos.splice(id, 1);
+  setTodos(todos.slice(0));
     } catch (error) {
       console.error(error);
     }
-  };
+  };  
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -67,7 +68,7 @@ const ShowPlan = ({ navigation }: ProfileProps) => {
           />
         </TouchableOpacity>
   
-        <View style={styles.todoList}>
+        <View>
           {todos.map((todo) => (
             <ToDoItemComponent key={todo.id} todo={todo} deleteItem={deleteItem} />
           ))}
@@ -103,10 +104,6 @@ const ShowPlan = ({ navigation }: ProfileProps) => {
     scrollViewContent: {
       flexGrow: 1,
       justifyContent: 'center',
-    },
-    todoList: {
-      marginTop: 20,
-      paddingHorizontal: 20,
     },
   });
   
