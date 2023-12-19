@@ -13,21 +13,20 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '../../App';
-import { getDBConnection, saveTodoItems, createTable } from '../controllers/db-service';
+import { getDBConnection, saveTodoPlans, createTable } from '../controllers/db-service';
 import { AddPlans } from '../models/AddPlans';
 
 type ProfileProps = NativeStackScreenProps<RootStackParamList>;
 
 export default function NewPlan({ navigation }: ProfileProps) {
   const isDarkMode = useColorScheme() === 'dark';
-  const [newCategory, setNewCategory] = useState('');
+  const [newCategory, setNewCategory] = useState("");
   const [todos, setTodos] = useState<AddPlans[]>([]);
   const [money, setMoney] = useState('');
 
   const addPlan = async () => {
     const db = await getDBConnection();
     await createTable(db);
-    if (!newCategory.trim()) return;
     try {
       const newTodos = [
         ...todos,
@@ -38,7 +37,7 @@ export default function NewPlan({ navigation }: ProfileProps) {
       ];
       setTodos(newTodos);
       const db = await getDBConnection();
-      await saveTodoItems(db, newTodos);
+      await saveTodoPlans(db, newTodos);
       navigation.navigate('ShowPlan');
     } catch (error) {
       console.error(error);
@@ -67,7 +66,7 @@ export default function NewPlan({ navigation }: ProfileProps) {
         onChangeText={setMoney}
         keyboardType="numeric"
       />
-          <Button title="Lưu" onPress={addPlan} />
+          <Button title="Lưu" color="pink" onPress={addPlan} />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -85,11 +84,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   appTitleText: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: 'bold',
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     margin: 10,
   },

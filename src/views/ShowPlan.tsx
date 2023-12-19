@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
+  FlatList,
     Image,
   SafeAreaView,
   ScrollView,
@@ -10,9 +11,9 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import { ToDoItemComponent } from '../components/ToDoItem';
+import { ToDoPlanComponent } from '../components/ToDoPlan';
 import { Plans } from '../models/Plans';
-import { getDBConnection, getTodoItems, saveInitItems, createTable, deleteTodoItem } from '../controllers/db-service';
+import { getDBConnection, getTodoPlans, createTable, deleteTodoPlan } from '../controllers/db-service';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 
@@ -24,15 +25,13 @@ const ShowPlan = ({ navigation }: ProfileProps) => {
 
   const loadDataCallback = useCallback(async () => {
     try {
-      const initPlans = [{ id:0, category: 'No Plans', money:1 }];
       const db = await getDBConnection();
       await createTable(db);
-      const storedPlanItems = await getTodoItems(db);
+      const storedPlanItems = await getTodoPlans(db);
       if (storedPlanItems.length) {
         setTodos(storedPlanItems);
       } else {
-        await saveInitItems(db, initPlans);
-        setTodos(initPlans);
+        setTodos([]);
       }
     } catch (error) {
       console.error(error);
@@ -46,7 +45,7 @@ const ShowPlan = ({ navigation }: ProfileProps) => {
   const deleteItem = async (id: number) => {
     try {
       const db = await getDBConnection();
-      await deleteTodoItem(db, id);
+      await deleteTodoPlan(db, id);
   todos.splice(id, 1);
   setTodos(todos.slice(0));
     } catch (error) {
@@ -67,13 +66,18 @@ const ShowPlan = ({ navigation }: ProfileProps) => {
             source={require("../assets/additem.png")}
           />
         </TouchableOpacity>
-  
-        <View>
-          {todos.map((todo) => (
-            <ToDoItemComponent key={todo.id} todo={todo} deleteItem={deleteItem} />
-          ))}
-        </View>
+        {todos.length === 0 && <Text style={styles.noPlansText}>Chưa có kế hoạch chi tiêu cho tháng này !!!</Text>}
       </ScrollView>
+      <FlatList
+          data={todos}
+          renderItem={({ item }) => (
+            <ToDoPlanComponent
+              item={item}
+              deleteItem={deleteItem}
+            />
+          )}
+          keyExtractor={(item) => item.id.toString()}
+        />
     </SafeAreaView>
   );
           }
@@ -88,7 +92,7 @@ const ShowPlan = ({ navigation }: ProfileProps) => {
       alignItems: 'center',
     },
     appTitleText: {
-      fontSize: 20,
+      fontSize: 24,
       fontWeight: 'bold',
     },
     addButton: {
@@ -98,12 +102,18 @@ const ShowPlan = ({ navigation }: ProfileProps) => {
       padding: 10,
     },
     addButtonIcon: {
-      height: 24,
-      width: 24,
+      height: 28,
+      width: 28,
     },
     scrollViewContent: {
       flexGrow: 1,
       justifyContent: 'center',
+    },
+    noPlansText: {
+      fontSize: 18,
+      color: 'gray',
+      textAlign: 'center',
+      marginTop: 20,
     },
   });
   
