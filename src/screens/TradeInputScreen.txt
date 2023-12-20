@@ -125,375 +125,79 @@ const TradeInputScreen = () => {
   );
 };
 
-
-const styles = StyleSheet.create({
-  savebuttonSpaceBlock: {
-    padding: Padding.p_3xs,
-    position: "absolute",
-  },
-  iconLayout4: {
-    height: 65,
-    width: 65,
-    position: "absolute",
-  },
-  rectangleIconPosition: {
-    left: 0,
-    top: 0,
-  },
-  savebuttonFlexBox: {
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  sTinTypo: {
-    height: 22,
-    width: 84,
-    textAlign: "left",
-    color: Color.color,
-    fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-    fontSize: FontSize.size_base,
-  },
-  iconLayout3: {
-    width: 37,
-    height: 20,
-    position: "absolute",
-  },
-  textTypo: {
-    display: "flex",
-    fontSize: FontSize.size_17xl,
-    textAlign: "left",
-    fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-    alignItems: "center",
-  },
-  chiLayout: {
-    width: 189,
-    height: 22,
-    position: "absolute",
-  },
-  addedPosition: {
-    left: 18,
-    padding: Padding.p_3xs,
-    position: "absolute",
-  },
-  addedItemsShadowBox: {
-    elevation: 48,
-    shadowRadius: 48,
-    backgroundColor: Color.colorWhite,
-    shadowOpacity: 1,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-  },
-  iconLayout2: {
-    height: 46,
-    width: 47,
-  },
-  julyTypo: {
-    color: Color.colorLightslategray,
-    fontSize: FontSize.size_xs,
-    left: "0.08%",
-    top: "50%",
-    textAlign: "left",
-    fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-    position: "absolute",
-  },
-  iconLayout1: {
-    width: 35,
-    position: "absolute",
-    overflow: "hidden",
-  },
-  iconLayout: {
-    width: "8.04%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    position: "absolute",
-    overflow: "hidden",
-  },
-  addbuttonLayout: {
-    width: 241,
-    height: 40,
-    position: "absolute",
-  },
-  addTypo: {
-    textAlign: "left",
-    fontFamily: FontFamily.aBeeZeeRegular,
-  },
-  header: {
-    top: 27,
-    left: 14,
-    width: 386,
-    height: 40,
-    position: "absolute",
-    overflow: "hidden",
-  },
-  lu: {
-    textAlign: "center",
-    fontFamily: FontFamily.aBeeZeeRegular,
-    fontSize: FontSize.size_base,
-    color: Color.color,
-    letterSpacing: 1,
-  },
-  savebutton: {
-    top: 29,
-    left: 349,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    backgroundColor: Color.colorGainsboro,
-  },
-  rectangleIcon: {
-    borderRadius: Border.br_7xs,
-    height: 65,
-    width: 65,
-    position: "absolute",
-  },
-  icon: {
-    top: 231,
-    left: 40,
-  },
-  rectangleIcon1: {
-    width: 34,
-    height: 34,
-    borderRadius: Border.br_7xs,
-  },
-  chnNgyThng: {
-    width: 160,
-    height: 20,
-    fontSize: FontSize.size_sm,
-    textAlign: "center",
-    color: Color.color,
-    fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-  },
-  choosedate: {
-    top: 376,
-    left: 40,
-    position: "absolute",
-  },
-  inputMoneyFieldChild: {
-    borderColor: Color.colorAquamarine,
-    width: 225,
-    marginTop: 11,
-    height: 3,
-    borderTopWidth: 3,
-    borderStyle: "solid",
-  },
-  inputMoneyField: {
-    top: 248,
-    left: 138,
-    position: "absolute",
-  },
-  iconDescription: {
-    right: 2,
-    bottom: 7,
-    width: 21,
-    zIndex: 0,
-    height: 20,
-    position: "absolute",
-  },
-  description: {
-    width: 154,
-    marginTop: 5,
-    zIndex: 1,
-    height: 22,
-    textAlign: "left",
-    color: Color.color,
-    fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-    fontSize: FontSize.size_base,
-  },
-  inputDescriptionFieldChild: {
-    width: 317,
-    zIndex: 2,
-    borderColor: Color.color,
-    marginTop: 5,
-    height: 3,
-    borderTopWidth: 3,
-    borderStyle: "solid",
-  },
-  inputDescriptionField: {
-    top: 321,
-    left: 46,
-    position: "absolute",
-  },
-  category: {
-    zIndex: 0,
-  },
-  inputDanhMucChild: {
-    shadowColor: "rgba(0, 0, 0, 0.25)",
-    shadowRadius: 4,
-    elevation: 4,
-    width: 222,
-    marginTop: 10,
-    shadowOpacity: 1,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    borderColor: Color.color,
-    zIndex: 1,
-    height: 3,
-    borderTopWidth: 3,
-    borderStyle: "solid",
-  },
-  selectbuttonIcon: {
-    right: 6,
-    bottom: 38,
-    zIndex: 2,
-  },
-  inputDanhMuc: {
-    top: 163,
-    width: 235,
-    height: 68,
-    left: 129,
-  },
-  rectangle: {
-    borderRadius: Border.br_7xs,
-    height: 65,
-    width: 65,
-    position: "absolute",
-    backgroundColor: Color.colorGainsboro,
-  },
-  text: {
-    top: 21,
-    left: 22,
-    width: 26,
-    height: 26,
-    color: Color.color,
-    position: "absolute",
-  },
-  icon1: {
-    top: 152,
-    left: 40,
-  },
-  khonChi: {
-    fontSize: 24,
-    textAlign: "left",
-    fontFamily: FontFamily.aBeeZeeRegular,
-    left: 0,
-    top: 0,
-    color: Color.color,
-    letterSpacing: 1,
-    width: 189,
-  },
-  icon2: {
-    top: 2,
-    left: 124,
-  },
-  chiThuDropdownMenu: {
-    top: 98,
-    left: 129,
-  },
-  addedItemsWrapper: {
-    top: 515,
-  },
-  text1: {
-    color: "#fd0f0f",
-    width: 10,
-    height: 10,
-  },
-  rectangleIcon2: {
-    borderRadius: Border.br_7xs,
-    left: 0,
-    top: 0,
-    position: "absolute",
-  },
-  icon3: {
-    marginLeft: 10,
-  },
-  rentalIncome: {
-    marginTop: -18,
-    color: Color.colorDarkslategray,
-    left: "0.08%",
-    top: "50%",
-    width: "31.18%",
-    textAlign: "left",
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-    position: "absolute",
-  },
-  july2021: {
-    marginTop: 4,
-    width: "31.18%",
-    color: Color.colorLightslategray,
-    fontSize: FontSize.size_xs,
-  },
-  july2022: {
-    marginTop: 19,
-    width: "83.65%",
-    height: 15,
-  },
-  text2: {
-    marginTop: -10,
-    width: "63.08%",
-    left: "36.92%",
-    fontSize: FontSize.size_lg,
-    color: "#fb1717",
-    textAlign: "right",
-    top: "50%",
-    fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-    position: "absolute",
-  },
-  info: {
-    width: 263,
-    height: 36,
-    marginLeft: 10,
-    overflow: "hidden",
-  },
-  addedItems: {
-    shadowColor: "rgba(0, 0, 0, 0.06)",
-    paddingHorizontal: Padding.p_11xs,
-    paddingVertical: Padding.p_sm,
-    borderRadius: Border.br_7xs,
-    alignItems: "center",
-    flexDirection: "row",
-  },
-  addedItemsContainer: {
-    top: 609,
-  },
-  showMoreIcon: {
-    width: 30,
-    height: 30,
-  },
-  morebutton: {
-    top: 724,
-    left: 175,
-    flexDirection: "row",
-    padding: Padding.p_3xs,
-  },
-  addbuttonChild: {
-    borderRadius: Border.br_5xs,
-    backgroundColor: Color.colorAquamarine,
-    left: 0,
-    top: 0,
-  },
-  add: {
-    top: 11,
-    fontSize: 20,
-    lineHeight: 20,
-    color: "#f4f3f6",
-    width: 104,
-    height: 14,
-    left: 86,
-    position: "absolute",
-  },
-  addbutton: {
-    top: 428,
-    left: 86,
-  },
-  tradeinputscreen: {
-    borderRadius: Border.br_13xl,
-    backgroundColor: Color.colorGray,
-    flex: 1,
-    width: "100%",
-    height: 896,
-    overflow: "hidden",
-  },
-});
-
 export default TradeInputScreen;
+
+
+
+
+import React, { useState } from 'react';
+import { Button, Image, View } from 'react-native';
+import {launchImageLibrary, launchCamera} from 'react-native-image-picker';
+
+
+const App = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const openImagePicker = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.error) {
+        console.log('Image picker error: ', response.error);
+      } else {
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        setSelectedImage(imageUri);
+      }
+    });
+  };
+  
+  handleCameraLaunch = () => {
+    const options = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+  
+    launchCamera(options, response => {
+      console.log('Response = ', response);
+      if (response.didCancel) {
+        console.log('User cancelled camera');
+      } else if (response.error) {
+        console.log('Camera Error: ', response.error);
+      } else {
+        // Process the captured image
+        let imageUri = response.uri || response.assets?.[0]?.uri;
+        setSelectedImage(imageUri);
+        console.log(imageUri);
+      }
+    });
+  }
+
+  return (
+    <View style={{ flex: 1, justifyContent: 'center' }}>
+     {selectedImage && (
+          <Image
+            source={{ uri: selectedImage }}
+            style={{ flex: 1 }}
+            resizeMode="contain"
+          />
+    )}
+    <View style={{ marginTop: 20 }}>
+      <Button title="Choose from Device" onPress={openImagePicker} />
+    </View>
+    <View style={{ marginTop: 20,marginBottom: 50 }}>
+      <Button title="Open Camera" onPress={handleCameraLaunch} />
+    </View>
+  </View>
+  );
+};
+
+export default App;

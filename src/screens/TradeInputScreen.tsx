@@ -7,6 +7,7 @@ import { useState } from "react";
 import { Input } from '@rneui/themed';
 import {Dropdown} from 'react-native-element-dropdown';
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker';
 
 const TradeInputScreen = () => {
     
@@ -14,9 +15,37 @@ const TradeInputScreen = () => {
   const [color2, setColor2] = useState('black');
   const [color3, setColor3] = useState('black');
   const [formType, setFormType] = useState('expense');
-  const [category, setCategory] = useState('');
-  const [date, setDate] = useState(new Date());
   const [show,setShow] = useState(false);
+
+  const [category, setCategory] = useState('');
+  const [money, setMoney] = useState('');
+  const [description, setDescription] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [selectedImage, setSelectedImage] = useState<string | undefined>();
+
+  
+
+  const openImagePicker = () => {
+    const options: ImageLibraryOptions = {
+      mediaType: 'photo',
+      includeBase64: false,
+      maxHeight: 2000,
+      maxWidth: 2000,
+    };
+  
+    launchImageLibrary(options, (response) => {
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      } else if (response.errorMessage) {
+        console.log('Image picker error: ', response.errorMessage);
+      } else {
+        let imageUri = response.assets?.[0] && response.assets[0].uri; // use the assets property instead
+        setSelectedImage(imageUri);
+      }
+    });
+  };
+  
+
 
   const onDateChange = (e: DateTimePickerEvent, selectedDate: Date | undefined) => {
     // Check if selectedDate is defined before setting the date
@@ -30,7 +59,7 @@ const TradeInputScreen = () => {
     setShow(true)
   }
 
-  const options = [
+  const chooses = [
     {label: 'Khoản thu', value: 'income'},
     {label: 'Khoản chi', value: 'expense'},
   ];
@@ -47,7 +76,7 @@ const TradeInputScreen = () => {
       </View>
       <View style={styles.formChoseDropdown}>
       <Dropdown
-        data={options}
+        data={chooses}
         value={formType}
         onChange={(item) => setFormType(item.value)}
         labelField="label"
@@ -57,13 +86,24 @@ const TradeInputScreen = () => {
         itemTextStyle={styles.formChoseList}
       />
       </View>
-      <View style={[styles.icon1, styles.iconLayout4]}>
-        <View style={[styles.rectangle, styles.rectangleIconPosition]} />
-        <Text style={[styles.text, styles.textTypo]}>+</Text>
+      <View style={[styles.addImageArea, styles.iconLayout]}>
+        
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+     {selectedImage && (
+          <Image
+            source={{ uri: selectedImage }}
+            style={{ flex: 1 }}
+            resizeMode="contain"
+          />
+    )}
+        <Pressable onPress={openImagePicker}>
+    <View style={[styles.rectangle]} />
+        <Text style={[styles.plus, styles.plusIcon]}>+</Text></Pressable>
+  </View>
       </View>
-      <View style={[styles.icon, styles.iconLayout4]}>
+      <View style={[styles.icon, styles.iconLayout]}>
         <Image
-          style={[styles.rectangleIcon, styles.rectangleIconPosition]}
+          style={[styles.rectangleIcon]}
           resizeMode="cover"
           source={require("../assets/rectangle1.png")}
         />
@@ -75,7 +115,7 @@ const TradeInputScreen = () => {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.dropdownIcon}
-          data={options}
+          data={chooses}
           search
           maxHeight={300}
           labelField="label"
@@ -101,6 +141,8 @@ const TradeInputScreen = () => {
             onFocus={() => setColor2(Color.colorAquamarine)}
             // Khi onBlur, gọi hàm setColor để đổi màu thành đen
             onBlur={() => setColor2('black')}
+            value={money}
+            onChangeText={(text) => setMoney(text)}
           />
       </View>
       <View style={styles.inputDescriptionField}>
@@ -117,17 +159,19 @@ const TradeInputScreen = () => {
             onFocus={() => setColor3(Color.colorAquamarine)}
             // Khi onBlur, gọi hàm setColor để đổi màu thành đen
             onBlur={() => setColor3('black')}
+            value={description}
+            onChangeText={(text) => setDescription(text)}
           />
       </View>
-      <View style={[styles.choosedate, styles.savebuttonFlexBox]}>
+      <View style={[styles.chooseDate, styles.savebuttonFlexBox]}>
         <Pressable onPress={()=>showMode()}>
         <Image
-          style={styles.rectangleIcon1}
+          style={styles.chooseDateIcon}
           resizeMode="cover"
           source={require("../assets/rectangle2.png")}
         />
         </Pressable>
-        <Text style={styles.chnNgyThng}>Chọn ngày tháng *</Text>
+        <Text style={styles.chooseDateText}>Chọn ngày tháng *</Text>
         {
             show&&(
                 <DateTimePicker
@@ -140,8 +184,9 @@ const TradeInputScreen = () => {
         }
       </View>
       <View style={[styles.addbutton, styles.addbuttonLayout]}>
+        <Pressable>
         <View style={[styles.addbuttonChild, styles.addbuttonLayout]} />
-        <Text style={[styles.add, styles.addTypo]}>+ ADD</Text>
+        <Text style={[styles.add, styles.addTypo]}>ADD +</Text></Pressable>
       </View>
       <View style={[styles.addedItemsWrapper, styles.addedPosition]}>
         <AddedItems />
@@ -162,14 +207,10 @@ const styles = StyleSheet.create({
     padding: Padding.p_3xs,
     position: "absolute",
   },
-  iconLayout4: {
+  iconLayout: {
     height: 65,
     width: 65,
     position: "absolute",
-  },
-  rectangleIconPosition: {
-    left: 0,
-    top: 0,
   },
   savebuttonFlexBox: {
     alignItems: "center",
@@ -187,54 +228,25 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40
   },
-  textTypo: {
+  plusIcon: {
     display: "flex",
     fontSize: FontSize.size_17xl,
-    textAlign: "left",
     fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-    alignItems: "center",
+    position:"absolute"
+  },
+  
+  plus: {
+    top: 7,
+    left: 22,
+    width: 36,
+    height: 36,
+    color: Color.color,
+    position: "absolute",
   },
   addedPosition: {
     left: 18,
     padding: Padding.p_3xs,
     position: "absolute",
-  },
-  addedItemsShadowBox: {
-    elevation: 48,
-    shadowRadius: 48,
-    backgroundColor: Color.colorWhite,
-    shadowOpacity: 1,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-  },
-  iconLayout2: {
-    height: 46,
-    width: 47,
-  },
-  julyTypo: {
-    color: Color.colorLightslategray,
-    fontSize: FontSize.size_xs,
-    left: "0.08%",
-    top: "50%",
-    textAlign: "left",
-    fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-    position: "absolute",
-  },
-  iconLayout1: {
-    width: 35,
-    position: "absolute",
-    overflow: "hidden",
-  },
-  iconLayout: {
-    width: "8.04%",
-    maxHeight: "100%",
-    maxWidth: "100%",
-    position: "absolute",
-    overflow: "hidden",
   },
   addbuttonLayout: {
     width: 241,
@@ -247,11 +259,10 @@ const styles = StyleSheet.create({
   },
   header: {
     top: 27,
-    left: 14,
+    left: "25%",
     width: 386,
     height: 40,
     position: "absolute",
-    overflow: "hidden",
   },
   lu: {
     textAlign: "center",
@@ -275,15 +286,20 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   icon: {
-    top: 231,
+    top: 235,
     left: 40,
   },
-  rectangleIcon1: {
+  addImageArea:{
+    top: 165,
+    left: 40,
+    position: "absolute",
+  },
+  chooseDateIcon: {
     width: 34,
     height: 34,
     borderRadius: Border.br_7xs,
   },
-  chnNgyThng: {
+  chooseDateText: {
     width: 160,
     height: 20,
     fontSize: FontSize.size_sm,
@@ -292,7 +308,7 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.aBeeZeeRegular,
     letterSpacing: 1,
   },
-  choosedate: {
+  chooseDate: {
     top: 376,
     left: 40,
     position: "absolute",
@@ -330,28 +346,6 @@ const styles = StyleSheet.create({
   category: {
     zIndex: 0,
   },
-  inputCategoryChild: {
-    shadowColor: "rgba(0, 0, 0, 0.25)",
-    shadowRadius: 4,
-    elevation: 4,
-    width: 226,
-    marginTop: 10,
-    shadowOpacity: 1,
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    borderColor: Color.color,
-    zIndex: 1,
-    height: 3,
-    borderTopWidth: 3,
-    borderStyle: "solid",
-  },
-  selectbuttonIcon: {
-    right: 6,
-    bottom: 38,
-    zIndex: 2,
-  },
   inputCategory: {
     top: 163,
     width: 235,
@@ -362,31 +356,16 @@ const styles = StyleSheet.create({
     borderRadius: Border.br_7xs,
     height: 65,
     width: 65,
-    position: "absolute",
+    position: "relative",
     backgroundColor: Color.colorGainsboro,
   },
-  text: {
-    top: 21,
-    left: 22,
-    width: 26,
-    height: 26,
-    color: Color.color,
-    position: "absolute",
-  },
-  icon1: {
-    top: 152,
-    left: 40,
-  },
+  
   formChoseList: {
     fontSize: 16,
     textAlign: "left",
     fontFamily: FontFamily.aBeeZeeRegular,
     color: Color.color,
 
-  },
-  icon2: {
-    top: 2,
-    left: 124,
   },
   formChoseDropdown: {
     top: 98,
@@ -397,61 +376,6 @@ const styles = StyleSheet.create({
   },
   addedItemsWrapper: {
     top: 515,
-  },
-  text1: {
-    color: "#fd0f0f",
-    width: 10,
-    height: 10,
-  },
-  rectangleIcon2: {
-    borderRadius: Border.br_7xs,
-    left: 0,
-    top: 0,
-    position: "absolute",
-  },
-  icon3: {
-    marginLeft: 10,
-  },
-  rentalIncome: {
-    marginTop: -18,
-    color: Color.colorDarkslategray,
-    left: "0.08%",
-    top: "50%",
-    width: "31.18%",
-    textAlign: "left",
-    fontSize: FontSize.size_sm,
-    fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-    position: "absolute",
-  },
-  july2021: {
-    marginTop: 4,
-    width: "31.18%",
-    color: Color.colorLightslategray,
-    fontSize: FontSize.size_xs,
-  },
-  july2022: {
-    marginTop: 19,
-    width: "83.65%",
-    height: 15,
-  },
-  text2: {
-    marginTop: -10,
-    width: "63.08%",
-    left: "36.92%",
-    fontSize: FontSize.size_lg,
-    color: "#fb1717",
-    textAlign: "right",
-    top: "50%",
-    fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-    position: "absolute",
-  },
-  info: {
-    width: 263,
-    height: 36,
-    marginLeft: 10,
-    overflow: "hidden",
   },
   addedItems: {
     shadowColor: "rgba(0, 0, 0, 0.06)",
@@ -500,14 +424,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: 896,
-    overflow: "hidden",
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#533483',
-    padding: 16,
-    justifyContent: 'center',
-    alignContent: 'center',
   },
   dropdownCategory: {
     height: 45,
@@ -515,24 +431,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingHorizontal: 10,
   },
-  label: {
-    position: 'absolute',
-    backgroundColor: 'white',
-    left: 22,
-    top: 8,
-    zIndex: 999,
-    paddingHorizontal: 8,
-    fontSize: 14,
-  },
   placeholderStyle: {
     fontSize: 16,
   },
   selectedTextStyle: {
     fontSize: 16,
-  },
-  iconStyle: {
-    width: 20,
-    height: 20,
   },
   inputSearchStyle: {
     height: 40,

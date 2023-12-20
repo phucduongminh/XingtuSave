@@ -1,11 +1,10 @@
 import * as React from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
-import { Color, FontSize, FontFamily, Border, Padding } from "../GlobalStyles";
+import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 
 const AddedItems = () => {
   return (
     <View style={styles.addedItems}>
-      <Text style={styles.text}>-</Text>
       <View style={styles.icon}>
         <Image
           style={styles.rectangleIcon}
@@ -30,22 +29,20 @@ const styles = StyleSheet.create({
     color: Color.colorLightslategray,
     fontSize: FontSize.size_xs,
     left: "0.08%",
-    top: "50%",
+    top: "30%",
     position: "absolute",
     textAlign: "left",
     fontFamily: FontFamily.aBeeZeeRegular,
     letterSpacing: 1,
   },
   text: {
-    fontSize: FontSize.size_17xl,
-    color: Color.colorRed_100,
-    display: "flex",
+    top:"10%",
+    fontSize: 50,
+    color: "red",
     width: 10,
     height: 10,
-    textAlign: "left",
     fontFamily: FontFamily.aBeeZeeRegular,
     letterSpacing: 1,
-    alignItems: "center",
   },
   rectangleIcon: {
     top: 0,
@@ -61,7 +58,7 @@ const styles = StyleSheet.create({
     width: 47,
   },
   rentalIncome: {
-    marginTop: -18,
+    marginTop: -25,
     fontSize: FontSize.size_sm,
     color: Color.colorDarkslategray,
     left: "0.08%",
@@ -98,12 +95,11 @@ const styles = StyleSheet.create({
   info: {
     width: 263,
     height: 36,
-    overflow: "hidden",
     marginLeft: 10,
   },
   addedItems: {
     backgroundColor: Color.colorWhite,
-    shadowColor: "rgba(0, 0, 0, 0.06)",
+    shadowColor: "rgba(0, 0, 0, 0.5)",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -112,10 +108,11 @@ const styles = StyleSheet.create({
     elevation: 48,
     shadowOpacity: 1,
     flexDirection: "row",
-    paddingHorizontal: Padding.p_11xs,
-    paddingVertical: Padding.p_sm,
+    paddingHorizontal: 10,
+    paddingVertical: 18,
     alignItems: "center",
     borderRadius: Border.br_7xs,
+    overflow:"scroll"
   },
 });
 
