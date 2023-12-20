@@ -8,7 +8,7 @@ import CustomIcon from '../components/CustomIcon';
 import TradeInputScreen from '../screens/TradeInputScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import CartScreen from '../screens/CartScreen';
-import OrderHistoryScreen from '../screens/OrderHistoryScreen';
+import SpendStatistic from '../screens/SpendStatistic';
 
 const Tab = createBottomTabNavigator();
 
@@ -72,7 +72,7 @@ const TabNavigator = () => {
         }}></Tab.Screen>
       <Tab.Screen
         name="History"
-        component={OrderHistoryScreen}
+        component={SpendStatistic}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <CustomIcon

@@ -4,6 +4,8 @@ export const FontFamily = {
   aBeeZeeRegular: "ABeeZee-Regular",
   robotoBold: "Roboto-Bold",
   robotoMedium: "Roboto-Medium",
+  aBeeZeeItalic: "ABeeZee-Italic",
+  poppinsRegular: "Poppins-Regular",
 };
 /* font sizes */
 export const FontSize = {
@@ -15,6 +17,7 @@ export const FontSize = {
   size_lg: 18,
   size_xl: 20,
   size_17xl: 36,
+  size_5xl: 24,
 };
 /* Colors */
 export const Color = {
@@ -42,6 +45,7 @@ export const Border = {
   br_13xl: 32,
   br_sm: 14,
   br_9xs: 4,
+  br_21xl: 40,
   br_7xs: 6,
   br_4xl_8: 24,
   br_5xs: 8,
