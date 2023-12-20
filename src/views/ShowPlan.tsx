@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import { ToDoPlanComponent } from '../components/ToDoPlan';
 import { Plans } from '../models/Plans';
-import { getDBConnection, getTodoPlans, createTable, deleteTodoPlan } from '../controllers/db-service';
+import { getDBConnection, getTodoPlans, createTable, deleteTodoPlan } from '../controllers/PlanControllers';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../App';
 

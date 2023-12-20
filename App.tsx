@@ -1,4 +1,4 @@
-import * as React from 'react';
+/* import * as React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ShowPlan from './src/views/ShowPlan';
@@ -25,5 +25,18 @@ const App = () => {
     </NavigationContainer>
   );
 };
+
+export default App; */
+
+import TabNavigator from './src/navigators';
+import { NavigationContainer } from '@react-navigation/native';
+
+function App(): JSX.Element {
+  return (
+    <NavigationContainer>
+    <TabNavigator/>
+    </NavigationContainer>
+  );
+}
 
 export default App;

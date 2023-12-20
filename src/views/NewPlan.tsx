@@ -13,7 +13,7 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 import { RootStackParamList } from '../../App';
-import { getDBConnection, saveTodoPlans, createTable } from '../controllers/db-service';
+import { getDBConnection, saveTodoPlans, createTable } from '../controllers/PlanControllers';
 import { AddPlans } from '../models/AddPlans';
 
 type ProfileProps = NativeStackScreenProps<RootStackParamList>;

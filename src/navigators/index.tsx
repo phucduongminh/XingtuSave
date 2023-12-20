@@ -5,7 +5,7 @@ import { BlurView } from '@react-native-community/blur';
 
 import { COLORS } from '../theme/theme';
 import CustomIcon from '../components/CustomIcon';
-import HomeScreen from '../screens/HomeScreen';
+import TradeInputScreen from '../screens/TradeInputScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
 import CartScreen from '../screens/CartScreen';
 import OrderHistoryScreen from '../screens/OrderHistoryScreen';
@@ -30,7 +30,7 @@ const TabNavigator = () => {
       }}>
       <Tab.Screen
         name="Home"
-        component={HomeScreen}
+        component={TradeInputScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <CustomIcon
@@ -90,7 +90,7 @@ const TabNavigator = () => {
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    height: 80,
+    height: 40,
     position: 'absolute',
     backgroundColor: COLORS.primaryBlackRGBA,
     borderTopWidth: 0,
