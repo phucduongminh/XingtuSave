@@ -5,4 +5,5 @@ export type Spends = {
     image: string;
     description:string;
     date: string;
+    income: number;
 };

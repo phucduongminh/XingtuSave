@@ -1,8 +1,11 @@
 import * as React from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
+import { AddTrades } from "../models/AddTrades";
 
-const AddedItems = () => {
+export const TradeItemsComponent: React.FC<{
+  item: AddTrades;
+}> = ({ item: {category,money,image,description,date,income} }) => {
   return (
     <View style={styles.addedItems}>
       <View style={styles.icon}>
@@ -13,12 +16,12 @@ const AddedItems = () => {
         />
       </View>
       <View style={styles.info}>
-        <Text style={styles.rentalIncome}>Siêu thị</Text>
-        <Text style={[styles.july2021, styles.julyTypo]}>25/10/2023</Text>
+        <Text style={styles.rentalIncome}>{category}</Text>
+        <Text style={[styles.july2021, styles.julyTypo]}>{date}</Text>
         <Text style={[styles.july2022, styles.julyTypo]}>
-          Mô tả: Rau, thịt,...
+          {description}
         </Text>
-        <Text style={styles.text1}>500.000</Text>
+        <Text style={styles.text1}>{money}</Text>
       </View>
     </View>
   );
@@ -115,5 +118,3 @@ const styles = StyleSheet.create({
     overflow:"scroll"
   },
 });
-
-export default AddedItems;

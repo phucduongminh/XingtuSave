@@ -3,6 +3,6 @@ export type AddTrades = {
     money: number;
     image: string;
     description:string;
-    date: Date;
+    date: string;
     income: number;
 };

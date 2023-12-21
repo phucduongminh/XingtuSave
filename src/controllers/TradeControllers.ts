@@ -1,6 +1,6 @@
 import { enablePromise, openDatabase, SQLiteDatabase } from 'react-native-sqlite-storage';
-import { Plans } from '../models/Plans';
-import { AddPlans } from '../models/AddPlans';
+import { Spends } from '../models/Spends';
+import { AddTrades } from '../models/AddTrades';
 
 const tableName = 'spends';
 
@@ -13,38 +13,48 @@ export const getDBConnection = async () => {
 export const createTable = async (db: SQLiteDatabase) => {
   // create table if not exists
   const query = `CREATE TABLE IF NOT EXISTS ${tableName}(
-      category_name	TEXT NOT NULL,
-      money	INTEGER NOT NULL
+      category_name	TEXT,
+      money	INTEGER,
+      image	TEXT,
+      description TEXT,
+      date TEXT,
+      income number
     );`;
 
   await db.executeSql(query);
 };
 
-export const getTodoPlans = async (db: SQLiteDatabase): Promise<Plans[]> => {
+export const getSpendsHistory = async (db: SQLiteDatabase): Promise<Spends[]> => {
   try {
-    const todoPlans: Plans[] = [];
-    const results = await db.executeSql(`SELECT rowid as id,category_name,money  FROM ${tableName};`);
+    const newTrades: Spends[] = [];
+    const results = await db.executeSql(`SELECT rowid as id,category_name,money,image,description,date,income  FROM ${tableName};`);
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
-        todoPlans.push(result.rows.item(index))
+        newTrades.push(result.rows.item(index))
       }
     });
-    return todoPlans;
+    return newTrades;
   } catch (error) {
     console.error(error);
-    throw Error('Failed to get todoPlans !!!');
+    throw Error('Failed to get TradesHistory !!!');
   }
 };
 
-export const saveTodoPlans = async (db: SQLiteDatabase, todoPlans: AddPlans[]) => {
+export const saveNewTrade = async (db: SQLiteDatabase, newTrades: AddTrades[]) => {
+  try {
   const insertQuery =
     `INSERT INTO ${tableName}(category_name, money) values` +
-    todoPlans.map(i => `('${i.category}', ${i.money})`).join(';');
-
+    newTrades.map(i => `('${i.category}', ${i.money})`).join(';');
+    console.log("ok bro");
   return db.executeSql(insertQuery);
+  
+} catch (error) {
+  console.error(error);
+  throw Error('Failed to get TradesHistory !!!');
+}
 };
 
-export const deleteTodoPlan = async (db: SQLiteDatabase, id: number) => {
+export const deleteTrade = async (db: SQLiteDatabase, id: number) => {
   const deleteQuery = `DELETE from ${tableName} where rowid = ${id};`;
   await db.executeSql(deleteQuery);
 };

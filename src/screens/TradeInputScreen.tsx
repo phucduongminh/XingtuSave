@@ -1,15 +1,15 @@
 import * as React from "react";
-import { StyleSheet, View, Pressable, Text, Image } from "react-native";
+import { StyleSheet, View, Pressable, Text, Image, FlatList } from "react-native";
 import HeaderName from "../components/HeaderName";
-import AddedItems from "../components/AddedItems";
+import {TradeItemsComponent} from "../components/TradeItems";
 import { Padding, Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Input } from '@rneui/themed';
 import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker';
 import { AddTrades } from "../models/AddTrades";
-import { createTable, getDBConnection } from "../controllers/TradeControllers";
+import { saveNewTrade, createTable, getDBConnection } from "../controllers/TradeControllers";
 
 const TradeInputScreen = () => {
 
@@ -62,24 +62,44 @@ const TradeInputScreen = () => {
         { label: 'Khoản chi', value: 'expense' },
     ];
 
+    const catechooses = [
+        { label: 'Siêu thị', value: 'Siêu thị' },
+        { label: 'Mua nhà', value: 'Mua nhà' },
+        { label: 'Ăn cắp', value: 'Ăn cắp' },
+    ];
+
     const [trades, setTrades] = useState<AddTrades[]>([]);
+    const [tradesList, setTradesList] = useState<AddTrades[]>([]);
+    const [showAdded, setShowAdded] = useState(false);
+
+    const loadDataCallback = useCallback(async () => {
+        try {
+          if (trades.length) {
+            setShowAdded(true);
+            setTradesList(trades)
+          } else {
+            setShowAdded(false);
+            setTradesList([])
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }, [trades]);
+    
+      useEffect(() => {
+        loadDataCallback();
+      }, [loadDataCallback]);
+
     const AddTrade = async () => {
         const db = await getDBConnection();
         await createTable(db);
         try {
             const newTrade = [
                 ...trades,
-                {
-                    category: category,
-                    money: Number(money),
-                    image: String(selectedImage),
-                    description: description,
-                    date: date,
-                    income: formType==='income'? 1: 0
-                },
             ];
             setTrades(newTrade);
-            //await saveTodoPlans(db, newTodos);
+            const db = await getDBConnection();
+            await saveNewTrade(db, newTrade);
             //navigation.navigate('ShowPlan');
         } catch (error) {
             console.error(error);
@@ -110,16 +130,16 @@ const TradeInputScreen = () => {
                     itemTextStyle={styles.formChoseList}
                 />
             </View>
-            <View style={[styles.addImageArea, styles.iconLayout]}>
-
-                <View style={{ flex: 1, justifyContent: 'center' }}>
-                    {selectedImage && (
+            <View style={[styles.addImageArea, styles.iconLayout]}>{selectedImage && (
                         <Image
                             source={{ uri: selectedImage }}
                             style={{ flex: 1 }}
-                            resizeMode="contain"
                         />
-                    )}
+                    )}</View>
+            
+            <View style={[styles.addImageArea1, styles.iconLayout]}>
+
+                <View style={{ flex: 1, justifyContent: 'center' }}>
                     <Pressable onPress={openImagePicker}>
                         <View style={[styles.rectangle]} />
                         <Text style={[styles.plus, styles.plusIcon]}>+</Text></Pressable>
@@ -139,7 +159,7 @@ const TradeInputScreen = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.dropdownIcon}
-                    data={chooses}
+                    data={catechooses}
                     search
                     maxHeight={300}
                     labelField="label"
@@ -208,13 +228,32 @@ const TradeInputScreen = () => {
                 }
             </View>
             <View style={[styles.addbutton, styles.addbuttonLayout]}>
-                <Pressable>
+                <Pressable onPress={()=>{const newTrade =
+                {
+                    category: category,
+                    money: Number(money),
+                    image: String(selectedImage),
+                    description: description,
+                    date: String(date),
+                    income: formType==='income'? 1: 0
+                };
+            setTrades([...trades,newTrade]);}}>
                     <View style={[styles.addbuttonChild, styles.addbuttonLayout]} />
                     <Text style={[styles.add, styles.addTypo]}>ADD +</Text></Pressable>
             </View>
-            <View style={[styles.addedItemsWrapper, styles.addedPosition]}>
-                <AddedItems />
-            </View>
+            {showAdded&&(<FlatList
+  data={tradesList}
+  renderItem={({ item }) => (
+    <View style={[styles.addedItemsWrapper, styles.addedPosition]}><TradeItemsComponent
+    item={item}
+  /></View>
+    
+  )}
+  keyExtractor={(item, index) => 'trade-' + (index + 1)}
+/>)}
+            
+
+
             <View style={[styles.morebutton, styles.savebuttonSpaceBlock]}>
                 <Image
                     style={styles.showMoreIcon}
@@ -314,10 +353,17 @@ const styles = StyleSheet.create({
         left: 40,
     },
     addImageArea: {
-        top: 165,
+        top: 90,
         left: 40,
         position: "absolute",
+        overflow:"visible"
     },
+    addImageArea1: {
+        top: 165,
+        left: 40,
+        overflow:"hidden"
+    },iconLayout1:{height: 65,
+        width: 65,},
     chooseDateIcon: {
         width: 34,
         height: 34,

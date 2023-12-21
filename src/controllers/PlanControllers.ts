@@ -13,8 +13,8 @@ export const getDBConnection = async () => {
 export const createTable = async (db: SQLiteDatabase) => {
   // create table if not exists
   const query = `CREATE TABLE IF NOT EXISTS ${tableName}(
-      category_name	TEXT NOT NULL,
-      money	INTEGER NOT NULL
+      category_name	TEXT,
+      money	INTEGER
     );`;
 
   await db.executeSql(query);
