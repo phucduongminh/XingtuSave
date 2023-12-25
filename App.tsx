@@ -40,3 +40,16 @@ function App(): JSX.Element {
 }
 
 export default App;
+/* import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
+import MyTabs from './src/navigators/test';
+
+function App(): JSX.Element {
+  return (
+    <NavigationContainer>
+    <MyTabs/>
+    </NavigationContainer>
+  );
+}
+
+export default App; */

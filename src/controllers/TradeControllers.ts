@@ -43,9 +43,9 @@ export const getSpendsHistory = async (db: SQLiteDatabase): Promise<Spends[]> =>
 export const saveNewTrade = async (db: SQLiteDatabase, newTrades: AddTrades[]) => {
   try {
   const insertQuery =
-    `INSERT INTO ${tableName}(category_name, money) values` +
-    newTrades.map(i => `('${i.category}', ${i.money})`).join(';');
-    console.log("ok bro");
+    `INSERT INTO ${tableName}(category_name, money,image,description,date,income) values` +
+    newTrades.map(i => `('${i.category}', ${i.money},'${i.image}','${i.description}','${i.date}',${i.income})`).join(';');
+    console.log("Insert Successful!");
   return db.executeSql(insertQuery);
   
 } catch (error) {

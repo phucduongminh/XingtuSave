@@ -30,6 +30,8 @@ export const Color = {
   colorRed_100: "#fa0c0c",
   colorRed: "#e81901",
   colorRed_200: "#fa0909",
+  colorTomato_100: "#ef5354",
+  colorTomato_200: "#ff4646",
   colorLightslategray: "#7d8895",
   colorGainsboro: "#eae2e2",
   colorMediumseagreen: "#50c474",

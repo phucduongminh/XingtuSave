@@ -1,14 +1,14 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { BlurView } from '@react-native-community/blur';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { COLORS } from '../theme/theme';
-import CustomIcon from '../components/CustomIcon';
 import TradeInputScreen from '../screens/TradeInputScreen';
-import FavoritesScreen from '../screens/FavoritesScreen';
-import CartScreen from '../screens/CartScreen';
+import ShowPlan from '../screens/ShowPlan';
+import TradeHistory from '../screens/TradeHistory';
 import SpendStatistic from '../screens/SpendStatistic';
+import Advice from '../screens/Advice';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,66 +20,73 @@ const TabNavigator = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: styles.tabBarStyle,
-        tabBarBackground: () => (
-          <BlurView
-            overlayColor=""
-            blurAmount={15}
-            style={styles.BlurViewStyles}
-          />
-        ),
       }}>
       <Tab.Screen
-        name="Home"
+        name="TradeInputScreen"
         component={TradeInputScreen}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <CustomIcon
-              name="home"
-              size={25}
+            <Icon
+              name="add-box"
+              size={size}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryBlueHex : COLORS.primaryDarkGreyHex
               }
             />
           ),
         }}></Tab.Screen>
       <Tab.Screen
-        name="Cart"
-        component={CartScreen}
+        name="TradeHistory"
+        component={TradeHistory}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <CustomIcon
-              name="cart"
-              size={25}
+            <Icon
+              name="schedule"
+              size={size}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryBlueHex : COLORS.primaryDarkGreyHex
               }
             />
           ),
         }}></Tab.Screen>
       <Tab.Screen
-        name="Favorite"
-        component={FavoritesScreen}
+        name="ShowPlan"
+        component={ShowPlan}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <CustomIcon
-              name="like"
-              size={25}
+            <Icon
+              name="assignment"
+              size={size}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryBlueHex : COLORS.primaryDarkGreyHex
               }
             />
           ),
         }}></Tab.Screen>
       <Tab.Screen
-        name="History"
+        name="SpendStatistic"
         component={SpendStatistic}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <CustomIcon
-              name="bell"
+            <Icon
+              name="donut-small"
               size={25}
               color={
-                focused ? COLORS.primaryOrangeHex : COLORS.primaryLightGreyHex
+                focused ? COLORS.primaryBlueHex : COLORS.primaryDarkGreyHex
+              }
+            />
+          ),
+        }}></Tab.Screen>
+        <Tab.Screen
+        name="Advice"
+        component={Advice}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Icon
+              name="shopping-cart-checkout"
+              size={25}
+              color={
+                focused ? COLORS.primaryBlueHex : COLORS.primaryDarkGreyHex
               }
             />
           ),
@@ -90,9 +97,9 @@ const TabNavigator = () => {
 
 const styles = StyleSheet.create({
   tabBarStyle: {
-    height: 40,
+    height: 45,
     position: 'absolute',
-    backgroundColor: COLORS.primaryBlackRGBA,
+    backgroundColor: '#ededed',
     borderTopWidth: 0,
     elevation: 0,
     borderTopColor: 'transparent',

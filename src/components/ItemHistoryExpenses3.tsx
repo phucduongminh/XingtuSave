@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
 
-const ItemHistoryExpenses3 = () => {
+const ItemHistoryExpense3 = () => {
   return (
     <View style={[styles.itemHistoryExpenses, styles.rectangleLayout]}>
       <View style={[styles.rectangle, styles.rectanglePosition]} />
@@ -10,7 +10,7 @@ const ItemHistoryExpenses3 = () => {
         <Text style={[styles.expensesreason, styles.valuePosition]}>
           Category 1
         </Text>
-        <Text style={[styles.value, styles.valuePosition]}>308.000 đ</Text>
+        <Text style={[styles.value, styles.valuePosition]}>30000 đ</Text>
       </View>
       <View style={[styles.icon, styles.iconLayout]}>
         <View style={[styles.rectangle1, styles.iconLayout]} />
@@ -96,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ItemHistoryExpenses3;
+export default ItemHistoryExpense3;
