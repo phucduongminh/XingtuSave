@@ -19,7 +19,6 @@ export const ToDoPlanComponent: React.FC<{
         <Text style={[styles.expensesreason, styles.datePosition]}>
           {category}
         </Text>
-        <Text style={[styles.date, styles.datePosition]}>14 July 2021</Text>
         <Text style={styles.value}>{money}</Text>
       </View>
       <Button

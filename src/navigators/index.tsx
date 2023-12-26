@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { COLORS } from '../theme/theme';
 import TradeInputScreen from '../screens/TradeInputScreen';
-import ShowPlan from '../screens/ShowPlan';
+import ShowPlan from '../views/ShowPlan';
 import TradeHistory from '../screens/TradeHistory';
 import SpendStatistic from '../screens/SpendStatistic';
 import Advice from '../screens/Advice';

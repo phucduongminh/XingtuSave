@@ -14,14 +14,22 @@ import {
 import { ToDoPlanComponent } from '../components/ToDoPlan';
 import { Plans } from '../models/Plans';
 import { getDBConnection, getTodoPlans, createTable, deleteTodoPlan } from '../controllers/PlanControllers';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../App';
+import NewPlan from './NewPlan';
+import Modal from 'react-native-modal';
 
-type ProfileProps = NativeStackScreenProps<RootStackParamList>;
-
-const ShowPlan = ({ navigation }: ProfileProps) => {
+const ShowPlan = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  const [todos, setTodos] = useState<Plans[]>([]); 
+  const [todos, setTodos] = useState<Plans[]>([]);
+  const [isModalVisible, setModalVisible] = useState(false); // State để quản lý hiển thị/ẩn modal
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const onAddPlanSuccess = () => {
+    setModalVisible(false); // Ẩn modal khi addPlan thành công
+    // Nếu cần làm gì đó sau khi addPlan thành công, thêm code ở đây
+  }; 
 
   const loadDataCallback = useCallback(async () => {
     try {
@@ -59,7 +67,7 @@ const ShowPlan = ({ navigation }: ProfileProps) => {
         <Text style={styles.appTitleText}>Kế hoạch chi tiêu trong tháng</Text>
       </View>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate("NewPlan")}>
+        <TouchableOpacity style={styles.addButton} onPress={toggleModal}>
           <Image
             style={styles.addButtonIcon}
             resizeMode="cover"
@@ -78,6 +86,15 @@ const ShowPlan = ({ navigation }: ProfileProps) => {
           )}
           keyExtractor={(item) => item.id.toString()}
         />
+        {/* Modal */}
+      <Modal isVisible={isModalVisible}>
+          {/* Nội dung của modal */}
+          <NewPlan onAddPlanSuccess={onAddPlanSuccess} />
+          {/* Nút để ẩn modal */}
+          <TouchableOpacity onPress={toggleModal}>
+            <Text>Hide Modal</Text>
+          </TouchableOpacity>
+      </Modal>
     </SafeAreaView>
   );
           }

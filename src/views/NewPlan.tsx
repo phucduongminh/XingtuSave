@@ -10,15 +10,15 @@ import {
   View,
   useColorScheme,
 } from 'react-native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
-import { RootStackParamList } from '../../App';
 import { getDBConnection, saveTodoPlans, createTable } from '../controllers/PlanControllers';
 import { AddPlans } from '../models/AddPlans';
 
-type ProfileProps = NativeStackScreenProps<RootStackParamList>;
+interface NewPlanProps {
+  onAddPlanSuccess: () => void;
+}
 
-export default function NewPlan({ navigation }: ProfileProps) {
+const NewPlan: React.FC<NewPlanProps> = ({ onAddPlanSuccess }) => {
   const isDarkMode = useColorScheme() === 'dark';
   const [newCategory, setNewCategory] = useState("");
   const [todos, setTodos] = useState<AddPlans[]>([]);
@@ -31,14 +31,14 @@ export default function NewPlan({ navigation }: ProfileProps) {
       const newTodos = [
         ...todos,
         {
-          category: newCategory,
-          money: Number(money)
+          category: String(newCategory),
+          money: Number(money),
         },
       ];
       setTodos(newTodos);
       const db = await getDBConnection();
       await saveTodoPlans(db, newTodos);
-      navigation.navigate('ShowPlan');
+      onAddPlanSuccess(); // Gọi callback khi addPlan thành công
     } catch (error) {
       console.error(error);
     }
@@ -108,3 +108,5 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
+
+export default NewPlan;

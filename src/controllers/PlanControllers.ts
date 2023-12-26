@@ -7,13 +7,13 @@ const tableName = 'plans';
 enablePromise(true);
 
 export const getDBConnection = async () => {
-  return openDatabase({ name: 'xingtu-123.sqlite', location: 'default' });
+  return openDatabase({ name: 'sqlcc.sqlite', location: 'default' });
 };
 
 export const createTable = async (db: SQLiteDatabase) => {
   // create table if not exists
   const query = `CREATE TABLE IF NOT EXISTS ${tableName}(
-      category_name	TEXT,
+      category TEXT,
       money	INTEGER
     );`;
 
@@ -23,7 +23,7 @@ export const createTable = async (db: SQLiteDatabase) => {
 export const getTodoPlans = async (db: SQLiteDatabase): Promise<Plans[]> => {
   try {
     const todoPlans: Plans[] = [];
-    const results = await db.executeSql(`SELECT rowid as id,category_name,money  FROM ${tableName};`);
+    const results = await db.executeSql(`SELECT rowid as id,category,money  FROM ${tableName};`);
     results.forEach(result => {
       for (let index = 0; index < result.rows.length; index++) {
         todoPlans.push(result.rows.item(index))
@@ -38,8 +38,8 @@ export const getTodoPlans = async (db: SQLiteDatabase): Promise<Plans[]> => {
 
 export const saveTodoPlans = async (db: SQLiteDatabase, todoPlans: AddPlans[]) => {
   const insertQuery =
-    `INSERT INTO ${tableName}(category_name, money) values` +
-    todoPlans.map(i => `('${i.category}', ${i.money})`).join(';');
+    `INSERT INTO ${tableName}(category, money) values` +
+    todoPlans.map(i => `('${i.category}', ${i.money})`).join(',');
 
   return db.executeSql(insertQuery);
 };
