@@ -6,6 +6,7 @@ import { AddTrades } from "../models/AddTrades";
 export const TradeItemsComponent: React.FC<{
   item: AddTrades;
 }> = ({ item: {category,money,image,description,date,income} }) => {
+  const moneyColor = income === 1 ? Color.colorAquamarine : Color.colorRed_200;
   return (
     <View style={styles.addedItems}>
       <View style={styles.icon}>
@@ -19,9 +20,9 @@ export const TradeItemsComponent: React.FC<{
         <Text style={styles.rentalIncome}>{category}</Text>
         <Text style={[styles.july2021, styles.julyTypo]}>{date}</Text>
         <Text style={[styles.july2022, styles.julyTypo]}>
-          {description}
+          Mô tả: {description}...
         </Text>
-        <Text style={styles.text1}>{money}</Text>
+        <Text style={[styles.moneyText, { color: moneyColor }]}>{money}</Text>
       </View>
     </View>
   );
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     color: Color.colorDarkslategray,
     left: "0.08%",
     top: "50%",
-    width: "31.18%",
+    width: "50%",
     position: "absolute",
     textAlign: "left",
     fontFamily: FontFamily.aBeeZeeRegular,
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
   },
   july2021: {
     marginTop: 4,
-    width: "31.18%",
+    width: "50%",
     color: Color.colorLightslategray,
     fontSize: FontSize.size_xs,
   },
@@ -83,15 +84,12 @@ const styles = StyleSheet.create({
     width: "83.65%",
     height: 15,
   },
-  text1: {
+  moneyText: {
     marginTop: -10,
-    width: "63.08%",
-    left: "36.92%",
     fontSize: FontSize.size_lg,
-    color: Color.colorRed_200,
-    textAlign: "right",
+    right:"-95%",
     top: "50%",
-    position: "absolute",
+    position:"relative",
     fontFamily: FontFamily.aBeeZeeRegular,
     letterSpacing: 1,
   },
@@ -111,10 +109,10 @@ const styles = StyleSheet.create({
     elevation: 48,
     shadowOpacity: 1,
     flexDirection: "row",
-    paddingHorizontal: 10,
     paddingVertical: 18,
     alignItems: "center",
     borderRadius: Border.br_7xs,
-    overflow:"scroll"
+    overflow:"scroll",
+    right:"20%"
   },
 });

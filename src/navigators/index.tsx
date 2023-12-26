@@ -4,11 +4,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import { COLORS } from '../theme/theme';
-import TradeInputScreen from '../screens/TradeInputScreen';
+import TradeInputScreen from '../views/TradeInputScreen';
 import ShowPlan from '../views/ShowPlan';
-import TradeHistory from '../screens/TradeHistory';
-import SpendStatistic from '../screens/SpendStatistic';
-import Advice from '../screens/Advice';
+import TradeHistory from '../views/TradeHistory';
+import SpendStatistic from '../views/SpendStatistic';
+import Advice from '../views/Advice';
 
 const Tab = createBottomTabNavigator();
 

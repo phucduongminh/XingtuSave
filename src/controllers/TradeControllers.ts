@@ -45,7 +45,6 @@ export const saveNewTrade = async (db: SQLiteDatabase, newTrades: AddTrades[]) =
   const insertQuery =
     `INSERT INTO ${tableName}(category,money,image,description,date,income) values` +
     newTrades.map(i => `('${i.category}', ${i.money},'${i.image}','${i.description}','${i.date}',${i.income})`).join(';');
-    console.log("Insert Successful!");
   return db.executeSql(insertQuery);
   
 } catch (error) {

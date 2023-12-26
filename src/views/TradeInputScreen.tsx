@@ -11,13 +11,26 @@ import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-pick
 import { AddTrades } from "../models/AddTrades";
 import { saveNewTrade, createTable, getDBConnection } from "../controllers/TradeControllers";
 
-const TradeInputScreen = () => {
+const getTrueDate = (date: Date) => {
+    // Lấy ngày, tháng và năm của đối tượng Date
+    let day = date.getDate();
+    let month = date.getMonth() + 1; // cộng thêm 1 để được tháng đúng
+    let year = date.getFullYear();
+  
+    // Nối các giá trị này với nhau bằng dấu gạch ngang (-)
+    let trueDate = `${day}-${month}-${year}`;
+  
+    // Trả về chuỗi trueDate
+    return trueDate;
+  };
 
+const TradeInputScreen = () => {
     const [color1, setColor1] = useState('black');
     const [color2, setColor2] = useState('black');
     const [color3, setColor3] = useState('black');
-    const [formType, setFormType] = useState('expense');
+    const [formType, setFormType] = useState('0');
     const [show, setShow] = useState(false);
+    const [showDate, setShowDate] = useState(false);
 
     const [category, setCategory] = useState('');
     const [money, setMoney] = useState('');
@@ -47,6 +60,8 @@ const TradeInputScreen = () => {
 
     const onDateChange = (e: DateTimePickerEvent, selectedDate: Date | undefined) => {
         // Check if selectedDate is defined before setting the date
+        setShowDate(true)
+        console.log(String(date))
         setShow(false)
         if (selectedDate) {
             setDate(selectedDate);
@@ -58,8 +73,8 @@ const TradeInputScreen = () => {
     }
 
     const chooses = [
-        { label: 'Khoản thu', value: 'income' },
-        { label: 'Khoản chi', value: 'expense' },
+        { label: 'Khoản thu', value: '1' },
+        { label: 'Khoản chi', value: '0' },
     ];
 
     const catechooses = [
@@ -70,15 +85,12 @@ const TradeInputScreen = () => {
 
     const [trades, setTrades] = useState<AddTrades[]>([]);
     const [tradesList, setTradesList] = useState<AddTrades[]>([]);
-    const [showAdded, setShowAdded] = useState(false);
 
     const loadDataCallback = useCallback(async () => {
         try {
-          if (trades.length) {
-            setShowAdded(true);
+          if (trades.length>0) {
             setTradesList(trades)
           } else {
-            setShowAdded(false);
             setTradesList([])
           }
         } catch (error) {
@@ -97,10 +109,9 @@ const TradeInputScreen = () => {
             const newTrade = [
                 ...trades,
             ];
-            setTrades(newTrade);
             const db = await getDBConnection();
             await saveNewTrade(db, newTrade);
-            //navigation.navigate('ShowPlan');
+            setTrades([])
         } catch (error) {
             console.error(error);
         }
@@ -215,7 +226,7 @@ const TradeInputScreen = () => {
                         source={require("../assets/rectangle2.png")}
                     />
                 </Pressable>
-                <Text style={styles.chooseDateText}>Chọn ngày tháng *</Text>
+                <Text style={styles.chooseDateText}>Chọn ngày tháng</Text>
                 {
                     show && (
                         <DateTimePicker
@@ -226,6 +237,7 @@ const TradeInputScreen = () => {
                         />
                     )
                 }
+                {showDate&&(<Text>:&#32;&#32;&#32;&#32;&#32;&#32;{getTrueDate(date)}</Text>)}
             </View>
             <View style={[styles.addbutton, styles.addbuttonLayout]}>
                 <Pressable onPress={()=>{const newTrade =
@@ -234,23 +246,20 @@ const TradeInputScreen = () => {
                     money: Number(money),
                     image: String(selectedImage),
                     description: description,
-                    date: String(date),
-                    income: formType==='income'? 1: 0
+                    date: getTrueDate(date),
+                    income: Number(formType)
                 };
             setTrades([...trades,newTrade]);}}>
                     <View style={[styles.addbuttonChild, styles.addbuttonLayout]} />
                     <Text style={[styles.add, styles.addTypo]}>ADD +</Text></Pressable>
             </View>
-            {showAdded&&(<FlatList
-  data={tradesList}
-  renderItem={({ item }) => (
-    <View style={[styles.addedItemsWrapper, styles.addedPosition]}><TradeItemsComponent
-    item={item}
-  /></View>
-    
-  )}
-  keyExtractor={(item, index) => 'trade-' + (index + 1)}
-/>)}
+            {tradesList.length > 0 && (
+        tradesList.map((item, index) => (
+          <View key={index} style={[styles.addedItemsWrapper, styles.addedPosition]}>
+            <TradeItemsComponent item={item} />
+          </View>
+        ))
+      )}
             
 
 
@@ -309,7 +318,6 @@ const styles = StyleSheet.create({
     addedPosition: {
         left: 18,
         padding: Padding.p_3xs,
-        position: "absolute",
     },
     addbuttonLayout: {
         width: 241,
@@ -445,7 +453,7 @@ const styles = StyleSheet.create({
         position: "absolute",
     },
     addedItemsWrapper: {
-        top: 515,
+        top: 400,
     },
     addedItems: {
         shadowColor: "rgba(0, 0, 0, 0.06)",
@@ -464,7 +472,7 @@ const styles = StyleSheet.create({
     },
     morebutton: {
         top: 724,
-        left: 175,
+        left: 180,
         flexDirection: "row",
         padding: Padding.p_3xs,
     },
@@ -511,6 +519,12 @@ const styles = StyleSheet.create({
         height: 40,
         fontSize: 16,
     },
+    dateText: {
+        top:"90%",
+    left:"3%",
+        position: "absolute",
+        color:"black"
+      },
 });
 
 export default TradeInputScreen;
