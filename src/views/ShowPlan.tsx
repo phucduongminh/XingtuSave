@@ -26,12 +26,20 @@ const ShowPlan = () => {
   const [todos, setTodos] = useState<Plans[]>([]);
   const [isModalVisible, setModalVisible] = useState(false); // State để quản lý hiển thị/ẩn modal
   const [isModalVisible1, setModalVisible1] = useState(false); // State để quản lý hiển thị/ẩn modal
-
+  const [deCategory,setDeCategory] = useState('');
+  const [deMoney,setDeMoney] = useState(0);
+  
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
-  const toggleModal1 = () => {
+  const toggleModal1 = (category: string,money:number) => {
+    setModalVisible1(!isModalVisible1);
+    setDeCategory(category);
+    setDeMoney(money);
+  };
+
+  const toggleModal2 = () => {
     setModalVisible1(!isModalVisible1);
   };
 
@@ -110,15 +118,15 @@ const ShowPlan = () => {
       </Modal>
       <Modal isVisible={isModalVisible1} style={{width:"100%", left:-20,top:-20}}>
           {/* Nội dung của modal */}
-          <DetailPlan/>
+          <DetailPlan deCategory={deCategory} deMoney={deMoney}/>
           {/* Nút để ẩn modal */}
-          <TouchableOpacity onPress={toggleModal1} style={styles.closeButton}>
+          <TouchableOpacity onPress={toggleModal2} style={styles.closeButton}>
           <Text style={styles.closeButtonText}>x</Text>
           </TouchableOpacity>
       </Modal>
     </SafeAreaView>
   );
-          }
+}
   const styles = StyleSheet.create({
     container: {
       height:"100%",
@@ -168,7 +176,7 @@ const ShowPlan = () => {
     closeButton: {
       position: 'absolute',
       top: -2, // Điều chỉnh giá trị top tùy thuộc vào vị trí mong muốn
-      right: 8, // Điều chỉnh giá trị right tùy thuộc vào vị trí mong muốn
+      right: 10, // Điều chỉnh giá trị right tùy thuộc vào vị trí mong muốn
       borderRadius: 100,
     },
     closeButtonText: {

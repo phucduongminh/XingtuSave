@@ -7,7 +7,7 @@ import formatNumber from "./formatNumber";
 export const ToDoPlanComponent: React.FC<{
   item: Plans;
   deleteItem: Function;
-  toggleModal1: () => void;
+  toggleModal1: (category: string,money:number) => void;
 }> = ({ item: {id, category,money}, deleteItem, toggleModal1 }) => {
   return (
     <View style={styles.planitem}>
@@ -22,7 +22,7 @@ export const ToDoPlanComponent: React.FC<{
           style={[styles.category, styles.valuePosition]}
         >{category}</Text>
         <Text style={[styles.value, styles.valuePosition]}>{formatNumber(money)}</Text>
-        <TouchableOpacity onPress={toggleModal1} style={[styles.icon1, styles.infoPosition]}>
+        <TouchableOpacity onPress={() => toggleModal1(category,money)} style={[styles.icon1, styles.infoPosition]}>
         <Image
           resizeMode="cover"
           source={require("../assets/icon21.png")}

@@ -5,8 +5,12 @@ import ItemHistoryExpenses from "../components/ItemHistoryExpenses";
 import ItemHistoryExpenses1 from "../components/ItemHistoryExpenses1";
 import ItemHistoryExpenses2 from "../components/ItemHistoryExpenses2";
 import { Padding, Color, FontSize, FontFamily, Border } from "../GlobalStyles";
+import formatNumber from "../components/formatNumber";
 
-const DetailPlan = () => {
+const DetailPlan: React.FC<{
+  deCategory:string;
+  deMoney:number;
+}> = ({ deCategory,deMoney }) => {
   return (
     <ScrollView contentInsetAdjustmentBehavior="automatic">
     <View style={styles.detailplan}>
@@ -16,7 +20,7 @@ const DetailPlan = () => {
         <View style={[styles.category, styles.categoryFlexBox]}>
           <Text
             style={[styles.categoryText, styles.moneyexpensesTypo]}
-          >{`Thực phẩm `}</Text>
+          >{deCategory}</Text>
           <Image
             style={[styles.categoryField, styles.childLayout]}
             resizeMode="cover"
@@ -30,7 +34,7 @@ const DetailPlan = () => {
             source={require("../assets/rectangle-13.png")}
           />
           <Text style={[styles.moneyexpenses, styles.moneyexpensesPosition]}>
-            3.000.000 đ
+            {formatNumber(deMoney)} đ
           </Text>
         </View>
       </View>
