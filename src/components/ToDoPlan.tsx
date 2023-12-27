@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Image, Text, Button } from "react-native";
+import { StyleSheet, View, Image, Text, Button, TouchableOpacity } from "react-native";
 import { FontFamily, Color, Border, FontSize } from "../GlobalStyles";
 import { Plans } from '../models/Plans';
 import formatNumber from "./formatNumber";
@@ -7,7 +7,8 @@ import formatNumber from "./formatNumber";
 export const ToDoPlanComponent: React.FC<{
   item: Plans;
   deleteItem: Function;
-}> = ({ item: {id, category,money}, deleteItem }) => {
+  toggleModal1: () => void;
+}> = ({ item: {id, category,money}, deleteItem, toggleModal1 }) => {
   return (
     <View style={styles.planitem}>
       <View style={styles.rectangle} />
@@ -21,11 +22,12 @@ export const ToDoPlanComponent: React.FC<{
           style={[styles.category, styles.valuePosition]}
         >{category}</Text>
         <Text style={[styles.value, styles.valuePosition]}>{formatNumber(money)}</Text>
+        <TouchableOpacity onPress={toggleModal1} style={[styles.icon1, styles.infoPosition]}>
         <Image
-          style={[styles.icon1, styles.infoPosition]}
           resizeMode="cover"
           source={require("../assets/icon21.png")}
         />
+        </TouchableOpacity>
       </View>
       <Button
         onPress={() => deleteItem(id)}
@@ -85,11 +87,10 @@ const styles = StyleSheet.create({
   },
   icon1: {
     height: "50%",
-    width: "6.71%",
+    width: "9%",
     top: "36.11%",
-    right: "0%",
     bottom: "13.89%",
-    left: "93.29%",
+    left: "90%",
     maxWidth: "100%",
     maxHeight: "100%",
   },

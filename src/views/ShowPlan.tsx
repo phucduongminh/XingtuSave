@@ -19,14 +19,20 @@ import { getDBConnection, getTodoPlans, createTable, deleteTodoPlan } from '../c
 import NewPlan from './NewPlan';
 import MoneyCalulate1 from "../components/MoneyCalulate1";
 import { FontFamily, Color } from "../GlobalStyles";
+import DetailPlan from './DetailPlan';
 
 const ShowPlan = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [todos, setTodos] = useState<Plans[]>([]);
   const [isModalVisible, setModalVisible] = useState(false); // State để quản lý hiển thị/ẩn modal
+  const [isModalVisible1, setModalVisible1] = useState(false); // State để quản lý hiển thị/ẩn modal
+
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
+  };
+  const toggleModal1 = () => {
+    setModalVisible1(!isModalVisible1);
   };
 
   const onAddPlanSuccess = () => {
@@ -83,21 +89,31 @@ const ShowPlan = () => {
         </TouchableOpacity>
         {todos.length === 0 && <Text style={styles.noPlansText}>Chưa có kế hoạch chi tiêu cho tháng này !!!</Text>}
         {todos.length > 0 && (
-        todos.map((item, index) => (
+        todos.map((item) => (
           <View key={item.id.toString()}>
             <ToDoPlanComponent item={item}
-              deleteItem={deleteItem} />
+              deleteItem={deleteItem}
+              toggleModal1={toggleModal1}
+              />
           </View>
         ))
       )}
       </ScrollView>
         {/* Modal */}
-      <Modal isVisible={isModalVisible}>
+      <Modal isVisible={isModalVisible} style={{width:"100%", left:-20,top:-20}}>
           {/* Nội dung của modal */}
           <NewPlan onAddPlanSuccess={onAddPlanSuccess} />
           {/* Nút để ẩn modal */}
-          <TouchableOpacity onPress={toggleModal}>
-            <Text>Hide Modal</Text>
+          <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
+          <Text style={styles.closeButtonText}>x</Text>
+          </TouchableOpacity>
+      </Modal>
+      <Modal isVisible={isModalVisible1} style={{width:"100%", left:-20,top:-20}}>
+          {/* Nội dung của modal */}
+          <DetailPlan/>
+          {/* Nút để ẩn modal */}
+          <TouchableOpacity onPress={toggleModal1} style={styles.closeButton}>
+          <Text style={styles.closeButtonText}>x</Text>
           </TouchableOpacity>
       </Modal>
     </SafeAreaView>
@@ -148,6 +164,16 @@ const ShowPlan = () => {
       color: Color.colorDarkslategray,
       textAlign: "left",
       position: "absolute",
+    },
+    closeButton: {
+      position: 'absolute',
+      top: -2, // Điều chỉnh giá trị top tùy thuộc vào vị trí mong muốn
+      right: 8, // Điều chỉnh giá trị right tùy thuộc vào vị trí mong muốn
+      borderRadius: 100,
+    },
+    closeButtonText: {
+      color: '#db2ead',
+      fontSize: 24,
     },
   });
   
