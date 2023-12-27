@@ -16,7 +16,7 @@ const ItemHistoryExpenses6 = () => {
           Phí đi lại
         </Text>
         <Text style={[styles.date, styles.datePosition]}>8 Oct 2020</Text>
-        <Text style={styles.value}>-320.000 đ</Text>
+        <Text style={styles.value}>320.000 đ</Text>
       </View>
     </View>
   );
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   rectangle: {
     borderRadius: Border.br_5xs,
-    backgroundColor: Color.colorWhite,
+    backgroundColor: "lightgrey",
     shadowColor: "rgba(0, 0, 0, 0.04)",
     shadowOffset: {
       width: 0,
@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
     width: 386,
     height: 74,
     zIndex: 0,
+    right:"1.5%"
   },
   icon: {
     top: 14,

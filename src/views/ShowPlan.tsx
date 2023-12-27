@@ -11,11 +11,14 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import Modal from 'react-native-modal';
+
 import { ToDoPlanComponent } from '../components/ToDoPlan';
 import { Plans } from '../models/Plans';
 import { getDBConnection, getTodoPlans, createTable, deleteTodoPlan } from '../controllers/PlanControllers';
 import NewPlan from './NewPlan';
-import Modal from 'react-native-modal';
+import MoneyCalulate1 from "../components/MoneyCalulate1";
+import {FontSize, FontFamily, Color } from "../GlobalStyles";
 
 const ShowPlan = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -67,6 +70,10 @@ const ShowPlan = () => {
         <Text style={styles.appTitleText}>Kế hoạch chi tiêu trong tháng</Text>
       </View>
       <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <MoneyCalulate1 />
+      <Text
+            style={styles.allMyExpenses}
+          >{`Chi tiêu dự kiến của bạn trong tháng này `}</Text>
         <TouchableOpacity style={styles.addButton} onPress={toggleModal}>
           <Image
             style={styles.addButtonIcon}
@@ -75,17 +82,15 @@ const ShowPlan = () => {
           />
         </TouchableOpacity>
         {todos.length === 0 && <Text style={styles.noPlansText}>Chưa có kế hoạch chi tiêu cho tháng này !!!</Text>}
+        {todos.length > 0 && (
+        todos.map((item, index) => (
+          <View key={item.id.toString()}>
+            <ToDoPlanComponent item={item}
+              deleteItem={deleteItem} />
+          </View>
+        ))
+      )}
       </ScrollView>
-      <FlatList
-          data={todos}
-          renderItem={({ item }) => (
-            <ToDoPlanComponent
-              item={item}
-              deleteItem={deleteItem}
-            />
-          )}
-          keyExtractor={(item) => item.id.toString()}
-        />
         {/* Modal */}
       <Modal isVisible={isModalVisible}>
           {/* Nội dung của modal */}
@@ -100,22 +105,24 @@ const ShowPlan = () => {
           }
   const styles = StyleSheet.create({
     container: {
-      height:'100%',
+      height:"100%",
       backgroundColor: '#fff',
     },
     appTitleView: {
+      top:20,
       height: 60,
       justifyContent: 'center',
       alignItems: 'center',
     },
     appTitleText: {
-      fontSize: 24,
-      fontWeight: 'bold',
+      fontSize: 16,
+      fontFamily: FontFamily.aBeeZeeRegular,
+    color: Color.colorDarkslategray,
     },
     addButton: {
       position: 'absolute',
-      top: 20,
-      right: 20,
+      top: 140,
+      right: 10,
       padding: 10,
     },
     addButtonIcon: {
@@ -131,6 +138,17 @@ const ShowPlan = () => {
       color: 'gray',
       textAlign: 'center',
       marginTop: 20,
+    },
+    allMyExpenses: {
+      marginTop: -260,
+      top: "50%",
+      left: "4%",
+      fontSize: 14,
+      letterSpacing: 1,
+      fontFamily: FontFamily.abelRegular,
+      color: Color.colorDarkslategray,
+      textAlign: "left",
+      position: "absolute",
     },
   });
   

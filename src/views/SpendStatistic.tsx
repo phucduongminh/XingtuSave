@@ -68,7 +68,7 @@ const SpendStatistic = () => {
         <Text style={[styles.totalText, styles.textTypo]}>Tổng</Text>
       </View>
       <View style={[styles.history, styles.headerLayout]}>
-        <View style={styles.scrollContainer}>
+        <View>
         <ItemHistoryExpenses3/>
         <ItemHistoryExpenses3 />
         <ItemHistoryExpenses3 />
@@ -84,6 +84,7 @@ const SpendStatistic = () => {
 const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
+    height:"100%",
   },
   container: {
     flex: 1,
@@ -128,14 +129,13 @@ const styles = StyleSheet.create({
     left: 14,
   },
   headername: {
-    marginTop: -9,
-    left: "41.71%",
+    top:-4,
+    left: "40%",
     textAlign: "center",
     color: Color.colorDarkslategray,
     fontFamily: FontFamily.abelRegular,
     letterSpacing: 1,
     fontSize: FontSize.size_base,
-    top: "50%",
     position: "absolute",
   },
   header: {
@@ -295,7 +295,6 @@ const styles = StyleSheet.create({
     backgroundColor: Color.colorGray,
     flex: 1,
     width: "100%",
-    height: 896,
   },
 });
 

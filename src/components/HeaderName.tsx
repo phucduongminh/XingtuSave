@@ -11,11 +11,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     marginTop: -8,
     top: "50%",
-    fontSize: FontSize.size_xl,
+    fontSize: 16,
     letterSpacing: 1,
     fontFamily: FontFamily.aBeeZeeRegular,
     color: Color.colorDarkslategray,
     textAlign: "center",
+    left:5
   },
 });
 

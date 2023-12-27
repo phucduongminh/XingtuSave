@@ -11,7 +11,7 @@ const ItemHistoryIncome = () => {
           Bố mẹ cho
         </Text>
         <Text style={[styles.date, styles.datePosition]}>8 Oct 2020</Text>
-        <Text style={styles.value}>+4.008.000 đđ</Text>
+        <Text style={styles.value}>4.008.000 đđ</Text>
       </View>
       <Image
         style={styles.icon}
@@ -25,8 +25,8 @@ const ItemHistoryIncome = () => {
 const styles = StyleSheet.create({
   rectanglePosition: {
     height: 74,
-    width: 386,
-    left: 0,
+    width: 384,
+    left: -3,
     top: 0,
     position: "absolute",
   },
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   },
   rectangle: {
     borderRadius: Border.br_7xs,
-    backgroundColor: Color.colorWhite,
+    backgroundColor: "lightgray",
     shadowColor: "rgba(0, 0, 0, 0.06)",
     shadowOffset: {
       width: 0,

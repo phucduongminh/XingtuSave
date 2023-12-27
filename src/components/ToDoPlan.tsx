@@ -1,25 +1,30 @@
-import React from 'react';
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
-import { Plans } from '../models/Plans';
+import * as React from "react";
+import { StyleSheet, View, Image, Text, Button } from "react-native";
 import { FontFamily, Color, Border, FontSize } from "../GlobalStyles";
+import { Plans } from '../models/Plans';
 
 export const ToDoPlanComponent: React.FC<{
   item: Plans;
   deleteItem: Function;
 }> = ({ item: {id, category,money}, deleteItem }) => {
   return (
-    <View style={styles.itemHistoryExpenses}>
+    <View style={styles.planitem}>
       <View style={styles.rectangle} />
-      <View style={styles.info}>
-        <Text style={[styles.expensesreason, styles.datePosition]}>
-          {category}
-        </Text>
-        <Text style={styles.value}>{money}</Text>
+      <Image
+        style={styles.icon}
+        resizeMode="cover"
+        source={require("../assets/icon6.png")}
+      />
+      <View style={[styles.info, styles.infoPosition]}>
+        <Text
+          style={[styles.category, styles.valuePosition]}
+        >{category}</Text>
+        <Text style={[styles.value, styles.valuePosition]}>{money}</Text>
+        <Image
+          style={[styles.icon1, styles.infoPosition]}
+          resizeMode="cover"
+          source={require("../assets/icon21.png")}
+        />
       </View>
       <Button
         onPress={() => deleteItem(id)}
@@ -29,62 +34,75 @@ export const ToDoPlanComponent: React.FC<{
     </View>
   );
 };
+
 const styles = StyleSheet.create({
-  datePosition: {
-    textAlign: "left",
-    fontFamily: FontFamily.aBeeZeeRegular,
+  infoPosition: {
+    overflow: "hidden",
+    position: "absolute",
+  },
+  valuePosition: {
+    fontFamily: FontFamily.abelRegular,
     letterSpacing: 1,
-    top: "40%",
+    top: "50%",
+    marginTop: -10,
     position: "absolute",
   },
   rectangle: {
-    marginLeft:10,
-    backgroundColor: Color.colorGray,
-    shadowColor: "rgba(0, 0, 0, 0.06)",
+    backgroundColor: Color.colorWhite,
+    shadowColor: "rgba(0, 0, 0, 0.7)",
     shadowOffset: {
       width: 0,
-      height: 4,
+      height: 2,
     },
     shadowRadius: 48,
     elevation: 48,
     shadowOpacity: 1,
     width: 386,
-    height: 70,
+    height: 74,
     borderRadius: Border.br_7xs,
+    marginBottom:20,
   },
-  expensesreason: {
-    marginTop: -11,
-    width: "30.81%",
+  icon: {
+    top: 14,
+    left: 14,
+    width: 46,
+    height: 46,
+    zIndex: 1,
+    position: "absolute",
+  },
+  category: {
+    left: "0%",
     fontSize: FontSize.size_sm,
     color: Color.colorDarkslategray,
-  },
-  date: {
-    marginTop: 20,
-    width: "28.19%",
-    fontSize: FontSize.size_xs,
-    color: Color.colorLightslategray,
+    textAlign: "left",
   },
   value: {
-    marginTop: -10,
-    width: "31.88%",
-    left: "77%",
+    left: "55.7%",
     fontSize: FontSize.size_lg,
-    color: Color.colorRed,
+    color: Color.colorMediumseagreen,
     textAlign: "right",
-    fontFamily: FontFamily.aBeeZeeRegular,
-    letterSpacing: 1,
-    top: "50%",
-    position: "absolute",
+  },
+  icon1: {
+    height: "50%",
+    width: "6.71%",
+    top: "36.11%",
+    right: "0%",
+    bottom: "13.89%",
+    left: "93.29%",
+    maxWidth: "100%",
+    maxHeight: "100%",
   },
   info: {
-    top: 19,
-    left: 41,
+    top: 17,
+    left: 74,
     width: 298,
-    position: "absolute",
-    
+    height: 36,
+    zIndex: 2,
   },
-  itemHistoryExpenses: {
-    marginTop: 16,
+  planitem: {
+    top: 40,
+    left: 15,
     borderRadius: Border.br_7xs,
   },
 });
+
