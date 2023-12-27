@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   income1: {
     width: "55.99%",
-    left: "22.04%",
+    left: "5%",
   },
   income: {
     width: 137,
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   expense: {
     width: "45.14%",
-    left: "35.42%",
+    left: "30%",
   },
   spending: {
     right: 0,

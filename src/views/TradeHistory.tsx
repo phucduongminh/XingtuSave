@@ -47,7 +47,7 @@ const TradeHistory = () => {
       ):(<Text style={styles.noPlansText}>Không có lịch sử chi tiêu !!!</Text>)
       }
       </View>
-      <MoneyCalulate />
+      <MoneyCalulate trades={trades} />
       <View style={styles.morebutton}>
         <Image
           style={styles.showmoreicon}

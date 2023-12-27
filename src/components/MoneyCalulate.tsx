@@ -1,19 +1,45 @@
 import * as React from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
+import { Spends } from '../models/Spends';
+import { useEffect, useState } from "react";
 
-const MoneyCalulate = () => {
+const MoneyCalulate: React.FC<{
+  trades: Spends[];
+}> = ({ trades }) => {
+    const [sumIncome,setSumIncome] = useState(0);
+    const [sumExpense,setSumExpense] = useState(0);
+  const calculateSums = () => {
+    let sumIncome = 0;
+    let sumExpense = 0;
+  
+    trades.forEach((trade) => {
+      if (trade.income === 1) {
+        sumIncome += trade.money;
+      } else {
+        sumExpense += trade.money;
+      }
+    });
+    setSumIncome(sumIncome);
+    setSumExpense(sumExpense);
+  };
+  
+  // Goi ham calculateSums sau khi mang trades thay doi hoac component duoc render
+  useEffect(() => {
+    calculateSums();
+  }, [trades]);
+    
   return (
     <View style={styles.moneycalulate}>
       <View style={[styles.income, styles.incomeLayout]}>
         <Text style={[styles.incometext, styles.incometextPosition]}>
-          4.008.000 đ
+          {sumIncome}&#32;đ
         </Text>
         <Text style={[styles.income1, styles.income1Typo]}>{`Thu nhập `}</Text>
       </View>
       <View style={[styles.spending, styles.incomeLayout]}>
         <Text style={[styles.expensetext, styles.incometextPosition]}>
-          320.000 đ
+          {sumExpense}&#32;đ
         </Text>
         <Text style={[styles.expense, styles.income1Typo]}>{`Chi tiêu `}</Text>
       </View>
@@ -52,7 +78,7 @@ const styles = StyleSheet.create({
   },
   income1: {
     width: "55.97%",
-    left: "22.02%",
+    left: "5%",
   },
   income: {
     width: 124,
@@ -63,7 +89,7 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
   expense: {
-    left: "35.4%",
+    left: "30%",
   },
   spending: {
     right: 0,
