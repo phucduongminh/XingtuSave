@@ -2,6 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Image, Text, Button } from "react-native";
 import { FontFamily, Color, Border, FontSize } from "../GlobalStyles";
 import { Plans } from '../models/Plans';
+import formatNumber from "./formatNumber";
 
 export const ToDoPlanComponent: React.FC<{
   item: Plans;
@@ -19,7 +20,7 @@ export const ToDoPlanComponent: React.FC<{
         <Text
           style={[styles.category, styles.valuePosition]}
         >{category}</Text>
-        <Text style={[styles.value, styles.valuePosition]}>{money}</Text>
+        <Text style={[styles.value, styles.valuePosition]}>{formatNumber(money)}</Text>
         <Image
           style={[styles.icon1, styles.infoPosition]}
           resizeMode="cover"

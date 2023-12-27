@@ -1,16 +1,62 @@
 import * as React from "react";
 import { Text, StyleSheet, View } from "react-native";
 import { Color, FontSize, FontFamily, Padding } from "../GlobalStyles";
+import { useCallback, useEffect, useState } from "react";
+import { Spends } from "../models/Spends";
+import { createTable, getDBConnection, getSpendsHistory } from "../controllers/TradeControllers";
+import formatNumber from "./formatNumber";
 
 const MoneyCalulate1 = () => {
+  const [trades, setTrades] = useState<Spends[]>([]);
+  const [sumIncome,setSumIncome] = useState(0);
+    const [sumExpense,setSumExpense] = useState(0);
+
+  const loadDataCallback = useCallback(async () => {
+    try {
+      const db = await getDBConnection();
+      await createTable(db);
+      const storedTradeItems = await getSpendsHistory(db);
+      if (storedTradeItems.length) {
+        setTrades(storedTradeItems);
+      } else {
+        setTrades([]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [trades]);
+
+  const calculateSums = useCallback(async () => {
+    try {
+      let sumIncome = 0;
+    let sumExpense = 0;
+  
+    trades.forEach((trade) => {
+      if (trade.income === 1) {
+        sumIncome += trade.money;
+      } else {
+        sumExpense += trade.money;
+      }
+    });
+    setSumIncome(sumIncome);
+    setSumExpense(sumExpense);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [trades]);
+
+  useEffect(() => {
+    loadDataCallback();
+    calculateSums();
+  }, [loadDataCallback]);
   return (
     <View style={styles.moneycalulate}>
       <View style={styles.income}>
-        <Text style={styles.incometext}>20.000.000 đ</Text>
+        <Text style={styles.incometext}>{formatNumber(sumIncome)} đ</Text>
         <Text style={[styles.income1, styles.income1Typo]}>{`Thu nhập `}</Text>
       </View>
       <View style={styles.spending}>
-        <Text style={styles.expensetext}>15.000.0000 đ</Text>
+        <Text style={styles.expensetext}>{formatNumber(sumExpense)} đ</Text>
         <Text style={[styles.expense, styles.income1Typo]}>{`Chi tiêu `}</Text>
       </View>
     </View>
@@ -41,7 +87,7 @@ const styles = StyleSheet.create({
   },
   income1: {
     width: "55.99%",
-    left: "5%",
+    left: "4%",
   },
   income: {
     width: 137,
@@ -62,7 +108,7 @@ const styles = StyleSheet.create({
   },
   expense: {
     width: "45.14%",
-    left: "30%",
+    left: "45%",
   },
   spending: {
     right: 0,

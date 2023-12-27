@@ -2,6 +2,7 @@ import * as React from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
 import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 import { AddTrades } from "../models/AddTrades";
+import formatNumber from "./formatNumber";
 
 export const TradeItemsComponent: React.FC<{
   item: AddTrades;
@@ -20,9 +21,9 @@ export const TradeItemsComponent: React.FC<{
         <Text style={styles.rentalIncome}>{category}</Text>
         <Text style={[styles.july2021, styles.julyTypo]}>{date}</Text>
         <Text style={[styles.july2022, styles.julyTypo]}>
-          Mô tả: {description}...
+          Mô tả: {description}
         </Text>
-        <Text style={[styles.moneyText, { color: moneyColor }]}>{money}</Text>
+        <Text style={[styles.moneyText, { color: moneyColor }]}>{formatNumber(money)} đ</Text>
       </View>
     </View>
   );
@@ -87,7 +88,7 @@ const styles = StyleSheet.create({
   moneyText: {
     marginTop: -10,
     fontSize: FontSize.size_lg,
-    right:"-95%",
+    right:"-85%",
     top: "50%",
     position:"relative",
     fontFamily: FontFamily.aBeeZeeRegular,

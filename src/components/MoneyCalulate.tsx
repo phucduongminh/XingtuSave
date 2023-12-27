@@ -3,6 +3,7 @@ import { Text, StyleSheet, View } from "react-native";
 import { Color, FontFamily, FontSize, Padding } from "../GlobalStyles";
 import { Spends } from '../models/Spends';
 import { useEffect, useState } from "react";
+import formatNumber from "./formatNumber";
 
 const MoneyCalulate: React.FC<{
   trades: Spends[];
@@ -33,13 +34,13 @@ const MoneyCalulate: React.FC<{
     <View style={styles.moneycalulate}>
       <View style={[styles.income, styles.incomeLayout]}>
         <Text style={[styles.incometext, styles.incometextPosition]}>
-          {sumIncome}&#32;đ
+          {formatNumber(sumIncome)}&#32;đ
         </Text>
         <Text style={[styles.income1, styles.income1Typo]}>{`Thu nhập `}</Text>
       </View>
       <View style={[styles.spending, styles.incomeLayout]}>
         <Text style={[styles.expensetext, styles.incometextPosition]}>
-          {sumExpense}&#32;đ
+          {formatNumber(sumExpense)}&#32;đ
         </Text>
         <Text style={[styles.expense, styles.income1Typo]}>{`Chi tiêu `}</Text>
       </View>
