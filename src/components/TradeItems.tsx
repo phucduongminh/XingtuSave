@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: Border.br_7xs,
     overflow:"scroll",
-    right:"20%"
+    right:"20%",
+    marginBottom:10
   },
 });

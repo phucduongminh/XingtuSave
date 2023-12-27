@@ -18,7 +18,7 @@ import { Plans } from '../models/Plans';
 import { getDBConnection, getTodoPlans, createTable, deleteTodoPlan } from '../controllers/PlanControllers';
 import NewPlan from './NewPlan';
 import MoneyCalulate1 from "../components/MoneyCalulate1";
-import {FontSize, FontFamily, Color } from "../GlobalStyles";
+import { FontFamily, Color } from "../GlobalStyles";
 
 const ShowPlan = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -137,7 +137,6 @@ const ShowPlan = () => {
       fontSize: 18,
       color: 'gray',
       textAlign: 'center',
-      marginTop: 20,
     },
     allMyExpenses: {
       marginTop: -260,

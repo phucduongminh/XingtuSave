@@ -5,16 +5,47 @@ import ItemHistoryExpenses6 from "../components/ItemHistoryExpenses6";
 import MoneyCalulate from "../components/MoneyCalulate";
 import DropdownMenuVariant12 from "../components/DropdownMenuVariant12";
 import { FontSize, FontFamily, Color, Border, Padding } from "../GlobalStyles";
+import { createTable, getDBConnection, getSpendsHistory } from "../controllers/TradeControllers";
+import { useCallback, useEffect, useState } from "react";
+import { Spends } from "../models/Spends";
+import { TradeItemsComponent } from "../components/TradeItems";
 
 const TradeHistory = () => {
+  const [trades, setTrades] = useState<Spends[]>([]);
+
+  const loadDataCallback = useCallback(async () => {
+    try {
+      const db = await getDBConnection();
+      await createTable(db);
+      const storedTradeItems = await getSpendsHistory(db);
+      if (storedTradeItems.length) {
+        setTrades(storedTradeItems);
+      } else {
+        setTrades([]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [trades]);
+
+  useEffect(() => {
+    loadDataCallback();
+  }, [loadDataCallback]);
+
   return (
     <View style={styles.tradehistoryfilter}>
       <View style={[styles.header, styles.headerLayout]}>
         <Text style={styles.headername}>Tất cả giao dịch</Text>
       </View>
       <View style={[styles.history, styles.headerLayout]}>
-        <ItemHistoryIncome />
-        <ItemHistoryExpenses6 />
+        {trades.length > 0 ? (
+        trades.map((item) => (
+          <View key={item.id}>
+            <TradeItemsComponent item={item} />
+          </View>
+        ))
+      ):(<Text style={styles.noPlansText}>Không có lịch sử chi tiêu !!!</Text>)
+      }
       </View>
       <MoneyCalulate />
       <View style={styles.morebutton}>
@@ -31,7 +62,7 @@ const TradeHistory = () => {
 
 const styles = StyleSheet.create({
   headerLayout: {
-    width: 386,
+    width: 392,
     position: "absolute",
   },
   iconLayout1: {
@@ -136,8 +167,8 @@ const styles = StyleSheet.create({
   },
   history: {
     top: 274,
-    left: 19,
-    height: 209,
+    left: 26,
+    marginBottom:50
   },
   showmoreicon: {
     width: 30,
@@ -157,6 +188,11 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 896,
     overflow: "hidden",
+  },
+  noPlansText: {
+    fontSize: 18,
+    color: 'gray',
+    textAlign: 'center',
   },
 });
 
