@@ -10,6 +10,7 @@ const SpendStatistic = () => {
   const initialData = [
     { category: 'Category 1', series: 30000 },
     { category: 'Category 2', series: 40000 },
+    { category: 'Category 3', series: 50000 },
   ];
   const [data, setData] = useState<{ category: string; series: number }[]>(initialData);
   const [series, setSeries] = useState<number[]>([1]);

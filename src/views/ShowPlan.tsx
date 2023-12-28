@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
-  FlatList,
     Image,
   SafeAreaView,
   ScrollView,
@@ -24,23 +23,23 @@ import DetailPlan from './DetailPlan';
 const ShowPlan = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [todos, setTodos] = useState<Plans[]>([]);
-  const [isModalVisible, setModalVisible] = useState(false); // State để quản lý hiển thị/ẩn modal
-  const [isModalVisible1, setModalVisible1] = useState(false); // State để quản lý hiển thị/ẩn modal
+  const [modalVisible, setModalVisible] = useState(false); // State để quản lý hiển thị/ẩn modal
+  const [modalVisible1, setModalVisible1] = useState(false); // State để quản lý hiển thị/ẩn modal
   const [deCategory,setDeCategory] = useState('');
   const [deMoney,setDeMoney] = useState(0);
   
 
   const toggleModal = () => {
-    setModalVisible(!isModalVisible);
+    setModalVisible(!modalVisible);
   };
   const toggleModal1 = (category: string,money:number) => {
-    setModalVisible1(!isModalVisible1);
+    setModalVisible1(!modalVisible1);
     setDeCategory(category);
     setDeMoney(money);
   };
 
   const toggleModal2 = () => {
-    setModalVisible1(!isModalVisible1);
+    setModalVisible1(!modalVisible1);
   };
 
   const onAddPlanSuccess = () => {
@@ -108,7 +107,7 @@ const ShowPlan = () => {
       )}
       </ScrollView>
         {/* Modal */}
-      <Modal isVisible={isModalVisible} style={{width:"100%", left:-20,top:-20}}>
+      <Modal isVisible={modalVisible} style={{width:"100%", left:-20,top:-20}}>
           {/* Nội dung của modal */}
           <NewPlan onAddPlanSuccess={onAddPlanSuccess} />
           {/* Nút để ẩn modal */}
@@ -116,7 +115,7 @@ const ShowPlan = () => {
           <Text style={styles.closeButtonText}>x</Text>
           </TouchableOpacity>
       </Modal>
-      <Modal isVisible={isModalVisible1} style={{width:"100%", left:-20,top:-20}}>
+      <Modal isVisible={modalVisible1} style={{width:"100%", left:-20,top:-20}}>
           {/* Nội dung của modal */}
           <DetailPlan deCategory={deCategory} deMoney={deMoney}/>
           {/* Nút để ẩn modal */}

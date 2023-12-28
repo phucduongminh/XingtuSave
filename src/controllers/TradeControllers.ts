@@ -7,7 +7,7 @@ const tableName = 'spends';
 enablePromise(true);
 
 export const getDBConnection = async () => {
-  return openDatabase({ name: 'xingtu-123.sqlite', location: 'default' });
+  return openDatabase({ name: 'newdb.sqlite', location: 'default' });
 };
 
 export const createTable = async (db: SQLiteDatabase) => {

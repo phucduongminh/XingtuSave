@@ -7,7 +7,7 @@ const tableName = 'plans';
 enablePromise(true);
 
 export const getDBConnection = async () => {
-  return openDatabase({ name: 'sqlcc.sqlite', location: 'default' });
+  return openDatabase({ name: 'newdb.sqlite', location: 'default' });
 };
 
 export const createTable = async (db: SQLiteDatabase) => {

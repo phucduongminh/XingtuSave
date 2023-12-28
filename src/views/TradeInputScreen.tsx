@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Pressable, Text, Image, FlatList } from "react-native";
+import { StyleSheet, View, Pressable, Text, Image } from "react-native";
 import HeaderName from "../components/HeaderName";
 import {TradeItemsComponent} from "../components/TradeItems";
 import { Padding, Color, FontFamily, FontSize, Border } from "../GlobalStyles";
@@ -10,6 +10,8 @@ import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/dat
 import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker';
 import { AddTrades } from "../models/AddTrades";
 import { saveNewTrade, createTable, getDBConnection } from "../controllers/TradeControllers";
+import { getTodoPlans } from "../controllers/PlanControllers";
+import { Plans } from "../models/Plans";
 
 const getTrueDate = (date: Date) => {
     // Lấy ngày, tháng và năm của đối tượng Date
@@ -77,11 +79,12 @@ const TradeInputScreen = () => {
         { label: 'Khoản chi', value: '0' },
     ];
 
-    const catechooses = [
-        { label: 'Siêu thị', value: 'Siêu thị' },
-        { label: 'Mua nhà', value: 'Mua nhà' },
-        { label: 'Ăn cắp', value: 'Ăn cắp' },
+    const initialCateChooses = [
+        { label: '', value: '' },
     ];
+
+    const [cateChoose, setCateChoose] = useState(initialCateChooses);
+    const [plans, setPlans] = useState<Plans[]>([]);
 
     const [trades, setTrades] = useState<AddTrades[]>([]);
     const [tradesList, setTradesList] = useState<AddTrades[]>([]);
@@ -97,10 +100,33 @@ const TradeInputScreen = () => {
           console.error(error);
         }
       }, [trades]);
+
+      const loadPlanCallback = useCallback(async () => {
+        try {
+          const db = await getDBConnection();
+          await createTable(db);
+          const storedPlanItems = await getTodoPlans(db);
+          if (storedPlanItems.length) {
+            setPlans(storedPlanItems);
+          } else {
+            setPlans([]);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }, [plans]);
     
       useEffect(() => {
         loadDataCallback();
-      }, [loadDataCallback]);
+        loadPlanCallback();
+        const initialCateChooses = plans.map((plan) => ({
+            label: plan.category,
+            value: plan.category,
+          }));
+      
+          // Set the state
+        setCateChoose(initialCateChooses);
+      }, [trades,plans]);
 
     const AddTrade = async () => {
         const db = await getDBConnection();
@@ -170,7 +196,7 @@ const TradeInputScreen = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.dropdownIcon}
-                    data={catechooses}
+                    data={cateChoose}
                     search
                     maxHeight={300}
                     labelField="label"

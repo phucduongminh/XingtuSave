@@ -29,11 +29,11 @@ export const ToDoPlanComponent: React.FC<{
         />
         </TouchableOpacity>
       </View>
-      <Button
+      {/* <Button
         onPress={() => deleteItem(id)}
         title="done"
         color="pink"
-      />
+      /> */}
     </View>
   );
 };
