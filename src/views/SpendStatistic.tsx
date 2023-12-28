@@ -10,14 +10,10 @@ const SpendStatistic = () => {
   const initialData = [
     { category: 'Category 1', series: 30000 },
     { category: 'Category 2', series: 40000 },
-    { category: 'Category 3', series: 50000 },
-    { category: 'Category 4', series: 60000 },
-    { category: 'Category 5', series: 10000 },
   ];
   const [data, setData] = useState<{ category: string; series: number }[]>(initialData);
   const [series, setSeries] = useState<number[]>([1]);
   const [sliceColor, setSliceColor] = useState<string[]>(['#fbd203']);
-  const [color, setColor] = useState<string>('#fbd203');
 
   useEffect(() => {
     if (data.length > 0) {
@@ -26,7 +22,6 @@ const SpendStatistic = () => {
 
       setSeries(seriesValues);
       setSliceColor(sliceColorValues);
-      setColor(sliceColorValues[0])
     }
   }, [data]);
 
@@ -68,11 +63,16 @@ const SpendStatistic = () => {
         <Text style={[styles.totalText, styles.textTypo]}>Tổng</Text>
       </View>
       <View style={[styles.history, styles.headerLayout]}>
-        <View>
-        <ItemHistoryExpenses3/>
-        <ItemHistoryExpenses3 />
-        <ItemHistoryExpenses3 />
-      </View>
+      <View>
+    {data.map((item, index) => (
+      <ItemHistoryExpenses3
+        key={index}
+        category={item.category}
+        series={item.series}
+        color={sliceColor[index]}
+      />
+    ))}
+  </View>
       
       </View>
     </View>
@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
   },
   history: {
     top: 518,
-    height: 287,
+    height: "50%",
     position: "absolute",
   },
   spendstatistic: {

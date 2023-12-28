@@ -1,17 +1,22 @@
 import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { FontFamily, Color, Border, FontSize } from "../GlobalStyles";
+import { Spends } from "../models/Spends";
+import formatNumber from "./formatNumber";
 
-const ItemHistoryExpenses = () => {
+const ItemHistoryExpenses:React.FC<{
+  item: Spends;
+}
+> = ({item:{id,category,money,image,description,date,income}}) => {
   return (
     <View style={styles.itemHistoryExpenses}>
       <View style={styles.rectangle} />
       <View style={styles.info}>
         <Text style={[styles.expensesreason, styles.datePosition]}>
-          Mua rau
+          {description}
         </Text>
-        <Text style={[styles.date, styles.datePosition]}>14 July 2021</Text>
-        <Text style={styles.value}>-10.000 đ</Text>
+        <Text style={[styles.date, styles.datePosition]}>{date}</Text>
+        <Text style={styles.value}>-{formatNumber(money)} đ</Text>
       </View>
     </View>
   );

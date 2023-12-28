@@ -2,15 +2,57 @@ import * as React from "react";
 import { Text, StyleSheet, Image, View, ScrollView } from "react-native";
 import Header1 from "../components/Header1";
 import ItemHistoryExpenses from "../components/ItemHistoryExpenses";
-import ItemHistoryExpenses1 from "../components/ItemHistoryExpenses1";
-import ItemHistoryExpenses2 from "../components/ItemHistoryExpenses2";
 import { Padding, Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 import formatNumber from "../components/formatNumber";
+import { createTable, getDBConnection, getSpendsHistory } from "../controllers/TradeControllers";
+import { useCallback, useEffect, useState } from "react";
+import { Spends } from "../models/Spends";
 
 const DetailPlan: React.FC<{
   deCategory:string;
   deMoney:number;
 }> = ({ deCategory,deMoney }) => {
+  const [spends, setSpends] = useState<Spends[]>([])
+  const [spendList,setSpendList] = useState<Spends[]>([])
+  const [remainMoney,setRemainMoney] = useState(0)
+
+  const moneyColor = remainMoney > 0 ? Color.colorAquamarine : Color.colorRed_200;
+
+  const loadDataCallback = useCallback(async () => {
+    try {
+      const db = await getDBConnection();
+      await createTable(db);
+      const storedTradeItems = await getSpendsHistory(db);
+      if (storedTradeItems.length) {
+        setSpends(storedTradeItems);
+      } else {
+        setSpends([]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [spends]);
+
+  const selectSpendList = useCallback(async () => {
+    try {
+      let remainMoney=deMoney;
+    spends.forEach((spend) => {
+      if ((spend.category === deCategory)&&(spend.income===0)) {
+        setSpendList([...spendList,spend])
+        remainMoney=remainMoney-spend.money
+      }
+    });
+    setRemainMoney(remainMoney)
+    } catch (error) {
+      console.error(error);
+    }
+  }, [spends]);
+
+  useEffect(() => {
+    loadDataCallback();
+    selectSpendList();
+  }, [loadDataCallback]);
+
   return (
     <ScrollView contentInsetAdjustmentBehavior="automatic">
     <View style={styles.detailplan}>
@@ -42,7 +84,7 @@ const DetailPlan: React.FC<{
         <Text style={[styles.remainingAmountText, styles.textTypo]}>
           Số tiền còn lại
         </Text>
-        <Text style={styles.remainingmoney}>2.000.000 đ</Text>
+        <Text style={[styles.remainingmoney, { color: moneyColor }]}>{formatNumber(remainMoney)} đ</Text>
       </View>
       <View style={[styles.categoryAllExpenses, styles.moneyexpensesPosition]}>
         <View style={styles.title}>
@@ -50,9 +92,15 @@ const DetailPlan: React.FC<{
             Các khoản đã chi
           </Text>
         </View>
-        <ItemHistoryExpenses />
-        <ItemHistoryExpenses1 />
-        <ItemHistoryExpenses2 />
+        {spendList.length > 0 ? (
+        spendList.map((item) => (
+          <View key={item.id.toString()}>
+            <ItemHistoryExpenses item={item}
+              />
+          </View>
+        ))
+      ):(<Text style={{marginTop:100,left:"10%"}}>Chưa có khoản chi tiêu cho danh mục này !!!</Text>)
+      }
       </View>
     </View>
     </ScrollView>
@@ -163,7 +211,7 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   remainingAmount: {
-    top: 627,
+    top: "80%",
     left: 19,
     width: 381,
   },

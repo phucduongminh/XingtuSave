@@ -2,18 +2,22 @@ import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
 
-const ItemHistoryExpense3 = () => {
+const ItemHistoryExpense3: React.FC<{
+  category:string;
+  series:number;
+  color:any;
+}> = ({ category,series,color }) => {
   return (
     <View style={[styles.itemHistoryExpenses, styles.rectangleLayout]}>
       <View style={[styles.rectangle, styles.rectanglePosition]} />
       <View style={styles.info}>
         <Text style={[styles.expensesreason, styles.valuePosition]}>
-          Category 1
+          {category}
         </Text>
-        <Text style={[styles.value, styles.valuePosition]}>30000 đ</Text>
+        <Text style={[styles.value, styles.valuePosition]}>{series} đ</Text>
       </View>
       <View style={[styles.icon, styles.iconLayout]}>
-        <View style={[styles.rectangle1, styles.iconLayout]} />
+        <View style={[styles.rectangle1, styles.iconLayout,{backgroundColor:color}]} />
       </View>
     </View>
   );
@@ -23,7 +27,6 @@ const styles = StyleSheet.create({
   rectangleLayout: {
     height: 74,
     width: 386,
-    position: "absolute",
   },
   rectanglePosition: {
     borderRadius: Border.br_7xs,
@@ -42,7 +45,7 @@ const styles = StyleSheet.create({
   },
   rectangle: {
     backgroundColor: Color.colorWhite,
-    shadowColor: "rgba(0, 0, 0, 0.06)",
+    shadowColor: "rgba(0, 0, 0, 0.7)",
     shadowOffset: {
       width: 0,
       height: 2,
@@ -79,7 +82,6 @@ const styles = StyleSheet.create({
     position: "absolute",
   },
   rectangle1: {
-    backgroundColor: Color.colorMediumseagreen,
     borderRadius: Border.br_7xs,
     left: 0,
     top: 0,
@@ -89,10 +91,10 @@ const styles = StyleSheet.create({
     left: 16,
   },
   itemHistoryExpenses: {
-    zIndex: 0,
     left: 0,
-    top: 0,
+    top:-52,
     width: 386,
+    marginBottom:10
   },
 });
 

@@ -1,9 +1,12 @@
 const formatNumber = (value: number) => {
-  if (value < 10000) {
-    return value.toString();
+  const isNegative = value < 0;
+  const absoluteValue = Math.abs(value);
+
+  if (absoluteValue < 10000) {
+    return isNegative ? `-${absoluteValue.toString()}` : absoluteValue.toString();
   }
 
-  const groups = value.toString().split('').reverse();
+  const groups = absoluteValue.toString().split('').reverse();
   let formattedPrice = '';
 
   for (let i = 0; i < groups.length; i++) {
@@ -13,7 +16,9 @@ const formatNumber = (value: number) => {
     formattedPrice += groups[i];
   }
 
-  return formattedPrice.split('').reverse().join('');
+  const result = formattedPrice.split('').reverse().join('');
+
+  return isNegative ? `-${result}` : result;
 };
 
 export default formatNumber;
