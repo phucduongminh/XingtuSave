@@ -4,6 +4,24 @@ import PieChart from 'react-native-pie-chart';
 import ItemHistoryExpenses3 from "../components/ItemHistoryExpenses3";
 import { FontFamily, Color, FontSize, Border, Padding } from "../GlobalStyles";
 import randomColor from 'randomcolor';
+import { Dropdown } from 'react-native-element-dropdown';
+import formatNumber from "../components/formatNumber";
+
+const chooses = [
+  { label: 'Tất cả', value: '0' },
+  { label: 'Tháng 1', value: '1' },
+  { label: 'Tháng 2', value: '2' },
+  { label: 'Tháng 3', value: '3' },
+  { label: 'Tháng 4', value: '4' },
+  { label: 'Tháng 5', value: '5' },
+  { label: 'Tháng 6', value: '6' },
+  { label: 'Tháng 7', value: '7' },
+  { label: 'Tháng 8', value: '8' },
+  { label: 'Tháng 9', value: '9' },
+  { label: 'Tháng 10', value: '10' },
+  { label: 'Tháng 11', value: '11' },
+  { label: 'Tháng 12', value: '12' },
+];
 
 const SpendStatistic = () => {
   const widthAndHeight = 250;
@@ -11,47 +29,55 @@ const SpendStatistic = () => {
     { category: 'Category 1', series: 30000 },
     { category: 'Category 2', series: 40000 },
     { category: 'Category 3', series: 50000 },
+    { category: 'Category 4', series: 50000 },
   ];
+  const [month,setMonth] = useState('0')
   const [data, setData] = useState<{ category: string; series: number }[]>(initialData);
   const [series, setSeries] = useState<number[]>([1]);
   const [sliceColor, setSliceColor] = useState<string[]>(['#fbd203']);
+  const [sumMoney,setSumMoney] = useState(0);
 
   useEffect(() => {
     if (data.length > 0) {
       const seriesValues = data.map((item) => item.series);
       const sliceColorValues = randomColor({ count: data.length });
 
+      let sumMoney=0;
+      seriesValues.forEach((value)=>{
+        sumMoney+=value
+      })
+      setSumMoney(sumMoney)
       setSeries(seriesValues);
       setSliceColor(sliceColorValues);
     }
   }, [data]);
 
   return (
-    <View style={styles.scrollContainer}>
       <View style={styles.spendstatistic}>
       <View style={[styles.header, styles.headerPosition]}>
         <Text style={styles.headername}>Thống kê</Text>
       </View>
-      <View style={[styles.selectbar, styles.chitieuFlexBox]}>
-        <Text style={styles.monthly}>Tháng 9</Text>
-        <Image
-          style={styles.selecticon}
-          resizeMode="cover"
-          source={require("../assets/selecticon.png")}
-        />
-      </View>
-      <View style={styles.chart}>
-        <View style={[styles.totalmoney, styles.headerPosition]}>
-          <Text style={[styles.text, styles.textTypo]}>500,000đ</Text>
-        </View>
+      <View >
         
-        <View style={styles.container}>
+      </View>
+      <Dropdown
+      style={[styles.selectbar]}
+                    data={chooses}
+                    onChange={(item) => setMonth(item.value)}
+                    labelField="label"
+                    valueField="value"
+                    iconColor="darkgray"
+                    placeholderStyle={styles.monthly}
+                    selectedTextStyle={styles.monthly}
+                    iconStyle={styles.selecticon}
+                    placeholder={'Tất cả'}
+        /> 
+      <View style={styles.chart}>
         <View
           style={[styles.chitieu, styles.chitieuFlexBox]}
         >
           <Text style={styles.chiTiu}>Chi tiêu</Text>
         </View>
-        <View style={styles.container}>
         
         <PieChart
           widthAndHeight={widthAndHeight}
@@ -59,9 +85,9 @@ const SpendStatistic = () => {
           sliceColor={sliceColor}
           coverRadius={0.6}
         />
-      </View>
-        </View>
         <Text style={[styles.totalText, styles.textTypo]}>Tổng</Text>
+        <Text style={[styles.text, styles.textTypo]}>{formatNumber(sumMoney)}đ</Text>
+
       </View>
       <View style={[styles.history, styles.headerLayout]}>
       <View>
@@ -69,15 +95,13 @@ const SpendStatistic = () => {
       <ItemHistoryExpenses3
         key={index}
         category={item.category}
-        series={item.series}
+        series={formatNumber(item.series)}
         color={sliceColor[index]}
       />
     ))}
   </View>
       
       </View>
-    </View>
-      
     </View>
   );
 };
@@ -203,40 +227,33 @@ const styles = StyleSheet.create({
     left: "64.49%",
     zIndex: 5,
   },
-  bottomNavigation: {
-    top: 823,
-    left: -1,
-    position: "absolute",
-  },
   monthly: {
-    fontSize: FontSize.size_xs,
-    textAlign: "left",
+    fontSize: 16,
+    left:"5%",
     color: Color.colorLightslategray,
     fontFamily: FontFamily.abelRegular,
-    letterSpacing: 1,
+    position:"absolute"
   },
   selecticon: {
-    width: 8,
-    height: 4,
-    marginLeft: 308,
+    width: 32,
+    height: 16,
+    marginLeft:380
   },
   selectbar: {
-    top: 100,
+    top: 75,
     borderRadius: Border.br_5xs,
-    paddingHorizontal: Padding.p_sm,
-    paddingVertical: 10,
-    backgroundColor: Color.colorWhite,
-    left: 14,
+    paddingVertical: 4,
+    backgroundColor: '#f2faf7',
     flexDirection: "row",
+
   },
   text: {
-    marginTop: -20,
+    top:160,
     width: "161.35%",
-    left: "-26.49%",
+    left: "-30%",
     fontSize: FontSize.size_5xl,
     height: 29,
     color: Color.colorDarkslategray,
-    top: "50%",
     fontFamily: FontFamily.aBeeZeeItalic,
     fontStyle: "italic",
   },
@@ -249,7 +266,7 @@ const styles = StyleSheet.create({
   },
   totalText: {
     marginLeft: -27,
-    bottom: 143,
+    bottom: 180,
     left: "50%",
     fontSize: FontSize.size_sm,
     width: 49,
@@ -264,7 +281,7 @@ const styles = StyleSheet.create({
     fontSize: FontSize.size_base,
   },
   chitieu: {
-    top: 20,
+    top: -5,
     left: 116,
     borderTopRightRadius: Border.br_21xl,
     borderBottomRightRadius: Border.br_21xl,
@@ -280,14 +297,17 @@ const styles = StyleSheet.create({
     zIndex: 3,
   },
   chart: {
-    top: 155,
+    top: 100,
     left: 28,
     width: 358,
     height: 331,
     position: "absolute",
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   history: {
-    top: 518,
+    top: 470,
     height: "50%",
     position: "absolute",
   },

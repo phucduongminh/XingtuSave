@@ -203,7 +203,6 @@ const TradeInputScreen = () => {
                     valueField="value"
                     placeholder={'Danh mục'}
                     searchPlaceholder="Search..."
-                    value={category}
                     onFocus={() => setColor1(Color.colorAquamarine)}
                     // Khi onBlur, gọi hàm setColor để đổi màu thành đen
                     onBlur={() => setColor1('black')}

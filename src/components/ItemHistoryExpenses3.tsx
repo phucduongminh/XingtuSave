@@ -4,7 +4,7 @@ import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
 
 const ItemHistoryExpense3: React.FC<{
   category:string;
-  series:number;
+  series:string;
   color:any;
 }> = ({ category,series,color }) => {
   return (
