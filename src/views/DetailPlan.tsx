@@ -36,18 +36,15 @@ const DetailPlan: React.FC<{
   const selectSpendList = useCallback(async () => {
     try {
       let remainMoney=deMoney;
-    spends.forEach((spend) => {
-      if ((spend.category === deCategory)&&(spend.income===0)) {
-        setSpendList([...spendList,spend])
-        remainMoney=remainMoney-spend.money
-      }
-    });
-    setRemainMoney(remainMoney)
+      let updatedSpendList = spends.filter(spend => spend.category === deCategory && spend.income === 0); // use filter to get the spends that match the condition
+      updatedSpendList.forEach(spend => remainMoney -= spend.money); // update the remainMoney
+      setSpendList(updatedSpendList); // set the spendList state with the updated array
+      setRemainMoney(remainMoney)
     } catch (error) {
       console.error(error);
     }
   }, [spends]);
-
+   
   useEffect(() => {
     loadDataCallback();
     selectSpendList();
@@ -94,7 +91,7 @@ const DetailPlan: React.FC<{
         </View>
         {spendList.length > 0 ? (
         spendList.map((item) => (
-          <View key={item.id.toString()}>
+          <View key={item.id}>
             <ItemHistoryExpenses item={item}
               />
           </View>

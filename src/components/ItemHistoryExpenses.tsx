@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   },
   expensesreason: {
     marginTop: -20,
-    width: "40%",
+    width: "60%",
     fontSize: FontSize.size_sm,
     color: Color.colorDarkslategray,
   },
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
   },
   value: {
     marginTop: -10,
-    left: "64.09%",
+    left: "75%",
     fontSize: FontSize.size_lg,
     color: Color.colorRed,
     textAlign: "right",
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
     left: 41,
     width: 298,
     height: 36,
-    overflow: "hidden",
     zIndex: 1,
     position: "absolute",
   },
