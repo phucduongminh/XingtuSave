@@ -1,23 +1,22 @@
 import * as React from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
 import { Padding, Color, Border, FontFamily, FontSize } from "../GlobalStyles";
+import { Dropdown } from 'react-native-element-dropdown';
+import CheckBox from '@react-native-community/checkbox';
 import { createPlanTable, getTodoPlans } from "../controllers/PlanControllers";
 import { Plans } from "../models/Plans";
 import { useCallback, useEffect, useState } from "react";
 import { getDBConnection } from "../controllers/connectDB";
-import { Dropdown } from 'react-native-element-dropdown';
-import CheckBox from '@react-native-community/checkbox';
-
 const initialCateChooses = [
   { label: '', value: '' },
 ];
 
 const DropdownMenuVariant = () => {
-  const [cateChoose, setCateChoose] = useState(initialCateChooses);
-  const [plans, setPlans] = useState<Plans[]>([]);
-  const [category,setCategory] = useState('')
   const [check1,setCheck1] = useState(false)
   const [check2,setCheck2] = useState(false)
+  const [category,setCategory] = useState('')
+  const [plans, setPlans] = useState<Plans[]>([]);
+  const [cateChoose, setCateChoose] = useState(initialCateChooses);
 
   const loadPlanCallback = useCallback(async () => {
     try {

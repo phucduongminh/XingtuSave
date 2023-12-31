@@ -10,9 +10,8 @@ import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/dat
 import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker';
 import { AddTrades } from "../models/AddTrades";
 import { createTradeTable, saveNewTrade } from "../controllers/TradeControllers";
-import { createPlanTable, getTodoPlans } from "../controllers/PlanControllers";
-import { Plans } from "../models/Plans";
 import { getDBConnection } from "../controllers/connectDB";
+import { useCategoryChoose } from "../controllers/CategoryChoose";
 
 const getTrueDate = (date: Date) => {
     // Lấy ngày, tháng và năm của đối tượng Date
@@ -33,13 +32,15 @@ const TradeInputScreen = () => {
     const [color3, setColor3] = useState('black');
     const [formType, setFormType] = useState('0');
     const [show, setShow] = useState(false);
-const [showDate, setShowDate] = useState(false);
+    const [showDate, setShowDate] = useState(false);
 
     const [category, setCategory] = useState('');
     const [money, setMoney] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState(new Date());
     const [selectedImage, setSelectedImage] = useState<string | undefined>();
+
+    const cateChoose = useCategoryChoose();
 
     const openImagePicker = () => {
         const options: ImageLibraryOptions = {
@@ -79,27 +80,21 @@ const [showDate, setShowDate] = useState(false);
         { label: 'Khoản chi', value: '0' },
     ];
 
-    const catechooses = [
-        { label: 'Siêu thị', value: 'Siêu thị' },
-        { label: 'Mua nhà', value: 'Mua nhà' },
-        { label: 'Ăn cắp', value: 'Ăn cắp' },
-    ];
-
     const [trades, setTrades] = useState<AddTrades[]>([]);
     const [tradesList, setTradesList] = useState<AddTrades[]>([]);
-    
+
     const loadDataCallback = useCallback(async () => {
         try {
           if (trades.length>0) {
-                        setTradesList(trades)
+            setTradesList(trades)
           } else {
-                        setTradesList([])
+            setTradesList([])
           }
         } catch (error) {
           console.error(error);
         }
       }, [trades]);
-    
+
       useEffect(() => {
         loadDataCallback();
       }, [loadDataCallback]);
@@ -111,7 +106,7 @@ const [showDate, setShowDate] = useState(false);
             const newTrade = [
                 ...trades,
             ];
-                        const db = await getDBConnection();
+            const db = await getDBConnection();
             await saveNewTrade(db, newTrade);
             setTrades([])
         } catch (error) {
@@ -172,14 +167,14 @@ const [showDate, setShowDate] = useState(false);
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.dropdownIcon}
-                    data={catechooses}
+                    data={cateChoose}
                     search
                     maxHeight={300}
                     labelField="label"
                     valueField="value"
                     placeholder={'Danh mục'}
                     searchPlaceholder="Search..."
-                                        onFocus={() => setColor1(Color.colorAquamarine)}
+                    onFocus={() => setColor1(Color.colorAquamarine)}
                     // Khi onBlur, gọi hàm setColor để đổi màu thành đen
                     onBlur={() => setColor1('black')}
                     onChange={item => {
@@ -238,7 +233,7 @@ const [showDate, setShowDate] = useState(false);
                         />
                     )
                 }
-{showDate&&(<Text>:&#32;&#32;&#32;&#32;&#32;&#32;{getTrueDate(date)}</Text>)}
+                {showDate&&(<Text>:&#32;&#32;&#32;&#32;&#32;&#32;{getTrueDate(date)}</Text>)}
             </View>
             <View style={[styles.addbutton, styles.addbuttonLayout]}>
                 <Pressable onPress={()=>{const newTrade =
@@ -251,20 +246,18 @@ const [showDate, setShowDate] = useState(false);
                     income: Number(formType)
                 };
             setTrades([...trades,newTrade]);
-            console.log(selectedImage)
-            console.log(String(selectedImage))
             }}>
                     <View style={[styles.addbuttonChild, styles.addbuttonLayout]} />
                     <Text style={[styles.add, styles.addTypo]}>ADD +</Text></Pressable>
             </View>
             {tradesList.length > 0 && (
         tradesList.map((item, index) => (
-    <View key={index} style={[styles.addedItemsWrapper, styles.addedPosition]}>
+          <View key={index} style={[styles.addedItemsWrapper, styles.addedPosition]}>
             <TradeItemsComponent item={item} />
           </View>
-    ))
-  )}
-              
+        ))
+      )}
+            
 
 
             <View style={[styles.morebutton, styles.savebuttonSpaceBlock]}>
@@ -322,7 +315,7 @@ const styles = StyleSheet.create({
     addedPosition: {
         left: 18,
         padding: Padding.p_3xs,
-            },
+    },
     addbuttonLayout: {
         width: 241,
         height: 40,
@@ -522,13 +515,13 @@ const styles = StyleSheet.create({
     inputSearchStyle: {
         height: 40,
         fontSize: 16,
-},
+    },
     dateText: {
         top:"90%",
     left:"3%",
         position: "absolute",
         color:"black"
-    },
+      },
 });
 
 export default TradeInputScreen;
