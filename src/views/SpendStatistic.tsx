@@ -1,56 +1,78 @@
-import React, { useEffect, useState } from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import {StyleSheet, Text, View} from 'react-native';
 import PieChart from 'react-native-pie-chart';
 import ItemHistoryExpenses3 from "../components/ItemHistoryExpenses3";
-import { FontFamily, Color, FontSize, Border, Padding } from "../GlobalStyles";
+import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 import randomColor from 'randomcolor';
 import { Dropdown } from 'react-native-element-dropdown';
 import formatNumber from "../components/formatNumber";
+import { Spends } from '../models/Spends';
+import { createTable, getDBConnection, getSpendsHistory } from "../controllers/TradeControllers";
+import filterAndGroup from '../controllers/Filters';
 
 const chooses = [
   { label: 'Tất cả', value: '0' },
-  { label: 'Tháng 1', value: '1' },
-  { label: 'Tháng 2', value: '2' },
-  { label: 'Tháng 3', value: '3' },
-  { label: 'Tháng 4', value: '4' },
-  { label: 'Tháng 5', value: '5' },
-  { label: 'Tháng 6', value: '6' },
-  { label: 'Tháng 7', value: '7' },
-  { label: 'Tháng 8', value: '8' },
-  { label: 'Tháng 9', value: '9' },
+  { label: 'Tháng 1', value: '01' },
+  { label: 'Tháng 2', value: '02' },
+  { label: 'Tháng 3', value: '03' },
+  { label: 'Tháng 4', value: '04' },
+  { label: 'Tháng 5', value: '05' },
+  { label: 'Tháng 6', value: '06' },
+  { label: 'Tháng 7', value: '07' },
+  { label: 'Tháng 8', value: '08' },
+  { label: 'Tháng 9', value: '09' },
   { label: 'Tháng 10', value: '10' },
   { label: 'Tháng 11', value: '11' },
   { label: 'Tháng 12', value: '12' },
 ];
 
 const SpendStatistic = () => {
-  const widthAndHeight = 250;
-  const initialData = [
-    { category: 'Category 1', series: 30000 },
-    { category: 'Category 2', series: 40000 },
-    { category: 'Category 3', series: 50000 },
-    { category: 'Category 4', series: 50000 },
-  ];
   const [month,setMonth] = useState('0')
-  const [data, setData] = useState<{ category: string; series: number }[]>(initialData);
+  const [data, setData] = useState<{ category: string; totalMoney: number }[]>([]);
   const [series, setSeries] = useState<number[]>([1]);
   const [sliceColor, setSliceColor] = useState<string[]>(['#fbd203']);
   const [sumMoney,setSumMoney] = useState(0);
+  const [spends,setSpends] = useState<Spends[]>([]);
+
+  const loadDataCallback = useCallback(async () => {
+    try {
+      const db = await getDBConnection();
+      await createTable(db);
+      const storedTradeItems = await getSpendsHistory(db);
+      if (storedTradeItems.length) {
+        setSpends(storedTradeItems);
+      } else {
+        setSpends([]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [spends,month]);
+
+  const loadDataGraph = useCallback(async () => {
+    try {
+      if (data.length > 0) {
+        const seriesValues = data.map((item) => item.totalMoney);
+        const sliceColorValues = randomColor({ count: data.length });
+  
+        let sumMoney=0;
+        seriesValues.forEach((value)=>{
+          sumMoney+=value
+        })
+        setSumMoney(sumMoney)
+        setSeries(seriesValues);
+        setSliceColor(sliceColorValues);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [data,month]);
 
   useEffect(() => {
-    if (data.length > 0) {
-      const seriesValues = data.map((item) => item.series);
-      const sliceColorValues = randomColor({ count: data.length });
-
-      let sumMoney=0;
-      seriesValues.forEach((value)=>{
-        sumMoney+=value
-      })
-      setSumMoney(sumMoney)
-      setSeries(seriesValues);
-      setSliceColor(sliceColorValues);
-    }
-  }, [data]);
+    loadDataCallback()
+    setData(filterAndGroup(spends,month))
+    loadDataGraph()
+  }, [loadDataCallback]);
 
   return (
       <View style={styles.spendstatistic}>
@@ -79,14 +101,12 @@ const SpendStatistic = () => {
           <Text style={styles.chiTiu}>Chi tiêu</Text>
         </View>
         
-        <PieChart
-          widthAndHeight={widthAndHeight}
+        {(data.length > 0) ?(<><PieChart
+          widthAndHeight={250}
           series={series}
           sliceColor={sliceColor}
-          coverRadius={0.6}
-        />
-        <Text style={[styles.totalText, styles.textTypo]}>Tổng</Text>
-        <Text style={[styles.text, styles.textTypo]}>{formatNumber(sumMoney)}đ</Text>
+          coverRadius={0.6} /><Text style={[styles.totalText, styles.textTypo]}>Tổng</Text><Text style={[styles.text, styles.textTypo]}>{formatNumber(sumMoney)}đ</Text></>
+        ):(<Text style={[styles.nullText, styles.textTypo]}>Không có thống kê chi tiêu cho tháng này</Text>)}
 
       </View>
       <View style={[styles.history, styles.headerLayout]}>
@@ -95,7 +115,7 @@ const SpendStatistic = () => {
       <ItemHistoryExpenses3
         key={index}
         category={item.category}
-        series={formatNumber(item.series)}
+        series={formatNumber(item.totalMoney)}
         color={sliceColor[index]}
       />
     ))}
@@ -274,6 +294,11 @@ const styles = StyleSheet.create({
     color: Color.colorLightslategray,
     zIndex: 2,
   },
+  nullText : {
+    fontSize: 16,
+    color: Color.colorLightslategray,
+    top:"60%",
+    zIndex: 3,},
   chiTiu: {
     fontFamily: FontFamily.poppinsRegular,
     color: Color.colorWhite,
