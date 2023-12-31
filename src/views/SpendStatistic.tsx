@@ -3,7 +3,6 @@ import {StyleSheet, Text, View} from 'react-native';
 import PieChart from 'react-native-pie-chart';
 import ItemHistoryExpenses3 from "../components/ItemHistoryExpenses3";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
-import randomColor from 'randomcolor';
 import { Dropdown } from 'react-native-element-dropdown';
 import formatNumber from "../components/formatNumber";
 import { Spends } from '../models/Spends';
@@ -25,6 +24,8 @@ const chooses = [
   { label: 'Tháng 11', value: '11' },
   { label: 'Tháng 12', value: '12' },
 ];
+
+const initialColors = ['#87ceeb','#fbd203', '#6495ed','#ff7f50',  '#da70d6', '#32cd32',  '#ff69b4', '#cd5c5c', '#ffd700', '#008080', '#ff4500', '#8a2be2'];
 
 const SpendStatistic = () => {
   const [month,setMonth] = useState('0')
@@ -49,29 +50,33 @@ const SpendStatistic = () => {
     }
   }, [spends,month]);
 
-  const loadDataGraph = useCallback(async () => {
+  const loadDataGraph = useCallback(() => {
     try {
       if (data.length > 0) {
         const seriesValues = data.map((item) => item.totalMoney);
-        const sliceColorValues = randomColor({ count: data.length });
   
-        let sumMoney=0;
-        seriesValues.forEach((value)=>{
-          sumMoney+=value
-        })
-        setSumMoney(sumMoney)
+        let sumMoney = 0;
+        seriesValues.forEach((value) => {
+          sumMoney += value;
+        });
+  
+        setSumMoney(sumMoney);
         setSeries(seriesValues);
+        
+        // Set colors here using initialColors
+        const sliceColorValues = initialColors.slice(0, data.length);
         setSliceColor(sliceColorValues);
       }
     } catch (error) {
       console.error(error);
     }
-  }, [data,month]);
-
+  }, [data, month]);
+  
   useEffect(() => {
-    loadDataCallback()
-    setData(filterAndGroup(spends,month))
-    loadDataGraph()
+    loadDataCallback();
+    const newData = filterAndGroup(spends, month);
+    setData(newData);
+    loadDataGraph();
   }, [loadDataCallback]);
 
   return (
