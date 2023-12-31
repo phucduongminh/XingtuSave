@@ -5,6 +5,8 @@ import { createPlanTable, getTodoPlans } from "../controllers/PlanControllers";
 import { Plans } from "../models/Plans";
 import { useCallback, useEffect, useState } from "react";
 import { getDBConnection } from "../controllers/connectDB";
+import { Dropdown } from 'react-native-element-dropdown';
+import CheckBox from '@react-native-community/checkbox';
 
 const initialCateChooses = [
   { label: '', value: '' },
@@ -13,6 +15,9 @@ const initialCateChooses = [
 const DropdownMenuVariant = () => {
   const [cateChoose, setCateChoose] = useState(initialCateChooses);
   const [plans, setPlans] = useState<Plans[]>([]);
+  const [category,setCategory] = useState('')
+  const [check1,setCheck1] = useState(false)
+  const [check2,setCheck2] = useState(false)
 
   const loadPlanCallback = useCallback(async () => {
     try {
@@ -49,29 +54,38 @@ const DropdownMenuVariant = () => {
           source={require("../assets/vector1.png")}
         />
       </View>
-      <View style={[styles.vectorWrapper, styles.parentPosition]}>
-        <Image
-          style={[styles.vectorIcon2, styles.vectorIconLayout]}
-          resizeMode="cover"
-          source={require("../assets/vector.png")}
-        />
-      </View>
-      <Image
-        style={[styles.checkmarkIcon, styles.checkmarkIconLayout]}
-        resizeMode="cover"
-        source={require("../assets/checkmark.png")}
-      />
+    <CheckBox
+    value={check1}
+    onValueChange={() => setCheck1(!check1)}
+    style={{left:"87.5%",top:"36%",position:"absolute"}}
+    ></CheckBox>
+
       <Text style={[styles.chiTiu, styles.lcTheoTypo]}>Chi tiêu</Text>
       <View style={[styles.danhMcParent, styles.parentPosition]}>
-       
+      <Dropdown
+                    style={[styles.dropdownCategory]}
+                    placeholderStyle={styles.dropdownText}
+                    selectedTextStyle={styles.dropdownText}
+                    iconStyle={styles.dropdownIcon}
+                    itemTextStyle={{fontSize:12}}
+                    iconColor="black"
+                    data={cateChoose}
+                    maxHeight={300}
+                    labelField="label"
+                    valueField="value"
+                    placeholder={'Danh mục'}
+                    onChange={item => {
+                        setCategory(item.value)
+                    }}
+                />
       </View>
       <View style={styles.thuNhpParent}>
         <Text style={[styles.thuNhp, styles.thuNhpPosition]}>Thu nhập</Text>
-        <Image
-          style={[styles.checkmarkIcon1, styles.thuNhpPosition]}
-          resizeMode="cover"
-          source={require("../assets/checkmark.png")}
-        />
+        <CheckBox
+    value={check2}
+    onValueChange={() => setCheck2(!check2)}
+    style={{left:"72%",top:"5%",position:"absolute"}}
+    ></CheckBox>
       </View>
       <Text style={[styles.tNgy, styles.ngyTypo]}>Từ ngày</Text>
       <Text style={[styles.nNgy, styles.ngyTypo]}>Đến ngày</Text>
@@ -98,7 +112,6 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     flexDirection: "row",
-    overflow: "hidden",
     backgroundColor: Color.colorWhite,
     left: "0%",
     right: "0%",
@@ -125,7 +138,7 @@ const styles = StyleSheet.create({
   },
   filter1: {
     textAlign: "left",
-    right:"15%",
+    right:"17%",
     color: Color.color,
     fontFamily: FontFamily.aBeeZeeRegular,
     fontSize: FontSize.size_xs,
@@ -163,7 +176,9 @@ const styles = StyleSheet.create({
   },
   vectorIcon1: {
     width: 16,
-    height: 7,
+    height: 16,
+    left:-2,
+    top:-2
   },
   lcTheoParent: {
     top: "0%",
@@ -212,11 +227,10 @@ const styles = StyleSheet.create({
     width: 12,
   },
   danhMcParent: {
-    top: "66.67%",
-    bottom: "16.67%",
+    top: "60%",
   },
   thuNhp: {
-    left: 21,
+    left: 12,
     textAlign: "left",
     color: Color.color,
     fontFamily: FontFamily.aBeeZeeRegular,
@@ -260,6 +274,16 @@ const styles = StyleSheet.create({
     height: 105,
     position: "absolute",
   },
+  dropdownIcon: {
+    width: 40,
+    height: 14,
+    right:"-30%"
+},
+dropdownCategory: {
+  height: 30,
+  width:100
+},
+dropdownText: {fontSize: 12,color: Color.color, left:"30%"},
 });
 
 export default DropdownMenuVariant;
