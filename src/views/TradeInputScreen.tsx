@@ -33,7 +33,7 @@ const TradeInputScreen = () => {
     const [color3, setColor3] = useState('black');
     const [formType, setFormType] = useState('0');
     const [show, setShow] = useState(false);
-    const [showDate, setShowDate] = useState(false);
+const [showDate, setShowDate] = useState(false);
 
     const [category, setCategory] = useState('');
     const [money, setMoney] = useState('');
@@ -79,53 +79,30 @@ const TradeInputScreen = () => {
         { label: 'Khoản chi', value: '0' },
     ];
 
-    const initialCateChooses = [
-        { label: '', value: '' },
+    const catechooses = [
+        { label: 'Siêu thị', value: 'Siêu thị' },
+        { label: 'Mua nhà', value: 'Mua nhà' },
+        { label: 'Ăn cắp', value: 'Ăn cắp' },
     ];
-
-    const [cateChoose, setCateChoose] = useState(initialCateChooses);
-    const [plans, setPlans] = useState<Plans[]>([]);
 
     const [trades, setTrades] = useState<AddTrades[]>([]);
     const [tradesList, setTradesList] = useState<AddTrades[]>([]);
-
+    
     const loadDataCallback = useCallback(async () => {
         try {
           if (trades.length>0) {
-            setTradesList(trades)
+                        setTradesList(trades)
           } else {
-            setTradesList([])
+                        setTradesList([])
           }
         } catch (error) {
           console.error(error);
         }
       }, [trades]);
-
-      const loadPlanCallback = useCallback(async () => {
-        try {
-          const db = await getDBConnection();
-          await createPlanTable(db);
-          const storedPlanItems = await getTodoPlans(db);
-          if (storedPlanItems.length) {
-            setPlans(storedPlanItems);
-          } else {
-            setPlans([]);
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      }, [plans]);
     
       useEffect(() => {
         loadDataCallback();
-        loadPlanCallback();
-        const initialCateChooses = plans.map((plan) => ({
-            label: plan.category,
-            value: plan.category,
-          }));
-          // Set the state
-        setCateChoose(initialCateChooses);
-      }, [trades,plans]);
+      }, [loadDataCallback]);
 
     const AddTrade = async () => {
         const db = await getDBConnection();
@@ -134,7 +111,7 @@ const TradeInputScreen = () => {
             const newTrade = [
                 ...trades,
             ];
-            const db = await getDBConnection();
+                        const db = await getDBConnection();
             await saveNewTrade(db, newTrade);
             setTrades([])
         } catch (error) {
@@ -195,14 +172,14 @@ const TradeInputScreen = () => {
                     selectedTextStyle={styles.selectedTextStyle}
                     inputSearchStyle={styles.inputSearchStyle}
                     iconStyle={styles.dropdownIcon}
-                    data={cateChoose}
+                    data={catechooses}
                     search
                     maxHeight={300}
                     labelField="label"
                     valueField="value"
                     placeholder={'Danh mục'}
                     searchPlaceholder="Search..."
-                    onFocus={() => setColor1(Color.colorAquamarine)}
+                                        onFocus={() => setColor1(Color.colorAquamarine)}
                     // Khi onBlur, gọi hàm setColor để đổi màu thành đen
                     onBlur={() => setColor1('black')}
                     onChange={item => {
@@ -261,7 +238,7 @@ const TradeInputScreen = () => {
                         />
                     )
                 }
-                {showDate&&(<Text>:&#32;&#32;&#32;&#32;&#32;&#32;{getTrueDate(date)}</Text>)}
+{showDate&&(<Text>:&#32;&#32;&#32;&#32;&#32;&#32;{getTrueDate(date)}</Text>)}
             </View>
             <View style={[styles.addbutton, styles.addbuttonLayout]}>
                 <Pressable onPress={()=>{const newTrade =
@@ -282,12 +259,12 @@ const TradeInputScreen = () => {
             </View>
             {tradesList.length > 0 && (
         tradesList.map((item, index) => (
-          <View key={index} style={[styles.addedItemsWrapper, styles.addedPosition]}>
+    <View key={index} style={[styles.addedItemsWrapper, styles.addedPosition]}>
             <TradeItemsComponent item={item} />
           </View>
-        ))
-      )}
-            
+    ))
+  )}
+              
 
 
             <View style={[styles.morebutton, styles.savebuttonSpaceBlock]}>
@@ -345,7 +322,7 @@ const styles = StyleSheet.create({
     addedPosition: {
         left: 18,
         padding: Padding.p_3xs,
-    },
+            },
     addbuttonLayout: {
         width: 241,
         height: 40,
@@ -545,13 +522,13 @@ const styles = StyleSheet.create({
     inputSearchStyle: {
         height: 40,
         fontSize: 16,
-    },
+},
     dateText: {
         top:"90%",
     left:"3%",
         position: "absolute",
         color:"black"
-      },
+    },
 });
 
 export default TradeInputScreen;
