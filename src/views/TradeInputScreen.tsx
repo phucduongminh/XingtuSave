@@ -9,9 +9,10 @@ import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { launchImageLibrary, ImageLibraryOptions } from 'react-native-image-picker';
 import { AddTrades } from "../models/AddTrades";
-import { saveNewTrade, createTable, getDBConnection } from "../controllers/TradeControllers";
-import { getTodoPlans } from "../controllers/PlanControllers";
+import { createTradeTable, saveNewTrade } from "../controllers/TradeControllers";
+import { createPlanTable, getTodoPlans } from "../controllers/PlanControllers";
 import { Plans } from "../models/Plans";
+import { getDBConnection } from "../controllers/connectDB";
 
 const getTrueDate = (date: Date) => {
     // Lấy ngày, tháng và năm của đối tượng Date
@@ -104,7 +105,7 @@ const TradeInputScreen = () => {
       const loadPlanCallback = useCallback(async () => {
         try {
           const db = await getDBConnection();
-          await createTable(db);
+          await createPlanTable(db);
           const storedPlanItems = await getTodoPlans(db);
           if (storedPlanItems.length) {
             setPlans(storedPlanItems);
@@ -123,14 +124,13 @@ const TradeInputScreen = () => {
             label: plan.category,
             value: plan.category,
           }));
-      
           // Set the state
         setCateChoose(initialCateChooses);
       }, [trades,plans]);
 
     const AddTrade = async () => {
         const db = await getDBConnection();
-        await createTable(db);
+        await createTradeTable(db);
         try {
             const newTrade = [
                 ...trades,

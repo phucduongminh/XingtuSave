@@ -3,8 +3,9 @@ import { Text, StyleSheet, View } from "react-native";
 import { Color, FontSize, FontFamily, Padding } from "../GlobalStyles";
 import { useCallback, useEffect, useState } from "react";
 import { Spends } from "../models/Spends";
-import { createTable, getDBConnection, getSpendsHistory } from "../controllers/TradeControllers";
+import { createTradeTable, getSpendsHistory } from "../controllers/TradeControllers";
 import formatNumber from "./formatNumber";
+import { getDBConnection } from "../controllers/connectDB";
 
 const MoneyCalulate1 = () => {
   const [trades, setTrades] = useState<Spends[]>([]);
@@ -14,7 +15,7 @@ const MoneyCalulate1 = () => {
   const loadDataCallback = useCallback(async () => {
     try {
       const db = await getDBConnection();
-      await createTable(db);
+      await createTradeTable(db);
       const storedTradeItems = await getSpendsHistory(db);
       if (storedTradeItems.length) {
         setTrades(storedTradeItems);

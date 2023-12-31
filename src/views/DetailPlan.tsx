@@ -4,9 +4,10 @@ import Header1 from "../components/Header1";
 import ItemHistoryExpenses from "../components/ItemHistoryExpenses";
 import { Padding, Color, FontSize, FontFamily, Border } from "../GlobalStyles";
 import formatNumber from "../components/formatNumber";
-import { createTable, getDBConnection, getSpendsHistory } from "../controllers/TradeControllers";
+import { createTradeTable, getSpendsHistory } from "../controllers/TradeControllers";
 import { useCallback, useEffect, useState } from "react";
 import { Spends } from "../models/Spends";
+import { getDBConnection } from "../controllers/connectDB";
 
 const DetailPlan: React.FC<{
   deCategory:string;
@@ -21,7 +22,7 @@ const DetailPlan: React.FC<{
   const loadDataCallback = useCallback(async () => {
     try {
       const db = await getDBConnection();
-      await createTable(db);
+      await createTradeTable(db);
       const storedTradeItems = await getSpendsHistory(db);
       if (storedTradeItems.length) {
         setSpends(storedTradeItems);

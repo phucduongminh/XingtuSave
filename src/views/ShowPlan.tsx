@@ -14,11 +14,12 @@ import Modal from 'react-native-modal';
 
 import { ToDoPlanComponent } from '../components/ToDoPlan';
 import { Plans } from '../models/Plans';
-import { getDBConnection, getTodoPlans, createTable, deleteTodoPlan } from '../controllers/PlanControllers';
+import { getTodoPlans, deleteTodoPlan, createPlanTable } from '../controllers/PlanControllers';
 import NewPlan from './NewPlan';
 import MoneyCalulate1 from "../components/MoneyCalulate1";
 import { FontFamily, Color } from "../GlobalStyles";
 import DetailPlan from './DetailPlan';
+import { getDBConnection } from '../controllers/connectDB';
 
 const ShowPlan = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -50,7 +51,7 @@ const ShowPlan = () => {
   const loadDataCallback = useCallback(async () => {
     try {
       const db = await getDBConnection();
-      await createTable(db);
+      await createPlanTable(db);
       const storedPlanItems = await getTodoPlans(db);
       if (storedPlanItems.length) {
         setTodos(storedPlanItems);

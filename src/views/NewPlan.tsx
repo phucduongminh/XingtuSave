@@ -11,8 +11,9 @@ import {
   useColorScheme,
 } from 'react-native';
 
-import { getDBConnection, saveTodoPlans, createTable } from '../controllers/PlanControllers';
+import { createPlanTable, saveTodoPlans } from '../controllers/PlanControllers';
 import { AddPlans } from '../models/AddPlans';
+import { getDBConnection } from '../controllers/connectDB';
 
 interface NewPlanProps {
   onAddPlanSuccess: () => void;
@@ -26,7 +27,7 @@ const NewPlan: React.FC<NewPlanProps> = ({ onAddPlanSuccess }) => {
 
   const addPlan = async () => {
     const db = await getDBConnection();
-    await createTable(db);
+    await createPlanTable(db);
     try {
       const newTodos = [
         ...todos,

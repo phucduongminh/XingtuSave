@@ -6,8 +6,9 @@ import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 import { Dropdown } from 'react-native-element-dropdown';
 import formatNumber from "../components/formatNumber";
 import { Spends } from '../models/Spends';
-import { createTable, getDBConnection, getSpendsHistory } from "../controllers/TradeControllers";
+import { createTradeTable, getSpendsHistory } from "../controllers/TradeControllers";
 import filterAndGroup from '../controllers/Filters';
+import { getDBConnection } from '../controllers/connectDB';
 
 const chooses = [
   { label: 'Tất cả', value: '0' },
@@ -38,7 +39,7 @@ const SpendStatistic = () => {
   const loadDataCallback = useCallback(async () => {
     try {
       const db = await getDBConnection();
-      await createTable(db);
+      await createTradeTable(db);
       const storedTradeItems = await getSpendsHistory(db);
       if (storedTradeItems.length) {
         setSpends(storedTradeItems);

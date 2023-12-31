@@ -1,40 +1,59 @@
 import * as React from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
 import { Padding, Color, Border, FontFamily, FontSize } from "../GlobalStyles";
+import { createPlanTable, getTodoPlans } from "../controllers/PlanControllers";
+import { Plans } from "../models/Plans";
+import { useCallback, useEffect, useState } from "react";
+import { getDBConnection } from "../controllers/connectDB";
 
-const DropdownMenuVariant12 = () => {
+const initialCateChooses = [
+  { label: '', value: '' },
+];
+
+const DropdownMenuVariant = () => {
+  const [cateChoose, setCateChoose] = useState(initialCateChooses);
+  const [plans, setPlans] = useState<Plans[]>([]);
+
+  const loadPlanCallback = useCallback(async () => {
+    try {
+      const db = await getDBConnection();
+      await createPlanTable(db);
+      const storedPlanItems = await getTodoPlans(db);
+      if (storedPlanItems.length) {
+        setPlans(storedPlanItems);
+      } else {
+        setPlans([]);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [plans]);
+
+  useEffect(() => {
+    loadPlanCallback();
+    const initialCateChooses = plans.map((plan) => ({
+        label: plan.category,
+        value: plan.category,
+      }));
+      // Set the state
+    setCateChoose(initialCateChooses);
+  }, [loadPlanCallback]);
+  
   return (
     <View style={styles.dropdownMenuvariant12}>
       <View style={[styles.lcTheoParent, styles.parentPosition]}>
-        <Text style={styles.lcTheoTypo}>Lọc theo</Text>
-        <Image
-          style={styles.vectorIcon}
-          resizeMode="cover"
-          source={require("../assets/vector.png")}
-        />
+        <Text style={styles.filter1}>Lọc theo</Text>
         <Image
           style={styles.vectorIcon1}
           resizeMode="cover"
           source={require("../assets/vector1.png")}
         />
       </View>
-      <Image
-        style={styles.item01Icon}
-        resizeMode="cover"
-        source={require("../assets/item-01.png")}
-      />
       <View style={[styles.vectorWrapper, styles.parentPosition]}>
         <Image
           style={[styles.vectorIcon2, styles.vectorIconLayout]}
           resizeMode="cover"
           source={require("../assets/vector.png")}
-        />
-      </View>
-      <View style={[styles.vectorContainer, styles.parentPosition]}>
-        <Image
-          style={[styles.vectorIcon2, styles.vectorIconLayout]}
-          resizeMode="cover"
-          source={require("../assets/vector2.png")}
         />
       </View>
       <Image
@@ -44,17 +63,7 @@ const DropdownMenuVariant12 = () => {
       />
       <Text style={[styles.chiTiu, styles.lcTheoTypo]}>Chi tiêu</Text>
       <View style={[styles.danhMcParent, styles.parentPosition]}>
-        <Text style={styles.lcTheoTypo}>{`Danh mục `}</Text>
-        <Image
-          style={[styles.vectorIcon4, styles.vectorIconSpaceBlock]}
-          resizeMode="cover"
-          source={require("../assets/vector1.png")}
-        />
-        <Image
-          style={[styles.vectorIcon5, styles.vectorIconSpaceBlock]}
-          resizeMode="cover"
-          source={require("../assets/vector.png")}
-        />
+       
       </View>
       <View style={styles.thuNhpParent}>
         <Text style={[styles.thuNhp, styles.thuNhpPosition]}>Thu nhập</Text>
@@ -112,6 +121,15 @@ const styles = StyleSheet.create({
     color: Color.color,
     fontFamily: FontFamily.aBeeZeeRegular,
     fontSize: FontSize.size_xs,
+    position:"absolute"
+  },
+  filter1: {
+    textAlign: "left",
+    right:"15%",
+    color: Color.color,
+    fontFamily: FontFamily.aBeeZeeRegular,
+    fontSize: FontSize.size_xs,
+    position:"absolute"
   },
   vectorIconSpaceBlock: {
     marginLeft: 11,
@@ -244,4 +262,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DropdownMenuVariant12;
+export default DropdownMenuVariant;

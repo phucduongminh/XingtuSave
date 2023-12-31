@@ -1,14 +1,13 @@
 import * as React from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
-import ItemHistoryIncome from "../components/ItemHistoryIncome";
-import ItemHistoryExpenses6 from "../components/ItemHistoryExpenses6";
 import MoneyCalulate from "../components/MoneyCalulate";
-import DropdownMenuVariant12 from "../components/DropdownMenuVariant12";
+import DropdownMenuVariant from "../components/DropdownMenuVariant";
 import { FontSize, FontFamily, Color, Border, Padding } from "../GlobalStyles";
-import { createTable, getDBConnection, getSpendsHistory } from "../controllers/TradeControllers";
+import { createTradeTable, getSpendsHistory } from "../controllers/TradeControllers";
 import { useCallback, useEffect, useState } from "react";
 import { Spends } from "../models/Spends";
 import { TradeItemsComponent } from "../components/TradeItems";
+import { getDBConnection } from "../controllers/connectDB";
 
 const TradeHistory = () => {
   const [trades, setTrades] = useState<Spends[]>([]);
@@ -16,7 +15,7 @@ const TradeHistory = () => {
   const loadDataCallback = useCallback(async () => {
     try {
       const db = await getDBConnection();
-      await createTable(db);
+      await createTradeTable(db);
       const storedTradeItems = await getSpendsHistory(db);
       if (storedTradeItems.length) {
         setTrades(storedTradeItems);
@@ -55,7 +54,7 @@ const TradeHistory = () => {
           source={require("../assets/show-more.png")}
         />
       </View>
-      <DropdownMenuVariant12 />
+      <DropdownMenuVariant />
     </View>
   );
 };
