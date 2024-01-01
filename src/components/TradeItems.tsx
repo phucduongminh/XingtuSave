@@ -11,11 +11,15 @@ export const TradeItemsComponent: React.FC<{
   return (
     <View style={styles.addedItems}>
       <View style={styles.icon}>
-        <Image
+        {image==='undefined'?(<Image
+          style={styles.rectangleIcon}
+          resizeMode="cover"
+          source={require("../assets/icon6.png")}
+        />):(<Image
           style={styles.rectangleIcon}
           resizeMode="cover"
           source={{ uri: image }}
-        />
+        />)}
       </View>
       <View style={styles.info}>
         <Text style={styles.rentalIncome}>{category}</Text>

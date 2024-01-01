@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
   },
   value: {
     marginTop: -21,
-    left: "72.15%",
+    left: "65%",
     fontSize: FontSize.size_lg,
     fontFamily: FontFamily.abelRegular,
     color: Color.colorTomato_100,

@@ -13,18 +13,29 @@ import { createTradeTable, saveNewTrade } from "../controllers/TradeControllers"
 import { getDBConnection } from "../controllers/connectDB";
 import { useCategoryChoose } from "../controllers/CategoryChoose";
 
-const getTrueDate = (date: Date) => {
+const getTrueDate = (date: Date): string => {
     // Lấy ngày, tháng và năm của đối tượng Date
     let day = date.getDate();
     let month = date.getMonth() + 1; // cộng thêm 1 để được tháng đúng
     let year = date.getFullYear();
   
-    // Nối các giá trị này với nhau bằng dấu gạch ngang (-)
-    let trueDate = `${day}-${month}-${year}`;
+    // Chuyển đổi các biến này sang kiểu string
+    let dayString = day.toString();
+    let monthString = month.toString();
+    let yearString = year.toString();
+  
+    // Thêm số 0 vào đầu của day và month nếu chúng có độ dài nhỏ hơn 2
+    dayString = dayString.padStart(2, "0");
+    monthString = monthString.padStart(2, "0");
+  
+    // Nối các giá trị này với nhau bằng dấu gạch chéo (/)
+    let trueDate = `${dayString}-${monthString}-${yearString}`;
   
     // Trả về chuỗi trueDate
     return trueDate;
   };
+
+
 
 const TradeInputScreen = () => {
     const [color1, setColor1] = useState('black');
@@ -160,7 +171,7 @@ const TradeInputScreen = () => {
                 />
             </View>
             <View style={[styles.inputCategory, styles.savebuttonSpaceBlock]}>
-                <Dropdown
+                {formType==='0'?(<Dropdown
                     style={[styles.dropdownCategory, { borderBottomColor: color1 }]}
                     placeholderStyle={styles.placeholderStyle}
                     selectedTextStyle={styles.selectedTextStyle}
@@ -171,7 +182,7 @@ const TradeInputScreen = () => {
                     maxHeight={300}
                     labelField="label"
                     valueField="value"
-                    placeholder={'Danh mục'}
+                    placeholder={'Danh mục *'}
                     searchPlaceholder="Search..."
                     onFocus={() => setColor1(Color.colorAquamarine)}
                     // Khi onBlur, gọi hàm setColor để đổi màu thành đen
@@ -179,11 +190,20 @@ const TradeInputScreen = () => {
                     onChange={item => {
                         setCategory(item.value)
                     }}
-                />
+                />):(<Input
+                    placeholder='Khoản thu'
+                    style={{ ...styles.smallField }}
+                    inputContainerStyle={{ borderColor: color1, borderBottomColor: color1 }}
+                    // Khi onFocus, gọi hàm setColor để đổi màu thành xanh
+                    onFocus={() => setColor1(Color.colorAquamarine)}
+                    // Khi onBlur, gọi hàm setColor để đổi màu thành đen
+                    onBlur={() => setColor1('black')}
+                    onChangeText={(text) => setCategory(text)}
+                />)}
             </View>
             <View style={styles.inputMoneyField}>
                 <Input
-                    placeholder='Số tiền'
+                    placeholder='Số tiền *'
                     keyboardType='numeric'
                     style={{ ...styles.smallField }}
                     inputContainerStyle={{ borderColor: color2, borderBottomColor: color2 }}
@@ -221,7 +241,7 @@ const TradeInputScreen = () => {
                         source={require("../assets/rectangle2.png")}
                     />
                 </Pressable>
-                <Text style={styles.chooseDateText}>Chọn ngày tháng</Text>
+                <Text style={styles.chooseDateText}>Chọn ngày tháng<Text style={{color:'red'}}>&#32;*</Text></Text>
                 {
                     show && (
                         <DateTimePicker
@@ -245,11 +265,10 @@ const TradeInputScreen = () => {
                     income: Number(formType)
                 };
             setTrades([...trades,newTrade]);
-            console.log(selectedImage)
-            console.log(String(selectedImage))
             }}>
                     <View style={[styles.addbuttonChild, styles.addbuttonLayout]} />
-                    <Text style={[styles.add, styles.addTypo]}>ADD +</Text></Pressable>
+                    <Text style={[styles.add, styles.addTypo]}>ADD +</Text>
+                    </Pressable>
             </View>
             {tradesList.length > 0 && (
         tradesList.map((item, index) => (
@@ -258,9 +277,6 @@ const TradeInputScreen = () => {
           </View>
         ))
       )}
-            
-
-
             <View style={[styles.morebutton, styles.savebuttonSpaceBlock]}>
                 <Image
                     style={styles.showMoreIcon}

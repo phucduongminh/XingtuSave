@@ -7,7 +7,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import formatNumber from "../components/formatNumber";
 import { Spends } from '../models/Spends';
 import { createTradeTable, getSpendsHistory } from "../controllers/TradeControllers";
-import filterAndGroup from '../controllers/Filters';
+import {filterAndGroup} from '../controllers/Filters';
 import { getDBConnection } from '../controllers/connectDB';
 
 const chooses = [

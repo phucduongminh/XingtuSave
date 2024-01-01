@@ -38,35 +38,32 @@ const groupByCategory = (spends: Spends[]) => {
     const filtered = spends.filter((spend) => getMonth(spend.date) === month);
     // Tạo một đối tượng rỗng để lưu kết quả
     const result: Record<string, number> = {};
-    // Duyệt qua mảng filtered
+    // Duyệt qua mảng spends
     filtered.reduce((acc, cur) => {
       // Lấy category của phần tử hiện tại
       const category = cur.category;
-      // Tạo một key là sự kết hợp của category và month
-      const key = `${category}-${month}`;
-      // Kiểm tra xem key đã tồn tại trong đối tượng chưa
-      if (acc[key]) {
+      // Kiểm tra xem category đã tồn tại trong đối tượng chưa
+      if (acc[category]) {
         // Nếu có, cộng thêm money vào value
-        acc[key] += cur.money;
+        acc[category] += cur.money;
       } else {
         // Nếu không, tạo một key mới với value là money
-        acc[key] = cur.money;
+        acc[category] = cur.money;
       }
       // Trả về đối tượng cập nhật
       return acc;
     }, result); // Truyền result làm giá trị khởi tạo cho reduce
+
     // Chuyển đổi đối tượng thành mảng các đối tượng nhỏ hơn
     const arrayResult = Object.entries(result).map(([key, value]) => {
-      // Tách key thành category và month
-      const [category, month] = key.split("-");
       // Trả về một đối tượng có category và totalMoney
-      return { category, totalMoney: value };
+      return { category: key, totalMoney: value };
     });
     // Trả về kết quả
     return arrayResult;
   };
 
-  export  const filterAndGroup = (spends: Spends[], month: string) => {
+  export const filterAndGroup = (spends: Spends[], month: string) => {
     // Lọc ra những dữ liệu có income = 0
     const filtered = spends.filter((spend) => spend.income === 0);
     // Khai báo một biến để lưu kết quả
