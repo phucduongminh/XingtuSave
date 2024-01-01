@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
 
-const ItemHistoryExpense3: React.FC<{
+const ItemStatistic: React.FC<{
   category:string;
   series:string;
   color:any;
@@ -98,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ItemHistoryExpense3;
+export default ItemStatistic;

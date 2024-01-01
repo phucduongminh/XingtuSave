@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import PieChart from 'react-native-pie-chart';
-import ItemHistoryExpenses3 from "../components/ItemHistoryExpenses3";
+import ItemStatistic from "../components/ItemStatistic";
 import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
 import { Dropdown } from 'react-native-element-dropdown';
 import formatNumber from "../components/formatNumber";
@@ -36,21 +36,6 @@ const SpendStatistic = () => {
   const [sumMoney,setSumMoney] = useState(0);
   const [spends,setSpends] = useState<Spends[]>([]);
 
-  const loadDataCallback = useCallback(async () => {
-    try {
-      const db = await getDBConnection();
-      await createTradeTable(db);
-      const storedTradeItems = await getSpendsHistory(db);
-      if (storedTradeItems.length) {
-        setSpends(storedTradeItems);
-      } else {
-        setSpends([]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [spends,month]);
-
   const loadDataGraph = useCallback(() => {
     try {
       if (data.length > 0) {
@@ -71,14 +56,28 @@ const SpendStatistic = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [data, month]);
+  }, [data]);
   
   useEffect(() => {
+    const loadDataCallback = async () => {
+      try {
+        const db = await getDBConnection();
+        await createTradeTable(db);
+        const storedTradeItems = await getSpendsHistory(db);
+        if (storedTradeItems.length) {
+          setSpends(storedTradeItems);
+        } else {
+          setSpends([]);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
     loadDataCallback();
     const newData = filterAndGroup(spends, month);
     setData(newData);
     loadDataGraph();
-  }, [loadDataCallback]);
+  }, [spends,month]);
 
   return (
       <View style={styles.spendstatistic}>
@@ -118,7 +117,7 @@ const SpendStatistic = () => {
       <View style={[styles.history, styles.headerLayout]}>
       <View>
     {data.map((item, index) => (
-      <ItemHistoryExpenses3
+      <ItemStatistic
         key={index}
         category={item.category}
         series={formatNumber(item.totalMoney)}

@@ -12,21 +12,6 @@ const MoneyCalulate1 = () => {
   const [sumIncome,setSumIncome] = useState(0);
     const [sumExpense,setSumExpense] = useState(0);
 
-  const loadDataCallback = useCallback(async () => {
-    try {
-      const db = await getDBConnection();
-      await createTradeTable(db);
-      const storedTradeItems = await getSpendsHistory(db);
-      if (storedTradeItems.length) {
-        setTrades(storedTradeItems);
-      } else {
-        setTrades([]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [trades]);
-
   const calculateSums = useCallback(async () => {
     try {
       let sumIncome = 0;
@@ -44,12 +29,27 @@ const MoneyCalulate1 = () => {
     } catch (error) {
       console.error(error);
     }
-  }, [trades]);
+  }, []);
 
   useEffect(() => {
+    const loadDataCallback = async () => {
+      try {
+        const db = await getDBConnection();
+        await createTradeTable(db);
+        const storedTradeItems = await getSpendsHistory(db);
+        if (storedTradeItems.length) {
+          setTrades(storedTradeItems);
+        } else {
+          setTrades([]);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
     loadDataCallback();
     calculateSums();
-  }, [loadDataCallback]);
+  }, [trades]);
+  
   return (
     <View style={styles.moneycalulate}>
       <View style={styles.income}>

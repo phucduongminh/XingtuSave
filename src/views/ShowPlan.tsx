@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Image,
   SafeAreaView,
@@ -48,24 +48,23 @@ const ShowPlan = () => {
     // Nếu cần làm gì đó sau khi addPlan thành công, thêm code ở đây
   }; 
 
-  const loadDataCallback = useCallback(async () => {
-    try {
-      const db = await getDBConnection();
-      await createPlanTable(db);
-      const storedPlanItems = await getTodoPlans(db);
-      if (storedPlanItems.length) {
-        setTodos(storedPlanItems);
-      } else {
-        setTodos([]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [todos]);
-
   useEffect(() => {
+    const loadDataCallback = async () => {
+      try {
+        const db = await getDBConnection();
+        await createPlanTable(db);
+        const storedPlanItems = await getTodoPlans(db);
+        if (storedPlanItems.length) {
+          setTodos(storedPlanItems);
+        } else {
+          setTodos([]);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
     loadDataCallback();
-  }, [loadDataCallback]);
+  }, [todos]);
 
   const deleteItem = async (id: number) => {
     try {

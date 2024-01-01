@@ -4,7 +4,7 @@ import MoneyCalulate from "../components/MoneyCalulate";
 import DropdownMenuVariant from "../components/DropdownMenuVariant";
 import { FontSize, FontFamily, Color, Border, Padding } from "../GlobalStyles";
 import { createTradeTable, getSpendsHistory } from "../controllers/TradeControllers";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Spends } from "../models/Spends";
 import { TradeItemsComponent } from "../components/TradeItems";
 import { getDBConnection } from "../controllers/connectDB";
@@ -12,24 +12,23 @@ import { getDBConnection } from "../controllers/connectDB";
 const TradeHistory = () => {
   const [trades, setTrades] = useState<Spends[]>([]);
 
-  const loadDataCallback = useCallback(async () => {
-    try {
-      const db = await getDBConnection();
-      await createTradeTable(db);
-      const storedTradeItems = await getSpendsHistory(db);
-      if (storedTradeItems.length) {
-        setTrades(storedTradeItems);
-      } else {
-        setTrades([]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [trades]);
-
   useEffect(() => {
-    loadDataCallback();
-  }, [loadDataCallback]);
+    const loadDataCallback = async () => {
+      try {
+        const db = await getDBConnection();
+        await createTradeTable(db);
+        const storedTradeItems = await getSpendsHistory(db);
+        if (storedTradeItems.length) {
+          setTrades(storedTradeItems);
+        } else {
+          setTrades([]);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    loadDataCallback()
+  }, [trades]);
 
   return (
     <View style={styles.tradehistoryfilter}>

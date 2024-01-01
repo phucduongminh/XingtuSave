@@ -3,7 +3,7 @@ import { StyleSheet, View, Pressable, Text, Image } from "react-native";
 import HeaderName from "../components/HeaderName";
 import {TradeItemsComponent} from "../components/TradeItems";
 import { Padding, Color, FontFamily, FontSize, Border } from "../GlobalStyles";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from '@rneui/themed';
 import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
@@ -83,21 +83,20 @@ const TradeInputScreen = () => {
     const [trades, setTrades] = useState<AddTrades[]>([]);
     const [tradesList, setTradesList] = useState<AddTrades[]>([]);
 
-    const loadDataCallback = useCallback(async () => {
-        try {
-          if (trades.length>0) {
-            setTradesList(trades)
-          } else {
-            setTradesList([])
-          }
-        } catch (error) {
-          console.error(error);
-        }
-      }, [trades]);
-
       useEffect(() => {
+        const loadDataCallback = async () => {
+            try {
+              if (trades.length>0) {
+                setTradesList(trades)
+              } else {
+                setTradesList([])
+              }
+            } catch (error) {
+              console.error(error);
+            }
+          };
         loadDataCallback();
-      }, [loadDataCallback]);
+      }, [trades]);
 
     const AddTrade = async () => {
         const db = await getDBConnection();

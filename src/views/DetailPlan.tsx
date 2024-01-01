@@ -19,21 +19,6 @@ const DetailPlan: React.FC<{
 
   const moneyColor = remainMoney > 0 ? Color.colorAquamarine : Color.colorRed_200;
 
-  const loadDataCallback = useCallback(async () => {
-    try {
-      const db = await getDBConnection();
-      await createTradeTable(db);
-      const storedTradeItems = await getSpendsHistory(db);
-      if (storedTradeItems.length) {
-        setSpends(storedTradeItems);
-      } else {
-        setSpends([]);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [spends]);
-
   const selectSpendList = useCallback(async () => {
     try {
       let remainMoney=deMoney;
@@ -44,12 +29,26 @@ const DetailPlan: React.FC<{
     } catch (error) {
       console.error(error);
     }
-  }, [spends]);
+  }, []);
    
   useEffect(() => {
+    const loadDataCallback = async () => {
+      try {
+        const db = await getDBConnection();
+        await createTradeTable(db);
+        const storedTradeItems = await getSpendsHistory(db);
+        if (storedTradeItems.length) {
+          setSpends(storedTradeItems);
+        } else {
+          setSpends([]);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
     loadDataCallback();
     selectSpendList();
-  }, [loadDataCallback]);
+  }, [spends]);
 
   return (
     <ScrollView contentInsetAdjustmentBehavior="automatic">
