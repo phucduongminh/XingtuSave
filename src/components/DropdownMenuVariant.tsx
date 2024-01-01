@@ -1,47 +1,64 @@
 import * as React from "react";
-import { Text, StyleSheet, Image, View } from "react-native";
+import { Text, StyleSheet, Image, View, Pressable } from "react-native";
 import { Padding, Color, Border, FontFamily, FontSize } from "../GlobalStyles";
 import { Dropdown } from 'react-native-element-dropdown';
 import CheckBox from '@react-native-community/checkbox';
-import { createPlanTable, getTodoPlans } from "../controllers/PlanControllers";
-import { Plans } from "../models/Plans";
-import { useCallback, useEffect, useState } from "react";
-import { getDBConnection } from "../controllers/connectDB";
-const initialCateChooses = [
-  { label: '', value: '' },
-];
+import { useState } from "react";
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import { useCategoryChoose } from "../controllers/CategoryChoose";
+
+const getTrueDate = (date: Date) => {
+  // Lấy ngày, tháng và năm của đối tượng Date
+  let day = date.getDate();
+  let month = date.getMonth() + 1; // cộng thêm 1 để được tháng đúng
+  let year = date.getFullYear();
+
+  // Nối các giá trị này với nhau bằng dấu gạch ngang (-)
+  let trueDate = `${day}-${month}-${year}`;
+
+  // Trả về chuỗi trueDate
+  return trueDate;
+};
 
 const DropdownMenuVariant = () => {
   const [check1,setCheck1] = useState(false)
   const [check2,setCheck2] = useState(false)
   const [category,setCategory] = useState('')
-  const [plans, setPlans] = useState<Plans[]>([]);
-  const [cateChoose, setCateChoose] = useState(initialCateChooses);
 
-  const loadPlanCallback = useCallback(async () => {
-    try {
-      const db = await getDBConnection();
-      await createPlanTable(db);
-      const storedPlanItems = await getTodoPlans(db);
-      if (storedPlanItems.length) {
-        setPlans(storedPlanItems);
-      } else {
-        setPlans([]);
-      }
-    } catch (error) {
-      console.error(error);
+  const [date, setDate] = useState(new Date());
+  const [show, setShow] = useState(false);
+  const [showDate, setShowDate] = useState(false);
+  const [date1, setDate1] = useState(new Date());
+  const [show1, setShow1] = useState(false);
+  const [showDate1, setShowDate1] = useState(false);
+
+  const cateChoose =useCategoryChoose();
+
+  const onDateChange = (e: DateTimePickerEvent, selectedDate: Date | undefined) => {
+    // Check if selectedDate is defined before setting the date
+    setShow(!show)
+    setShowDate(!showDate)
+    if (selectedDate) {
+        setDate(selectedDate);
     }
-  }, [plans]);
+};
 
-  useEffect(() => {
-    loadPlanCallback();
-    const initialCateChooses = plans.map((plan) => ({
-        label: plan.category,
-        value: plan.category,
-      }));
-      // Set the state
-    setCateChoose(initialCateChooses);
-  }, [loadPlanCallback]);
+const showMode = () => {
+    setShow(!show)
+}
+
+const onDateChange1 = (e: DateTimePickerEvent, selectedDate: Date | undefined) => {
+  // Check if selectedDate is defined before setting the date
+  setShow1(!show1)
+  setShowDate1(!showDate1)
+  if (selectedDate) {
+      setDate1(selectedDate);
+  }
+};
+
+const showMode1 = () => {
+  setShow1(!show1)
+}
   
   return (
     <View style={styles.dropdownMenuvariant12}>
@@ -86,18 +103,47 @@ const DropdownMenuVariant = () => {
     style={{left:"72%",top:"5%",position:"absolute"}}
     ></CheckBox>
       </View>
-      <Text style={[styles.tNgy, styles.ngyTypo]}>Từ ngày</Text>
-      <Text style={[styles.nNgy, styles.ngyTypo]}>Đến ngày</Text>
+      {showDate ===true?(<Text style={[styles.fromDate, styles.dateChoose]}>{getTrueDate(date)}</Text>):(<Text style={[styles.fromDate, styles.dateChoose]}>Từ ngày</Text>)}
+      {showDate1 ===true?(<Text style={[styles.toDate, styles.dateChoose]}>{getTrueDate(date)}</Text>):(<Text style={[styles.toDate, styles.dateChoose]}>Đến ngày</Text>)}
+      <Pressable 
+      onPress={() => showMode()}
+      style={[styles.image6Icon, styles.iconLayout]}
+      >
       <Image
-        style={[styles.image6Icon, styles.iconLayout]}
         resizeMode="cover"
-        source={require("../assets/image-6.png")}
+        source={require("../assets/calenderIcon.png")}
       />
-      <Image
-        style={[styles.image7Icon, styles.iconLayout]}
+      </Pressable>
+      <Pressable 
+      onPress={() => showMode1()}
+      style={[styles.image7Icon, styles.iconLayout]}
+      >
+        <Image
+        
         resizeMode="cover"
-        source={require("../assets/image-6.png")}
+        source={require("../assets/calenderIcon.png")}
       />
+      </Pressable>
+      {
+                    show && (
+                        <DateTimePicker
+                            value={date}
+                            mode={"date"}
+                            is24Hour={true}
+                            onChange={onDateChange}
+                        />
+                    )
+                }
+                {
+                    show1 && (
+                        <DateTimePicker
+                            value={date1}
+                            mode={"date"}
+                            is24Hour={true}
+                            onChange={onDateChange1}
+                        />
+                    )
+                }
     </View>
   );
 };
@@ -151,7 +197,7 @@ const styles = StyleSheet.create({
     top: 8,
     position: "absolute",
   },
-  ngyTypo: {
+  dateChoose: {
     left: 33,
     textAlign: "left",
     color: Color.color,
@@ -251,10 +297,10 @@ const styles = StyleSheet.create({
     left: "67.92%",
     position: "absolute",
   },
-  tNgy: {
+  fromDate: {
     top: 19,
   },
-  nNgy: {
+  toDate: {
     top: 46,
   },
   image6Icon: {
