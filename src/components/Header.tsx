@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Text, StyleSheet, View } from "react-native";
-import { FontSize, FontFamily, Color } from "../GlobalStyles";
+import { FontSize, FontFamily, Color } from "../theme/GlobalStyles";
 
-const Header1 = () => {
+const Header = () => {
   return (
     <View style={styles.header}>
       <Text
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Header1;
+export default Header;

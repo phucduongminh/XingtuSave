@@ -2,7 +2,7 @@ import * as React from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
 import MoneyCalulate from "../components/MoneyCalulate";
 import DropdownMenuVariant from "../components/DropdownMenuVariant";
-import { FontSize, FontFamily, Color, Border, Padding } from "../GlobalStyles";
+import { FontSize, FontFamily, Color, Border, Padding } from "../theme/GlobalStyles";
 import { createTradeTable, getSpendsHistory } from "../controllers/TradeControllers";
 import { useEffect, useState } from "react";
 import { Spends } from "../models/Spends";

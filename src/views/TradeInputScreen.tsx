@@ -2,7 +2,7 @@ import * as React from "react";
 import { StyleSheet, View, Pressable, Text, Image } from "react-native";
 import HeaderName from "../components/HeaderName";
 import {TradeItemsComponent} from "../components/TradeItems";
-import { Padding, Color, FontFamily, FontSize, Border } from "../GlobalStyles";
+import { Padding, Color, FontFamily, FontSize, Border } from "../theme/GlobalStyles";
 import { useEffect, useState } from "react";
 import { Input } from '@rneui/themed';
 import { Dropdown } from 'react-native-element-dropdown';

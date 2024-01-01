@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Text, StyleSheet, View } from "react-native";
-import { Color, FontSize, FontFamily, Padding } from "../GlobalStyles";
-import { useCallback, useEffect, useState } from "react";
+import { Color, FontSize, FontFamily, Padding } from "../theme/GlobalStyles";
+import { useEffect, useState } from "react";
 import { Spends } from "../models/Spends";
 import { createTradeTable, getSpendsHistory } from "../controllers/TradeControllers";
 import formatNumber from "./formatNumber";
@@ -11,25 +11,6 @@ const MoneyCalulate1 = () => {
   const [trades, setTrades] = useState<Spends[]>([]);
   const [sumIncome,setSumIncome] = useState(0);
     const [sumExpense,setSumExpense] = useState(0);
-
-  const calculateSums = useCallback(async () => {
-    try {
-      let sumIncome = 0;
-    let sumExpense = 0;
-  
-    trades.forEach((trade) => {
-      if (trade.income === 1) {
-        sumIncome += trade.money;
-      } else {
-        sumExpense += trade.money;
-      }
-    });
-    setSumIncome(sumIncome);
-    setSumExpense(sumExpense);
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
 
   useEffect(() => {
     const loadDataCallback = async () => {
@@ -47,8 +28,28 @@ const MoneyCalulate1 = () => {
       }
     };
     loadDataCallback();
+    const calculateSums = async () => {
+      try {
+        let sumIncome = 0;
+      let sumExpense = 0;
+    
+      trades.forEach((trade) => {
+        if (trade.income === 1) {
+          sumIncome += trade.money;
+        } else {
+          sumExpense += trade.money;
+        }
+      });
+      setSumIncome(sumIncome);
+      setSumExpense(sumExpense);
+      } catch (error) {
+        console.error(error);
+      }
+    };
     calculateSums();
   }, [trades]);
+
+
   
   return (
     <View style={styles.moneycalulate}>

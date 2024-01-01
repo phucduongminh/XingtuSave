@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text, StyleSheet } from "react-native";
-import { FontSize, FontFamily, Color } from "../GlobalStyles";
+import { FontFamily, Color } from "../theme/GlobalStyles";
 
 const HeaderName = () => {
   return <Text style={styles.headername}>Thêm khoản chi tiêu</Text>;

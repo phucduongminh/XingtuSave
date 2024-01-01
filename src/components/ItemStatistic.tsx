@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { Border, Color, FontSize, FontFamily } from "../GlobalStyles";
+import { Border, Color, FontSize, FontFamily } from "../theme/GlobalStyles";
 
 const ItemStatistic: React.FC<{
   category:string;

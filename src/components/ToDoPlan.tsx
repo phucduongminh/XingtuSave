@@ -1,14 +1,14 @@
 import * as React from "react";
 import { StyleSheet, View, Image, Text, Button, TouchableOpacity } from "react-native";
-import { FontFamily, Color, Border, FontSize } from "../GlobalStyles";
+import { FontFamily, Color, Border, FontSize } from "../theme/GlobalStyles";
 import { Plans } from '../models/Plans';
 import formatNumber from "./formatNumber";
 
 export const ToDoPlanComponent: React.FC<{
   item: Plans;
   deleteItem: Function;
-  toggleModal1: (category: string,money:number) => void;
-}> = ({ item: {id, category,money}, deleteItem, toggleModal1 }) => {
+  onModal1: (category: string,money:number) => void;
+}> = ({ item: {id, category,money}, deleteItem, onModal1 }) => {
   return (
     <View style={styles.planitem}>
       <View style={styles.rectangle} />
@@ -22,7 +22,7 @@ export const ToDoPlanComponent: React.FC<{
           style={[styles.category, styles.valuePosition]}
         >{category}</Text>
         <Text style={[styles.value, styles.valuePosition]}>{formatNumber(money)}</Text>
-        <TouchableOpacity onPress={() => toggleModal1(category,money)} style={[styles.icon1, styles.infoPosition]}>
+        <TouchableOpacity onPress={() => onModal1(category,money)} style={[styles.icon1, styles.infoPosition]}>
         <Image
           resizeMode="cover"
           source={require("../assets/icon21.png")}
@@ -32,7 +32,7 @@ export const ToDoPlanComponent: React.FC<{
       {/* <Button
         onPress={() => deleteItem(id)}
         title="done"
-        color="pink"
+        color="#18A3F2"
       /> */}
     </View>
   );

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text, StyleSheet, Image, View, Pressable } from "react-native";
-import { Padding, Color, Border, FontFamily, FontSize } from "../GlobalStyles";
+import { Padding, Color, Border, FontFamily, FontSize } from "../theme/GlobalStyles";
 import { Dropdown } from 'react-native-element-dropdown';
 import CheckBox from '@react-native-community/checkbox';
 import { useState } from "react";

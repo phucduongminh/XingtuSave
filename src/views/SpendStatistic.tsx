@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import PieChart from 'react-native-pie-chart';
 import ItemStatistic from "../components/ItemStatistic";
-import { FontFamily, Color, FontSize, Border } from "../GlobalStyles";
+import { FontFamily, Color, FontSize, Border } from "../theme/GlobalStyles";
 import { Dropdown } from 'react-native-element-dropdown';
 import formatNumber from "../components/formatNumber";
 import { Spends } from '../models/Spends';

@@ -1,11 +1,11 @@
 import * as React from "react";
 import { Text, StyleSheet, Image, View, ScrollView } from "react-native";
-import Header1 from "../components/Header1";
+import Header from "../components/Header";
 import ItemHistoryExpenses from "../components/ItemHistoryExpenses";
-import { Padding, Color, FontSize, FontFamily, Border } from "../GlobalStyles";
+import { Padding, Color, FontSize, FontFamily, Border } from "../theme/GlobalStyles";
 import formatNumber from "../components/formatNumber";
 import { createTradeTable, getSpendsHistory } from "../controllers/TradeControllers";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Spends } from "../models/Spends";
 import { getDBConnection } from "../controllers/connectDB";
 
@@ -18,18 +18,6 @@ const DetailPlan: React.FC<{
   const [remainMoney,setRemainMoney] = useState(0)
 
   const moneyColor = remainMoney > 0 ? Color.colorAquamarine : Color.colorRed_200;
-
-  const selectSpendList = useCallback(async () => {
-    try {
-      let remainMoney=deMoney;
-      let updatedSpendList = spends.filter(spend => spend.category === deCategory && spend.income === 0); // use filter to get the spends that match the condition
-      updatedSpendList.forEach(spend => remainMoney -= spend.money); // update the remainMoney
-      setSpendList(updatedSpendList); // set the spendList state with the updated array
-      setRemainMoney(remainMoney)
-    } catch (error) {
-      console.error(error);
-    }
-  }, []);
    
   useEffect(() => {
     const loadDataCallback = async () => {
@@ -47,13 +35,27 @@ const DetailPlan: React.FC<{
       }
     };
     loadDataCallback();
+  }, [spends]);
+
+  useEffect(() => {
+    const selectSpendList = async () => {
+      try {
+        let remainMoney=deMoney;
+        let updatedSpendList = spends.filter(spend => spend.category === deCategory && spend.income === 0); // use filter to get the spends that match the condition
+        updatedSpendList.forEach(spend => remainMoney -= spend.money); // update the remainMoney
+        setSpendList(updatedSpendList); // set the spendList state with the updated array
+        setRemainMoney(remainMoney)
+      } catch (error) {
+        console.error(error);
+      }
+    };
     selectSpendList();
   }, [spends]);
 
   return (
     <ScrollView contentInsetAdjustmentBehavior="automatic">
     <View style={styles.detailplan}>
-      <Header1 />
+      <Header />
       <View style={[styles.planCategoryInfo, styles.remainingAmountFlexBox]}>
         <Text style={[styles.text, styles.textTypo]}>Khoản chi tiêu</Text>
         <View style={[styles.category, styles.categoryFlexBox]}>
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
   },
   childLayout: {
     height: 35,
-    width: 351,
+    width: 360,
     borderRadius: Border.br_9xs,
   },
   moneyexpensesPosition: {

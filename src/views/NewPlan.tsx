@@ -67,7 +67,7 @@ const NewPlan: React.FC<NewPlanProps> = ({ onAddPlanSuccess }) => {
         onChangeText={setMoney}
         keyboardType="numeric"
       />
-          <Button title="Lưu" color="pink" onPress={addPlan} />
+          <Button title="Lưu" color="#18A3F2" onPress={addPlan} />
         </View>
       </ScrollView>
     </SafeAreaView>

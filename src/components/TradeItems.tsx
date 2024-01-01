@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Text, StyleSheet, Image, View } from "react-native";
-import { Color, FontSize, FontFamily, Border } from "../GlobalStyles";
+import { Color, FontSize, FontFamily, Border } from "../theme/GlobalStyles";
 import { AddTrades } from "../models/AddTrades";
 import formatNumber from "./formatNumber";
 

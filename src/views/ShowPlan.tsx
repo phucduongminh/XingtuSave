@@ -17,7 +17,7 @@ import { Plans } from '../models/Plans';
 import { getTodoPlans, deleteTodoPlan, createPlanTable } from '../controllers/PlanControllers';
 import NewPlan from './NewPlan';
 import MoneyCalulate1 from "../components/MoneyCalulate1";
-import { FontFamily, Color } from "../GlobalStyles";
+import { FontFamily, Color } from "../theme/GlobalStyles";
 import DetailPlan from './DetailPlan';
 import { getDBConnection } from '../controllers/connectDB';
 
@@ -30,17 +30,21 @@ const ShowPlan = () => {
   const [deMoney,setDeMoney] = useState(0);
   
 
-  const toggleModal = () => {
-    setModalVisible(!modalVisible);
+  const onModal = () => {
+    setModalVisible(true);
   };
-  const toggleModal1 = (category: string,money:number) => {
-    setModalVisible1(!modalVisible1);
+  const offModal = () => {
+    setModalVisible(false);
+  };
+
+  const onModal1 = (category: string,money:number) => {
+    setModalVisible1(true);
     setDeCategory(category);
     setDeMoney(money);
   };
 
-  const toggleModal2 = () => {
-    setModalVisible1(!modalVisible1);
+  const offModal1 = () => {
+    setModalVisible1(false);
   };
 
   const onAddPlanSuccess = () => {
@@ -87,7 +91,7 @@ const ShowPlan = () => {
       <Text
             style={styles.allMyExpenses}
           >{`Chi tiêu dự kiến của bạn trong tháng này `}</Text>
-        <TouchableOpacity style={styles.addButton} onPress={toggleModal}>
+        <TouchableOpacity style={styles.addButton} onPress={onModal}>
           <Image
             style={styles.addButtonIcon}
             resizeMode="cover"
@@ -100,7 +104,7 @@ const ShowPlan = () => {
           <View key={item.id.toString()}>
             <ToDoPlanComponent item={item}
               deleteItem={deleteItem}
-              toggleModal1={toggleModal1}
+              onModal1={onModal1}
               />
           </View>
         ))
@@ -111,7 +115,7 @@ const ShowPlan = () => {
           {/* Nội dung của modal */}
           <NewPlan onAddPlanSuccess={onAddPlanSuccess} />
           {/* Nút để ẩn modal */}
-          <TouchableOpacity onPress={toggleModal} style={styles.closeButton}>
+          <TouchableOpacity onPress={offModal} style={styles.closeButton}>
           <Text style={styles.closeButtonText}>x</Text>
           </TouchableOpacity>
       </Modal>
@@ -119,7 +123,7 @@ const ShowPlan = () => {
           {/* Nội dung của modal */}
           <DetailPlan deCategory={deCategory} deMoney={deMoney}/>
           {/* Nút để ẩn modal */}
-          <TouchableOpacity onPress={toggleModal2} style={styles.closeButton}>
+          <TouchableOpacity onPress={offModal1} style={styles.closeButton}>
           <Text style={styles.closeButtonText}>x</Text>
           </TouchableOpacity>
       </Modal>

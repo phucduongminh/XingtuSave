@@ -1,6 +1,6 @@
 import * as React from "react";
 import { StyleSheet, View, Text } from "react-native";
-import { FontFamily, Color, Border, FontSize } from "../GlobalStyles";
+import { FontFamily, Color, Border, FontSize } from "../theme/GlobalStyles";
 import { Spends } from "../models/Spends";
 import formatNumber from "./formatNumber";
 
