@@ -1,7 +1,7 @@
 // useCategoryChoose.ts
 import { createPlanTable, getTodoPlans } from "../controllers/PlanControllers";
 import { Plans } from "../models/Plans";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getDBConnection } from "../controllers/connectDB";
 
 interface CateChoose {
@@ -17,23 +17,24 @@ export const useCategoryChoose = () => {
   const [plans, setPlans] = useState<Plans[]>([]);
   const [cateChoose, setCateChoose] = useState(initialCateChooses);
 
-  useEffect(() => {
-    const loadPlanCallback = async () => {
-      try {
-        const db = await getDBConnection();
-        await createPlanTable(db);
-        const storedPlanItems = await getTodoPlans(db);
-        if (storedPlanItems.length) {
-          setPlans(storedPlanItems);
-        } else {
-          setPlans([]);
-        }
-      } catch (error) {
-        console.error(error);
+  const loadPlanCallback = useCallback(async () => {
+    try {
+      const db = await getDBConnection();
+      await createPlanTable(db);
+      const storedPlanItems = await getTodoPlans(db);
+      if (storedPlanItems.length) {
+        setPlans(storedPlanItems);
+      } else {
+        setPlans([]);
       }
-    };
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
     loadPlanCallback();
-  }, [plans]);
+  }, [loadPlanCallback]);
 
   useEffect(() => {
     // Update cateChoose state only after plans state is updated
