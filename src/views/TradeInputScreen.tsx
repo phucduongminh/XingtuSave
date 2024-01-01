@@ -75,15 +75,15 @@ const TradeInputScreen = () => {
 
     const onDateChange = (e: DateTimePickerEvent, selectedDate: Date | undefined) => {
         // Check if selectedDate is defined before setting the date
-        setShow(!show)
-        setShowDate(!showDate)
+        setShow(false)
+        setShowDate(true)
         if (selectedDate) {
             setDate(selectedDate);
         }
     };
 
     const showMode = () => {
-        setShow(!show)
+        setShow(true)
     }
 
     const chooses = [

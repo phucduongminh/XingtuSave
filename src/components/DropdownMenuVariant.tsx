@@ -102,8 +102,8 @@ const showMode1 = () => {
       <View style={[styles.danhMcParent, styles.parentPosition]}>
       {showCateDrop&&(<Dropdown
                     style={[styles.dropdownCategory]}
-                    placeholderStyle={styles.dropdownText}
-                    selectedTextStyle={styles.dropdownText}
+                    placeholderStyle={[styles.dropdownText,{left:"82%"}]}
+                    selectedTextStyle={[styles.dropdownText,{left:"100%"}]}
                     iconStyle={styles.dropdownIcon}
                     itemTextStyle={{fontSize:12}}
                     iconColor="black"
@@ -348,9 +348,9 @@ const styles = StyleSheet.create({
 },
 dropdownCategory: {
   height: 30,
-  width:100
+  width:120
 },
-dropdownText: {fontSize: 12,color: Color.color, left:"30%"},
+dropdownText: {fontSize: 12,color: Color.color},
 });
 
 export default DropdownMenuVariant;

@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     color: Color.colorDarkslategray,
     left: "0.08%",
     top: "50%",
-    width: "50%",
+    width: "70%",
     position: "absolute",
     textAlign: "left",
     fontFamily: FontFamily.aBeeZeeRegular,
