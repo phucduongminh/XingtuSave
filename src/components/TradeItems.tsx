@@ -14,7 +14,7 @@ export const TradeItemsComponent: React.FC<{
         <Image
           style={styles.rectangleIcon}
           resizeMode="cover"
-          source={require("../assets/rectangle3.png")}
+          source={{ uri: image }}
         />
       </View>
       <View style={styles.info}>

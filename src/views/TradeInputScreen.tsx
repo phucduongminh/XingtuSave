@@ -245,6 +245,8 @@ const TradeInputScreen = () => {
                     income: Number(formType)
                 };
             setTrades([...trades,newTrade]);
+            console.log(selectedImage)
+            console.log(String(selectedImage))
             }}>
                     <View style={[styles.addbuttonChild, styles.addbuttonLayout]} />
                     <Text style={[styles.add, styles.addTypo]}>ADD +</Text></Pressable>

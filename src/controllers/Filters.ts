@@ -66,7 +66,7 @@ const groupByCategory = (spends: Spends[]) => {
     return arrayResult;
   };
 
-  const filterAndGroup = (spends: Spends[], month: string) => {
+  export  const filterAndGroup = (spends: Spends[], month: string) => {
     // Lọc ra những dữ liệu có income = 0
     const filtered = spends.filter((spend) => spend.income === 0);
     // Khai báo một biến để lưu kết quả
@@ -82,7 +82,30 @@ const groupByCategory = (spends: Spends[]) => {
     return grouped;
   };
 
-  export default filterAndGroup
+  const filterByControl = (spends: Spends[], control:number): Spends[] => {
+    // Khai báo một biến để lưu kết quả
+    let grouped: Spends[] = []; // assign an empty array as the default value
+    if (control === 0) {
+      // Gom nhóm theo category
+      grouped = spends;
+    } else if (control ===1){
+      // Gom nhóm theo category và month
+      grouped = spends.filter((spend) => spend.income === 1);
+    } else if (control ===2){
+      grouped = spends.filter((spend) => spend.income === 0);
+    }
+    // Trả về kết quả
+    return grouped;
+  };
+
+  export  const filterByRequest = (spends: Spends[], control:number, category:string): Spends[] => {
+    let grouped= filterByControl(spends,control);
+    if(category!==''){
+      grouped = grouped.filter((spend) => spend.category === category);
+    }
+    return grouped;
+  };
+
 
   
   

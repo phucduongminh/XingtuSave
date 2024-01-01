@@ -8,9 +8,13 @@ import { useEffect, useState } from "react";
 import { Spends } from "../models/Spends";
 import { TradeItemsComponent } from "../components/TradeItems";
 import { getDBConnection } from "../controllers/connectDB";
+import { filterByRequest } from "../controllers/Filters";
 
 const TradeHistory = () => {
+  const [tradesList, setTradesList] = useState<Spends[]>([]);
   const [trades, setTrades] = useState<Spends[]>([]);
+  const [category,setCategory] = useState('')
+  const [control,setControl] = useState(0)
 
   useEffect(() => {
     const loadDataCallback = async () => {
@@ -30,19 +34,26 @@ const TradeHistory = () => {
     loadDataCallback()
   }, [trades]);
 
+  useEffect(()=>{
+    const loadTradeList = async () =>{
+      setTradesList(filterByRequest(trades,control,category))
+    }
+    loadTradeList()
+  },[trades,control,category])
+
   return (
     <View style={styles.tradehistoryfilter}>
       <View style={[styles.header, styles.headerLayout]}>
         <Text style={styles.headername}>Tất cả giao dịch</Text>
       </View>
       <View style={[styles.history, styles.headerLayout]}>
-        {trades.length > 0 ? (
-        trades.map((item) => (
+        {tradesList.length > 0 ? (
+        tradesList.map((item) => (
           <View key={item.id}>
             <TradeItemsComponent item={item} />
           </View>
         ))
-      ):(<Text style={styles.noPlansText}>Không có lịch sử chi tiêu !!!</Text>)
+      ):(<Text style={styles.noPlansText}>Không có lịch sử giao dịch !!!</Text>)
       }
       </View>
       <MoneyCalulate trades={trades} />
@@ -53,7 +64,7 @@ const TradeHistory = () => {
           source={require("../assets/show-more.png")}
         />
       </View>
-      <DropdownMenuVariant />
+      <DropdownMenuVariant setCategory={setCategory} setControl={setControl}/>
     </View>
   );
 };

@@ -3,7 +3,7 @@ import { Text, StyleSheet, Image, View, Pressable } from "react-native";
 import { Padding, Color, Border, FontFamily, FontSize } from "../theme/GlobalStyles";
 import { Dropdown } from 'react-native-element-dropdown';
 import CheckBox from '@react-native-community/checkbox';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { useCategoryChoose } from "../controllers/CategoryChoose";
 
@@ -20,10 +20,12 @@ const getTrueDate = (date: Date) => {
   return trueDate;
 };
 
-const DropdownMenuVariant = () => {
+const DropdownMenuVariant:React.FC<{
+  setCategory: Function
+  setControl: Function
+}> = ({setCategory,setControl}) => {
   const [check1,setCheck1] = useState(false)
   const [check2,setCheck2] = useState(false)
-  const [category,setCategory] = useState('')
 
   const [date, setDate] = useState(new Date());
   const [show, setShow] = useState(false);
@@ -33,6 +35,8 @@ const DropdownMenuVariant = () => {
   const [showDate1, setShowDate1] = useState(false);
 
   const cateChoose =useCategoryChoose();
+  const [showCateDrop, setShowCateDrop] = useState(false);
+  
 
   const onDateChange = (e: DateTimePickerEvent, selectedDate: Date | undefined) => {
     // Check if selectedDate is defined before setting the date
@@ -59,6 +63,24 @@ const onDateChange1 = (e: DateTimePickerEvent, selectedDate: Date | undefined) =
 const showMode1 = () => {
   setShow1(!show1)
 }
+
+  useEffect(()=>{
+    const controlFilter = (()=>{
+      if((check1===true&&check2===true)||(check1===false&&check2===false)){
+        setControl(0)
+        setShowCateDrop(false)
+        setCategory('')
+      } else if(check1===true){
+        setControl(1)
+        setShowCateDrop(false)
+        setCategory('')
+      } else {
+        setControl(2)
+        setShowCateDrop(true)
+      }
+    })
+    controlFilter()
+  },[check1,check2])
   
   return (
     <View style={styles.dropdownMenuvariant12}>
@@ -71,14 +93,14 @@ const showMode1 = () => {
         />
       </View>
     <CheckBox
-    value={check1}
-    onValueChange={() => setCheck1(!check1)}
+    value={check2}
+    onValueChange={() => setCheck2(!check2)}
     style={{left:"87.5%",top:"36%",position:"absolute"}}
     ></CheckBox>
 
       <Text style={[styles.chiTiu, styles.lcTheoTypo]}>Chi tiêu</Text>
       <View style={[styles.danhMcParent, styles.parentPosition]}>
-      <Dropdown
+      {showCateDrop&&(<Dropdown
                     style={[styles.dropdownCategory]}
                     placeholderStyle={styles.dropdownText}
                     selectedTextStyle={styles.dropdownText}
@@ -93,13 +115,13 @@ const showMode1 = () => {
                     onChange={item => {
                         setCategory(item.value)
                     }}
-                />
+                />)}
       </View>
       <View style={styles.thuNhpParent}>
         <Text style={[styles.thuNhp, styles.thuNhpPosition]}>Thu nhập</Text>
         <CheckBox
-    value={check2}
-    onValueChange={() => setCheck2(!check2)}
+    value={check1}
+    onValueChange={() => setCheck1(!check1)}
     style={{left:"72%",top:"5%",position:"absolute"}}
     ></CheckBox>
       </View>
