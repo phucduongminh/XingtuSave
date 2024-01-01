@@ -10,7 +10,30 @@ import TradeHistory from '../views/TradeHistory';
 import SpendStatistic from '../views/SpendStatistic';
 import Advice from '../views/Advice';
 
-const Tab = createBottomTabNavigator();
+// Define the type for the TradeInputScreen params
+type TradeInputScreenParams = {
+  // Add any params that you need to pass to this screen
+};
+
+// Define the type for the TradeHistoryScreen params
+type TradeHistoryScreenParams = {
+  // Add any params that you need to pass to this screen
+  num:number;
+};
+
+// Define the type for the other screens
+// ...
+
+// Define the type for the bottom tab navigator
+export type BottomTabParamList = {
+  TradeInputScreen: undefined;
+  TradeHistory: TradeHistoryScreenParams;
+  ShowPlan: undefined;
+  SpendStatistic:undefined;
+  Advice:undefined;
+};
+
+const Tab = createBottomTabNavigator<BottomTabParamList>();
 
 const TabNavigator = () => {
   return (

@@ -12,6 +12,8 @@ import { AddTrades } from "../models/AddTrades";
 import { createTradeTable, saveNewTrade } from "../controllers/TradeControllers";
 import { getDBConnection } from "../controllers/connectDB";
 import { useCategoryChoose } from "../controllers/CategoryChoose";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { BottomTabParamList } from "../navigators";
 
 const getTrueDate = (date: Date): string => {
     // Lấy ngày, tháng và năm của đối tượng Date
@@ -35,9 +37,9 @@ const getTrueDate = (date: Date): string => {
     return trueDate;
   };
 
+  type ProfileProps = NativeStackScreenProps<BottomTabParamList>;
 
-
-const TradeInputScreen = () => {
+const TradeInputScreen = ({ navigation }: ProfileProps) => {
     const [color1, setColor1] = useState('black');
     const [color2, setColor2] = useState('black');
     const [color3, setColor3] = useState('black');
@@ -118,7 +120,13 @@ const TradeInputScreen = () => {
             ];
             const db = await getDBConnection();
             await saveNewTrade(db, newTrade);
-            Alert.alert("Thêm giao dịch thành công", "Dữ liệu của bạn đã được lưu.");
+            Alert.alert('Thêm giao dịch thành công', 'Dữ liệu của bạn đã được lưu.', [
+                {
+                  text: 'Cancel',
+                  style: 'cancel',
+                },
+                {text: 'OK', onPress: () => navigation.navigate("TradeHistory",{num: Math.random(),})},
+              ]);
             setTrades([])
         } catch (error) {
             console.error(error);

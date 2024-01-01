@@ -9,12 +9,28 @@ import { Spends } from "../models/Spends";
 import { TradeItemsComponent } from "../components/TradeItems";
 import { getDBConnection } from "../controllers/connectDB";
 import { filterByRequest } from "../controllers/Filters";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { BottomTabParamList } from "../navigators";
+import { RouteProp, useRoute } from '@react-navigation/native';
 
-const TradeHistory = () => {
+type ProfileProps = NativeStackScreenProps<BottomTabParamList>;
+
+const TradeHistory = ({ navigation }: ProfileProps) => {
   const [tradesList, setTradesList] = useState<Spends[]>([]);
   const [trades, setTrades] = useState<Spends[]>([]);
   const [category,setCategory] = useState('')
   const [control,setControl] = useState(0)
+
+  const route = useRoute<RouteProp<BottomTabParamList, 'TradeHistory'>>();
+
+  // Get the num param from the route prop
+  let num = route.params.num;
+
+// Check if the num param is a valid number
+if (isNaN(num)) {
+  // Use a default value if the num param is not a number
+  num = 0;
+}
 
   useEffect(() => {
     const loadDataCallback = async () => {
@@ -32,7 +48,7 @@ const TradeHistory = () => {
       }
     };
     loadDataCallback()
-  }, []);
+  }, [num]);
 
   useEffect(()=>{
     const loadTradeList = async () =>{
