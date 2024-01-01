@@ -28,6 +28,7 @@ const ShowPlan = () => {
   const [modalVisible1, setModalVisible1] = useState(false); // State để quản lý hiển thị/ẩn modal
   const [deCategory,setDeCategory] = useState('');
   const [deMoney,setDeMoney] = useState(0);
+  const [deId,setDeId] = useState(0);
   
 
   const onModal = () => {
@@ -37,8 +38,9 @@ const ShowPlan = () => {
     setModalVisible(false);
   };
 
-  const onModal1 = (category: string,money:number) => {
+  const onModal1 = (id: number,category: string,money:number) => {
     setModalVisible1(true);
+    setDeId(id)
     setDeCategory(category);
     setDeMoney(money);
   };
@@ -121,7 +123,7 @@ const ShowPlan = () => {
       </Modal>
       <Modal isVisible={modalVisible1} style={{width:"100%", left:-20,top:-20}}>
           {/* Nội dung của modal */}
-          <DetailPlan deCategory={deCategory} deMoney={deMoney}/>
+          <DetailPlan deCategory={deCategory} deMoney={deMoney} deId={deId}/>
           {/* Nút để ẩn modal */}
           <TouchableOpacity onPress={offModal1} style={styles.closeButton}>
           <Text style={styles.closeButtonText}>x</Text>

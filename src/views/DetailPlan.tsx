@@ -8,11 +8,13 @@ import { createTradeTable, getSpendsHistory } from "../controllers/TradeControll
 import { useEffect, useState } from "react";
 import { Spends } from "../models/Spends";
 import { getDBConnection } from "../controllers/connectDB";
+import { addRemains } from "../controllers/PlanControllers";
 
 const DetailPlan: React.FC<{
   deCategory:string;
   deMoney:number;
-}> = ({ deCategory,deMoney }) => {
+  deId:number;
+}> = ({ deCategory,deMoney,deId }) => {
   const [spends, setSpends] = useState<Spends[]>([])
   const [spendList,setSpendList] = useState<Spends[]>([])
   const [remainMoney,setRemainMoney] = useState(0)
@@ -45,6 +47,8 @@ const DetailPlan: React.FC<{
         updatedSpendList.forEach(spend => remainMoney -= spend.money); // update the remainMoney
         setSpendList(updatedSpendList); // set the spendList state with the updated array
         setRemainMoney(remainMoney)
+        const db = await getDBConnection();
+      await addRemains(db, deId,remainMoney);
       } catch (error) {
         console.error(error);
       }

@@ -7,8 +7,9 @@ import formatNumber from "./formatNumber";
 export const ToDoPlanComponent: React.FC<{
   item: Plans;
   deleteItem: Function;
-  onModal1: (category: string,money:number) => void;
-}> = ({ item: {id, category,money}, deleteItem, onModal1 }) => {
+  onModal1: (id:number,category: string,money:number) => void;
+}> = ({ item: {id, category,money, remain}, deleteItem, onModal1 }) => {
+  const moneyColor = remain > 0 ? Color.colorAquamarine : Color.colorRed_200;
   return (
     <View style={styles.planitem}>
       <View style={styles.rectangle} />
@@ -21,8 +22,8 @@ export const ToDoPlanComponent: React.FC<{
         <Text
           style={[styles.category, styles.valuePosition]}
         >{category}</Text>
-        <Text style={[styles.value, styles.valuePosition]}>{formatNumber(money)}</Text>
-        <TouchableOpacity onPress={() => onModal1(category,money)} style={[styles.icon1, styles.infoPosition]}>
+        <Text style={[styles.value, styles.valuePosition, { color: moneyColor }]}>{formatNumber(remain)}</Text>
+        <TouchableOpacity onPress={() => onModal1(id,category,money)} style={[styles.icon1, styles.infoPosition]}>
         <Image
           resizeMode="cover"
           source={require("../assets/icon21.png")}

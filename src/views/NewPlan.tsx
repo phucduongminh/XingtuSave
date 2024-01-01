@@ -34,6 +34,7 @@ const NewPlan: React.FC<NewPlanProps> = ({ onAddPlanSuccess }) => {
         {
           category: String(newCategory),
           money: Number(money),
+          remain:Number(money)
         },
       ];
       setTodos(newTodos);
