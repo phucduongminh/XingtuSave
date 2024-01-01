@@ -40,28 +40,28 @@ const DropdownMenuVariant:React.FC<{
 
   const onDateChange = (e: DateTimePickerEvent, selectedDate: Date | undefined) => {
     // Check if selectedDate is defined before setting the date
-    setShow(!show)
-    setShowDate(!showDate)
+    setShow(false)
+    setShowDate(true)
     if (selectedDate) {
         setDate(selectedDate);
     }
 };
 
 const showMode = () => {
-    setShow(!show)
+    setShow(true)
 }
 
 const onDateChange1 = (e: DateTimePickerEvent, selectedDate: Date | undefined) => {
   // Check if selectedDate is defined before setting the date
-  setShow1(!show1)
-  setShowDate1(!showDate1)
+  setShow1(false)
+  setShowDate1(true)
   if (selectedDate) {
       setDate1(selectedDate);
   }
 };
 
 const showMode1 = () => {
-  setShow1(!show1)
+  setShow1(true)
 }
 
   useEffect(()=>{
@@ -126,7 +126,7 @@ const showMode1 = () => {
     ></CheckBox>
       </View>
       {showDate ===true?(<Text style={[styles.fromDate, styles.dateChoose]}>{getTrueDate(date)}</Text>):(<Text style={[styles.fromDate, styles.dateChoose]}>Từ ngày</Text>)}
-      {showDate1 ===true?(<Text style={[styles.toDate, styles.dateChoose]}>{getTrueDate(date)}</Text>):(<Text style={[styles.toDate, styles.dateChoose]}>Đến ngày</Text>)}
+      {showDate1 ===true?(<Text style={[styles.toDate, styles.dateChoose]}>{getTrueDate(date1)}</Text>):(<Text style={[styles.toDate, styles.dateChoose]}>Đến ngày</Text>)}
       <Pressable 
       onPress={() => showMode()}
       style={[styles.image6Icon, styles.iconLayout]}

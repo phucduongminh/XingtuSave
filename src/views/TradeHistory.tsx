@@ -32,7 +32,7 @@ const TradeHistory = () => {
       }
     };
     loadDataCallback()
-  }, [trades]);
+  }, []);
 
   useEffect(()=>{
     const loadTradeList = async () =>{

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Pressable, Text, Image } from "react-native";
+import { StyleSheet, View, Pressable, Text, Image, Alert } from "react-native";
 import HeaderName from "../components/HeaderName";
 import {TradeItemsComponent} from "../components/TradeItems";
 import { Padding, Color, FontFamily, FontSize, Border } from "../theme/GlobalStyles";
@@ -118,6 +118,7 @@ const TradeInputScreen = () => {
             ];
             const db = await getDBConnection();
             await saveNewTrade(db, newTrade);
+            Alert.alert("Thêm giao dịch thành công", "Dữ liệu của bạn đã được lưu.");
             setTrades([])
         } catch (error) {
             console.error(error);

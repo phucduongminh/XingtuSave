@@ -10,23 +10,23 @@ const MoneyCalulate: React.FC<{
 }> = ({ trades }) => {
     const [sumIncome,setSumIncome] = useState(0);
     const [sumExpense,setSumExpense] = useState(0);
-  const calculateSums = () => {
-    let sumIncome = 0;
-    let sumExpense = 0;
-  
-    trades.forEach((trade) => {
-      if (trade.income === 1) {
-        sumIncome += trade.money;
-      } else {
-        sumExpense += trade.money;
-      }
-    });
-    setSumIncome(sumIncome);
-    setSumExpense(sumExpense);
-  };
   
   // Goi ham calculateSums sau khi mang trades thay doi hoac component duoc render
   useEffect(() => {
+    const calculateSums = async() => {
+      let sumIncome = 0;
+      let sumExpense = 0;
+    
+      trades.forEach((trade) => {
+        if (trade.income === 1) {
+          sumIncome += trade.money;
+        } else {
+          sumExpense += trade.money;
+        }
+      });
+      setSumIncome(sumIncome);
+      setSumExpense(sumExpense);
+    };
     calculateSums();
   }, [trades]);
     
