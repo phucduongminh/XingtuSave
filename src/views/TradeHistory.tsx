@@ -9,12 +9,24 @@ import { Spends } from "../models/Spends";
 import { TradeItemsComponent } from "../components/TradeItems";
 import { getDBConnection } from "../controllers/connectDB";
 import { filterByRequest } from "../controllers/Filters";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { BottomTabParamList } from "../navigators";
+import { RouteProp, useRoute } from '@react-navigation/native';
 
-const TradeHistory = () => {
+type ProfileProps = NativeStackScreenProps<BottomTabParamList>;
+
+const TradeHistory = ({ navigation }: ProfileProps) => {
   const [tradesList, setTradesList] = useState<Spends[]>([]);
   const [trades, setTrades] = useState<Spends[]>([]);
   const [category,setCategory] = useState('')
   const [control,setControl] = useState(0)
+  const [sDate,setSDate] = useState('')
+  const [sDate1,setSDate1] = useState('')
+  //const [num,setNum] = useState(0)
+
+
+  const route = useRoute<RouteProp<BottomTabParamList, 'TradeHistory'>>();
+  let num = route.params.num
 
   useEffect(() => {
     const loadDataCallback = async () => {
@@ -32,14 +44,14 @@ const TradeHistory = () => {
       }
     };
     loadDataCallback()
-  }, [trades]);
+  }, [num]);
 
   useEffect(()=>{
     const loadTradeList = async () =>{
-      setTradesList(filterByRequest(trades,control,category))
+      setTradesList(filterByRequest(trades,control,category,sDate,sDate1))
     }
     loadTradeList()
-  },[trades,control,category])
+  },[trades,control,category,sDate,sDate1])
 
   return (
     <View style={styles.tradehistoryfilter}>
@@ -64,7 +76,12 @@ const TradeHistory = () => {
           source={require("../assets/show-more.png")}
         />
       </View>
-      <DropdownMenuVariant setCategory={setCategory} setControl={setControl}/>
+      <DropdownMenuVariant 
+      setCategory={setCategory} 
+      setControl={setControl} 
+      setSDate={setSDate} 
+      setSDate1={setSDate1}
+      />
     </View>
   );
 };

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { StyleSheet, View, Pressable, Text, Image } from "react-native";
+import { StyleSheet, View, Pressable, Text, Image, Alert } from "react-native";
 import HeaderName from "../components/HeaderName";
 import {TradeItemsComponent} from "../components/TradeItems";
 import { Padding, Color, FontFamily, FontSize, Border } from "../theme/GlobalStyles";
@@ -12,6 +12,8 @@ import { AddTrades } from "../models/AddTrades";
 import { createTradeTable, saveNewTrade } from "../controllers/TradeControllers";
 import { getDBConnection } from "../controllers/connectDB";
 import { useCategoryChoose } from "../controllers/CategoryChoose";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { BottomTabParamList } from "../navigators";
 
 const getTrueDate = (date: Date): string => {
     // Lấy ngày, tháng và năm của đối tượng Date
@@ -35,9 +37,9 @@ const getTrueDate = (date: Date): string => {
     return trueDate;
   };
 
+  type ProfileProps = NativeStackScreenProps<BottomTabParamList>;
 
-
-const TradeInputScreen = () => {
+const TradeInputScreen = ({ navigation }: ProfileProps) => {
     const [color1, setColor1] = useState('black');
     const [color2, setColor2] = useState('black');
     const [color3, setColor3] = useState('black');
@@ -75,15 +77,15 @@ const TradeInputScreen = () => {
 
     const onDateChange = (e: DateTimePickerEvent, selectedDate: Date | undefined) => {
         // Check if selectedDate is defined before setting the date
-        setShow(!show)
-        setShowDate(!showDate)
+        setShow(false)
+        setShowDate(true)
         if (selectedDate) {
             setDate(selectedDate);
         }
     };
 
     const showMode = () => {
-        setShow(!show)
+        setShow(true)
     }
 
     const chooses = [
@@ -118,6 +120,13 @@ const TradeInputScreen = () => {
             ];
             const db = await getDBConnection();
             await saveNewTrade(db, newTrade);
+            Alert.alert('Thêm giao dịch thành công', 'Dữ liệu của bạn đã được lưu.', [
+                {
+                  text: 'Cancel',
+                  style: 'cancel',
+                },
+                {text: 'OK', onPress: () => navigation.navigate("TradeHistory",{num: Math.random(),})},
+              ]);
             setTrades([])
         } catch (error) {
             console.error(error);

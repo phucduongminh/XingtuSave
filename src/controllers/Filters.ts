@@ -95,11 +95,42 @@ const groupByCategory = (spends: Spends[]) => {
     return grouped;
   };
 
-  export  const filterByRequest = (spends: Spends[], control:number, category:string): Spends[] => {
+  // Import the parse function from date-fns library
+import { parse } from 'date-fns';
+
+const filterByDate = (spends: Spends[], sDate:string,sDate1:string): Spends[] => {
+  let grouped=spends;
+  if(sDate!==''){
+    // Parse the sDate string to a Date object
+    const sDateObj = parse(sDate, 'dd-MM-yyyy', new Date());
+    // Filter the spends array by comparing the date values
+    grouped = grouped.filter((spend) => {
+      // Parse the spend.date string to a Date object
+      const spendDateObj = parse(spend.date, 'dd-MM-yyyy', new Date());
+      // Compare the date values using the > operator
+      return spendDateObj >= sDateObj;
+    });
+  }
+  if(sDate1!==''){
+    // Parse the sDate1 string to a Date object
+    const sDate1Obj = parse(sDate1, 'dd-MM-yyyy', new Date());
+    // Filter the spends array by comparing the date values
+    grouped = grouped.filter((spend) => {
+      // Parse the spend.date string to a Date object
+      const spendDateObj = parse(spend.date, 'dd-MM-yyyy', new Date());
+      // Compare the date values using the < operator
+      return spendDateObj <= sDate1Obj;
+    });
+  }
+  return grouped
+}
+
+  export  const filterByRequest = (spends: Spends[], control:number, category:string, sDate:string,sDate1:string): Spends[] => {
     let grouped= filterByControl(spends,control);
     if(category!==''){
       grouped = grouped.filter((spend) => spend.category === category);
     }
+    grouped = filterByDate(grouped,sDate,sDate1)
     return grouped;
   };
 
