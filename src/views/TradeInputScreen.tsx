@@ -111,15 +111,15 @@ const TradeInputScreen = ({ navigation }: ProfileProps) => {
         loadDataCallback();
       }, [trades]);
 
-    const AddTrade = async () => {
+      const AddTrade = async () => {
         const db = await getDBConnection();
         await createTradeTable(db);
         try {
-            const newTrade = [
-                ...trades,
-            ];
+            // const newTrade = [ // Không cần tạo một mảng mới
+            //     ...trades,
+            // ];
             const db = await getDBConnection();
-            await saveNewTrade(db, newTrade);
+            await saveNewTrade(db, trades); // Truyền mảng trades vào hàm
             Alert.alert('Thêm giao dịch thành công', 'Dữ liệu của bạn đã được lưu.', [
                 {
                   text: 'Cancel',
@@ -129,7 +129,7 @@ const TradeInputScreen = ({ navigation }: ProfileProps) => {
               ]);
             setTrades([])
         } catch (error) {
-            console.error(error);
+            Alert.alert("Không thành công","Vui lòng nhập Thông tin.");
         }
     };
 
@@ -273,7 +273,14 @@ const TradeInputScreen = ({ navigation }: ProfileProps) => {
                     date: getTrueDate(date),
                     income: Number(formType)
                 };
-            setTrades([...trades,newTrade]);
+                if(
+                    category===''&&money===''&&showDate===false&&formType==='0'
+                ){Alert.alert("Không thành công","Vui lòng nhập đủ Danh mục, Số tiền, Ngày tháng!");}
+                else if
+                (money===''&&showDate===false&&formType==='1'){
+                Alert.alert("Không thành công","Vui lòng nhập đủ Số tiền, Ngày tháng!");
+                }else{setTrades([...trades,newTrade]);}
+            
             }}>
                     <View style={[styles.addbuttonChild, styles.addbuttonLayout]} />
                     <Text style={[styles.add, styles.addTypo]}>ADD +</Text>
@@ -286,13 +293,6 @@ const TradeInputScreen = ({ navigation }: ProfileProps) => {
           </View>
         ))
       )}
-            <View style={[styles.morebutton, styles.savebuttonSpaceBlock]}>
-                <Image
-                    style={styles.showMoreIcon}
-                    resizeMode="cover"
-                    source={require("../assets/show-more.png")}
-                />
-            </View>
         </View>
     );
 };
@@ -366,8 +366,8 @@ const styles = StyleSheet.create({
         letterSpacing: 1,
     },
     savebutton: {
-        top: 29,
-        left: 349,
+        left: "75%",
+        top:29,
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "row",
