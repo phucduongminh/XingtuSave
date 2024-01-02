@@ -22,7 +22,6 @@ const TradeHistory = ({ navigation }: ProfileProps) => {
   const [control,setControl] = useState(0)
   const [sDate,setSDate] = useState('')
   const [sDate1,setSDate1] = useState('')
-  //const [num,setNum] = useState(0)
 
 
   const route = useRoute<RouteProp<BottomTabParamList, 'TradeHistory'>>();

@@ -120,11 +120,7 @@ const TradeInputScreen = ({ navigation }: ProfileProps) => {
             // ];
             const db = await getDBConnection();
             await saveNewTrade(db, trades); // Truyền mảng trades vào hàm
-            Alert.alert('Thêm giao dịch thành công', 'Dữ liệu của bạn đã được lưu.', [
-                {
-                  text: 'Cancel',
-                  style: 'cancel',
-                },
+            Alert.alert('Thêm giao dịch thành công', 'Dữ liệu của bạn đã được lưu.',[
                 {text: 'OK', onPress: () => navigation.navigate("TradeHistory",{num: Math.random(),})},
               ]);
             setTrades([])
