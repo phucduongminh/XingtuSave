@@ -23,7 +23,9 @@ const getTrueDate = (date: Date) => {
 const DropdownMenuVariant:React.FC<{
   setCategory: Function
   setControl: Function
-}> = ({setCategory,setControl}) => {
+  setSDate: Function
+  setSDate1:Function
+}> = ({setCategory,setControl,setSDate,setSDate1}) => {
   const [check1,setCheck1] = useState(false)
   const [check2,setCheck2] = useState(false)
 
@@ -33,6 +35,7 @@ const DropdownMenuVariant:React.FC<{
   const [date1, setDate1] = useState(new Date());
   const [show1, setShow1] = useState(false);
   const [showDate1, setShowDate1] = useState(false);
+  const [canChooseDate, setCanChooseDate] = useState(false);
 
   const cateChoose =useCategoryChoose();
   const [showCateDrop, setShowCateDrop] = useState(false);
@@ -44,6 +47,7 @@ const DropdownMenuVariant:React.FC<{
     setShowDate(true)
     if (selectedDate) {
         setDate(selectedDate);
+        setSDate(getTrueDate(selectedDate))
     }
 };
 
@@ -57,6 +61,7 @@ const onDateChange1 = (e: DateTimePickerEvent, selectedDate: Date | undefined) =
   setShowDate1(true)
   if (selectedDate) {
       setDate1(selectedDate);
+      setSDate1(getTrueDate(selectedDate))
   }
 };
 
@@ -77,6 +82,13 @@ const showMode1 = () => {
       } else {
         setControl(2)
         setShowCateDrop(true)
+      }
+      if(check1===false&&check2===false){
+        setCanChooseDate(false)
+        setSDate('')
+        setSDate1('')
+      } else {
+        setCanChooseDate(true)
       }
     })
     controlFilter()
@@ -125,6 +137,8 @@ const showMode1 = () => {
     style={{left:"72%",top:"5%",position:"absolute"}}
     ></CheckBox>
       </View>
+
+      {canChooseDate&&(<>
       {showDate ===true?(<Text style={[styles.fromDate, styles.dateChoose]}>{getTrueDate(date)}</Text>):(<Text style={[styles.fromDate, styles.dateChoose]}>Từ ngày</Text>)}
       {showDate1 ===true?(<Text style={[styles.toDate, styles.dateChoose]}>{getTrueDate(date1)}</Text>):(<Text style={[styles.toDate, styles.dateChoose]}>Đến ngày</Text>)}
       <Pressable 
@@ -165,7 +179,7 @@ const showMode1 = () => {
                             onChange={onDateChange1}
                         />
                     )
-                }
+                }</>)}
     </View>
   );
 };

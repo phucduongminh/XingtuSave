@@ -22,6 +22,7 @@
     "@rneui/themed": "github:react-native-elements/react-native-elements#themed",
     "@types/events": "^3.0.3",
     "@types/react-dom": "^18.2.17",
+    "date-fns": "^3.0.6",
     "events": "^3.3.0",
     "immer": "^10.0.3",
     "lottie-react-native": "^6.4.1",

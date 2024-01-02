@@ -13,6 +13,7 @@ import Advice from '../views/Advice';
 // Define the type for the TradeInputScreen params
 type TradeInputScreenParams = {
   // Add any params that you need to pass to this screen
+  num:number;
 };
 
 // Define the type for the TradeHistoryScreen params
@@ -26,7 +27,7 @@ type TradeHistoryScreenParams = {
 
 // Define the type for the bottom tab navigator
 export type BottomTabParamList = {
-  TradeInputScreen: undefined;
+  TradeInputScreen: TradeInputScreenParams;
   TradeHistory: TradeHistoryScreenParams;
   ShowPlan: undefined;
   SpendStatistic:undefined;
@@ -57,7 +58,9 @@ const TabNavigator = () => {
               }
             />
           ),
-        }}></Tab.Screen>
+        }}
+        initialParams={{ num: Math.random() }}
+        ></Tab.Screen>
       <Tab.Screen
         name="TradeHistory"
         component={TradeHistory}
@@ -71,7 +74,9 @@ const TabNavigator = () => {
               }
             />
           ),
-        }}></Tab.Screen>
+        }}
+        initialParams={{ num: Math.random() }}
+        ></Tab.Screen>
       <Tab.Screen
         name="ShowPlan"
         component={ShowPlan}

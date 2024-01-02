@@ -20,17 +20,13 @@ const TradeHistory = ({ navigation }: ProfileProps) => {
   const [trades, setTrades] = useState<Spends[]>([]);
   const [category,setCategory] = useState('')
   const [control,setControl] = useState(0)
+  const [sDate,setSDate] = useState('')
+  const [sDate1,setSDate1] = useState('')
+  //const [num,setNum] = useState(0)
+
 
   const route = useRoute<RouteProp<BottomTabParamList, 'TradeHistory'>>();
-
-  // Get the num param from the route prop
-  let num = route.params.num;
-
-// Check if the num param is a valid number
-if (isNaN(num)) {
-  // Use a default value if the num param is not a number
-  num = 0;
-}
+  let num = route.params.num
 
   useEffect(() => {
     const loadDataCallback = async () => {
@@ -52,10 +48,10 @@ if (isNaN(num)) {
 
   useEffect(()=>{
     const loadTradeList = async () =>{
-      setTradesList(filterByRequest(trades,control,category))
+      setTradesList(filterByRequest(trades,control,category,sDate,sDate1))
     }
     loadTradeList()
-  },[trades,control,category])
+  },[trades,control,category,sDate,sDate1])
 
   return (
     <View style={styles.tradehistoryfilter}>
@@ -80,7 +76,12 @@ if (isNaN(num)) {
           source={require("../assets/show-more.png")}
         />
       </View>
-      <DropdownMenuVariant setCategory={setCategory} setControl={setControl}/>
+      <DropdownMenuVariant 
+      setCategory={setCategory} 
+      setControl={setControl} 
+      setSDate={setSDate} 
+      setSDate1={setSDate1}
+      />
     </View>
   );
 };

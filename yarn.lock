@@ -2984,6 +2984,11 @@
   dependencies:
     "d3-path" "^3.1.0"
 
+"date-fns@^3.0.6":
+  "integrity" "sha512-W+G99rycpKMMF2/YD064b2lE7jJGUe+EjOES7Q8BIGY8sbNdbgcs9XFTZwvzc9Jx1f3k7LB7gZaZa7f8Agzljg=="
+  "resolved" "https://registry.npmjs.org/date-fns/-/date-fns-3.0.6.tgz"
+  "version" "3.0.6"
+
 "dayjs@^1.8.15":
   "integrity" "sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ=="
   "resolved" "https://registry.npmjs.org/dayjs/-/dayjs-1.11.10.tgz"
