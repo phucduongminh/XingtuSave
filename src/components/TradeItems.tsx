@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   moneyText: {
     marginTop: -10,
     fontSize: FontSize.size_lg,
-    right:"-85%",
+    right:"-80%",
     top: "50%",
     position:"relative",
     fontFamily: FontFamily.aBeeZeeRegular,

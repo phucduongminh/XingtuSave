@@ -38,15 +38,15 @@ export const getSpendsHistory = async (db: SQLiteDatabase): Promise<Spends[]> =>
 
 export const saveNewTrade = async (db: SQLiteDatabase, newTrades: AddTrades[]) => {
   try {
-  const insertQuery =
-    `INSERT INTO ${tableName}(category,money,image,description,date,income) values` +
-    newTrades.map(i => `('${i.category}', ${i.money},'${i.image}','${i.description}','${i.date}',${i.income})`).join(';');
-  return db.executeSql(insertQuery);
+    const insertQuery =
+      `INSERT INTO ${tableName}(category,money,image,description,date,income) values` +
+      newTrades.map(i => `('${i.category}', ${i.money},'${i.image}','${i.description}','${i.date}',${i.income})`).join(','); // Sử dụng dấu phẩy để nối các bản ghi
+    return db.executeSql(insertQuery + ';'); // Thêm dấu chấm phẩy để kết thúc câu lệnh
   
-} catch (error) {
-  console.error(error);
-  throw Error('Failed to get TradesHistory !!!');
-}
+  } catch (error) {
+    console.error(error);
+    throw Error('Failed to get TradesHistory !!!');
+  }
 };
 
 export const deleteTrade = async (db: SQLiteDatabase, id: number) => {
