@@ -120,16 +120,12 @@ const TradeInputScreen = ({ navigation }: ProfileProps) => {
             // ];
             const db = await getDBConnection();
             await saveNewTrade(db, trades); // Truyền mảng trades vào hàm
-            Alert.alert('Thêm giao dịch thành công', 'Dữ liệu của bạn đã được lưu.', [
-                {
-                  text: 'Cancel',
-                  style: 'cancel',
-                },
+            Alert.alert('Thêm giao dịch thành công', 'Dữ liệu của bạn đã được lưu.',[
                 {text: 'OK', onPress: () => navigation.navigate("TradeHistory",{num: Math.random(),})},
               ]);
             setTrades([])
         } catch (error) {
-            Alert.alert("Không thành công","Vui lòng nhập Thông tin.");
+            Alert.alert("Không thành công","Vui lòng nhấn ADD kiểm tra lại thông tin.");
         }
     };
 
@@ -274,10 +270,10 @@ const TradeInputScreen = ({ navigation }: ProfileProps) => {
                     income: Number(formType)
                 };
                 if(
-                    category===''&&money===''&&showDate===false&&formType==='0'
+                    (formType==='0')&&(category===''||money===''||showDate===false)
                 ){Alert.alert("Không thành công","Vui lòng nhập đủ Danh mục, Số tiền, Ngày tháng!");}
                 else if
-                (money===''&&showDate===false&&formType==='1'){
+                ((formType==='1')&&(money===''||showDate===false)){
                 Alert.alert("Không thành công","Vui lòng nhập đủ Số tiền, Ngày tháng!");
                 }else{setTrades([...trades,newTrade]);}
             

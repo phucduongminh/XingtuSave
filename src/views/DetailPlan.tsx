@@ -10,6 +10,33 @@ import { Spends } from "../models/Spends";
 import { getDBConnection } from "../controllers/connectDB";
 import { addRemains } from "../controllers/PlanControllers";
 
+const getTrueDate = (date: Date): string => {
+  // Lấy ngày, tháng và năm của đối tượng Date
+  let day = date.getDate();
+  let month = date.getMonth() + 1; // cộng thêm 1 để được tháng đúng
+  let year = date.getFullYear();
+
+  // Chuyển đổi các biến này sang kiểu string
+  let dayString = day.toString();
+  let monthString = month.toString();
+  let yearString = year.toString();
+
+  // Thêm số 0 vào đầu của day và month nếu chúng có độ dài nhỏ hơn 2
+  dayString = dayString.padStart(2, "0");
+  monthString = monthString.padStart(2, "0");
+
+  // Nối các giá trị này với nhau bằng dấu gạch chéo (/)
+  let trueDate = `${dayString}-${monthString}-${yearString}`;
+
+  // Trả về chuỗi trueDate
+  return trueDate;
+};
+
+const getMonth = (date: string) => {
+  // Giả sử date có định dạng dd-mm-yyyy
+  return date.slice(3, 5); // Trả về chuỗi từ vị trí 3 đến 4
+};
+
 const DetailPlan: React.FC<{
   deCategory:string;
   deMoney:number;
@@ -44,6 +71,8 @@ const DetailPlan: React.FC<{
       try {
         let remainMoney=deMoney;
         let updatedSpendList = spends.filter(spend => spend.category === deCategory && spend.income === 0); // use filter to get the spends that match the condition
+        updatedSpendList = updatedSpendList.filter((spend) => getMonth(spend.date) === getMonth(getTrueDate(new Date())));
+
         updatedSpendList.forEach(spend => remainMoney -= spend.money); // update the remainMoney
         setSpendList(updatedSpendList); // set the spendList state with the updated array
         setRemainMoney(remainMoney)
