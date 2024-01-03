@@ -25,7 +25,10 @@ const DropdownMenuVariant:React.FC<{
   setControl: Function
   setSDate: Function
   setSDate1:Function
-}> = ({setCategory,setControl,setSDate,setSDate1}) => {
+  params: {
+    age: number;
+}
+}> = ({setCategory,setControl,setSDate,setSDate1,params}) => {
   const [check1,setCheck1] = useState(false)
   const [check2,setCheck2] = useState(false)
 
@@ -37,7 +40,7 @@ const DropdownMenuVariant:React.FC<{
   const [showDate1, setShowDate1] = useState(false);
   const [canChooseDate, setCanChooseDate] = useState(false);
 
-  const cateChoose =useCategoryChoose();
+  const cateChoose = useCategoryChoose({num:params.age});
   const [showCateDrop, setShowCateDrop] = useState(false);
   
 

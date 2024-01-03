@@ -3,7 +3,7 @@ import { StyleSheet, View, Pressable, Text, Image, Alert } from "react-native";
 import HeaderName from "../components/HeaderName";
 import {TradeItemsComponent} from "../components/TradeItems";
 import { Padding, Color, FontFamily, FontSize, Border } from "../theme/GlobalStyles";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Input } from '@rneui/themed';
 import { Dropdown } from 'react-native-element-dropdown';
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
@@ -13,7 +13,7 @@ import { createTradeTable, saveNewTrade } from "../controllers/TradeControllers"
 import { getDBConnection } from "../controllers/connectDB";
 import { useCategoryChoose } from "../controllers/CategoryChoose";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { BottomTabParamList } from "../navigators";
+import { BottomTabParamList, ParamsContext } from "../navigators";
 
 const getTrueDate = (date: Date): string => {
     // Lấy ngày, tháng và năm của đối tượng Date
@@ -40,6 +40,8 @@ const getTrueDate = (date: Date): string => {
   type ProfileProps = NativeStackScreenProps<BottomTabParamList>;
 
 const TradeInputScreen = ({ navigation }: ProfileProps) => {
+    const {params} = useContext(ParamsContext);
+
     const [color1, setColor1] = useState('black');
     const [color2, setColor2] = useState('black');
     const [color3, setColor3] = useState('black');
@@ -53,7 +55,7 @@ const TradeInputScreen = ({ navigation }: ProfileProps) => {
     const [date, setDate] = useState(new Date());
     const [selectedImage, setSelectedImage] = useState<string | undefined>();
 
-    const cateChoose = useCategoryChoose();
+    const cateChoose = useCategoryChoose({num:params.age});
 
     const openImagePicker = () => {
         const options: ImageLibraryOptions = {

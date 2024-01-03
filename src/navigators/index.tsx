@@ -11,16 +11,12 @@ import SpendStatistic from '../views/SpendStatistic';
 import Advice from '../views/Advice';
 import { NavigationContainer } from '@react-navigation/native';
 
-type TradeInputScreenParams = {
-  num:number;
-};
-
 type TradeHistoryScreenParams = {
   num:number;
 };
 
 export type BottomTabParamList = {
-  TradeInputScreen: TradeInputScreenParams;
+  TradeInputScreen: undefined;
   TradeHistory: TradeHistoryScreenParams;
   ShowPlan: undefined;
   SpendStatistic:undefined;
@@ -38,7 +34,7 @@ interface ParamsContextType {
 }
 
 // Tạo một context để lưu trữ các tham số và sử dụng kiểu dữ liệu đã định nghĩa
-const ParamsContext = React.createContext<ParamsContextType>({
+export const ParamsContext = React.createContext<ParamsContextType>({
   params: { // Khởi tạo giá trị ban đầu cho params
     age: 0 // Giá trị mặc định cho age
   },
@@ -93,7 +89,6 @@ const TabNavigator = () => {
                 />
               ),
             }}
-            initialParams={{ num: Math.random() }}
             ></Tab.Screen>
             
           <Tab.Screen
@@ -114,7 +109,7 @@ const TabNavigator = () => {
                 />
               ),
             }}
-            initialParams={{ num: Math.random() }}
+            initialParams={{ num: 0 }}
             ></Tab.Screen>
 
           <Tab.Screen

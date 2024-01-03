@@ -9,7 +9,13 @@ interface CateChoose {
   value: string;
 }
 
-export const useCategoryChoose = () => {
+// Tạo một type để mô tả tham số num
+type NumType = {
+  num: number; // Thuộc tính num là một số
+};
+
+// Sử dụng kiểu dữ liệu đã định nghĩa khi khai báo hàm useCategoryChoose
+export const useCategoryChoose = ({num}: NumType) => {
   const initialCateChooses: CateChoose[] = [
     { label: "", value: "" },
   ];
@@ -30,7 +36,7 @@ export const useCategoryChoose = () => {
     } catch (error) {
       console.error(error);
     }
-  }, []);
+  }, [num]);
 
   useEffect(() => {
     loadPlanCallback();
@@ -44,7 +50,7 @@ export const useCategoryChoose = () => {
     }));
     // Set the state
     setCateChoose(initialCateChooses);
-  }, [plans]);
+  }, [plans,num]);
 
   return cateChoose;
 };

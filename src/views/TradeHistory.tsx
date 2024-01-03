@@ -4,13 +4,13 @@ import MoneyCalulate from "../components/MoneyCalulate";
 import DropdownMenuVariant from "../components/DropdownMenuVariant";
 import { FontSize, FontFamily, Color, Border, Padding } from "../theme/GlobalStyles";
 import { createTradeTable, getSpendsHistory } from "../controllers/TradeControllers";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Spends } from "../models/Spends";
 import { TradeItemsComponent } from "../components/TradeItems";
 import { getDBConnection } from "../controllers/connectDB";
 import { filterByRequest } from "../controllers/Filters";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { BottomTabParamList } from "../navigators";
+import { BottomTabParamList, ParamsContext } from "../navigators";
 import { RouteProp, useRoute } from '@react-navigation/native';
 
 type ProfileProps = NativeStackScreenProps<BottomTabParamList>;
@@ -23,6 +23,7 @@ const TradeHistory = ({ navigation }: ProfileProps) => {
   const [sDate,setSDate] = useState('')
   const [sDate1,setSDate1] = useState('')
 
+  const {params} = useContext(ParamsContext);
 
   const route = useRoute<RouteProp<BottomTabParamList, 'TradeHistory'>>();
   let num = route.params.num
@@ -80,6 +81,7 @@ const TradeHistory = ({ navigation }: ProfileProps) => {
       setControl={setControl} 
       setSDate={setSDate} 
       setSDate1={setSDate1}
+      params={params}
       />
     </View>
   );
